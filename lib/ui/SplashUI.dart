@@ -1,5 +1,5 @@
 import 'package:fluam_app/generated/l10n.dart';
-import 'package:fluam_app/ui/MainUI.dart';
+import 'package:fluam_app/route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -64,15 +64,8 @@ class _SplashUIState extends State<SplashUI> with TickerProviderStateMixin {
       _flutterLogoController.forward();
       _appLogoController.forward();
       await Future.delayed(Duration(milliseconds: waitTime));
-      _goNext();
+      AppRoute.goMainAndRemoveUntil(_scaffold.currentContext);
     });
-  }
-
-  _goNext() {
-    Navigator.pushAndRemoveUntil(_scaffold.currentContext,
-        MaterialPageRoute(builder: (context) {
-      return MainUI();
-    }), (route) => route == null);
   }
 
   @override

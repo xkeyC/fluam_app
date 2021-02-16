@@ -12,6 +12,8 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  font_awesome_flutter: ^8.11.0
+  scaffold_responsive: ^1.0.0
 
 dev_dependencies:
   flutter_test:
