@@ -12,7 +12,7 @@ class FlarumSiteData extends FlarumBaseData {
     if (!flarumBaseData.dataIsMap) {
       throw "The Data not FlarumSiteData";
     }
-    if (!flarumBaseData.checkMapDataType(typeName)) {
+    if (!flarumBaseData.checkDataType(typeName)) {
       throw "The Data not FlarumSiteData";
     }
     return FlarumSiteData(

@@ -11,7 +11,10 @@ class FlarumBaseData {
 
   bool get dataIsList => this.data is List;
 
-  bool get dataIsNull => this.data == null;
+  bool get dataIsNull =>
+      this.data == null ||
+      (dataIsList && (data as List).length == 0) ||
+      (dataIsMap) && (data as Map) == {};
 
   factory FlarumBaseData.formJson(String jsonData) {
     Map m = json.decode(jsonData);
@@ -24,7 +27,13 @@ class FlarumBaseData {
         .toString();
   }
 
-  bool checkMapDataType(String typeName) {
-    return data["type"] == typeName;
+  bool checkDataType(String typeName) {
+    if (dataIsMap) {
+      return data["type"] == typeName;
+    } else if (dataIsList) {
+      return data[0]["type"] == typeName;
+    } else {
+      return false;
+    }
   }
 }

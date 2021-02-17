@@ -1,14 +1,18 @@
-import 'package:fluam_app/decoder/flarum/base.dart';
-import 'package:fluam_app/decoder/flarum/flarum.dart';
+import 'package:fluam_app/data/decoder/flarum/flarum.dart';
+import 'package:fluam_app/data/decoder/flarum/src/tags.dart';
 import 'package:http/http.dart' as http;
 
 void main() async {
   final http.Client client = http.Client();
   String data =
       (await client.get(Uri.parse("https://discuss.flarum.org/api"))).body;
-  client.close();
+
   print(FlarumSiteData.formBase(FlarumBaseData.formJson(data)).title);
-  print(FlarumSiteData.formBase(FlarumBaseData.formJson(data)).apiUrl);
-  print(FlarumSiteData.formBase(FlarumBaseData.formJson(data)).welcomeTitle);
-  print(FlarumSiteData.formBase(FlarumBaseData.formJson(data)).welcomeMessage);
+
+  data =
+      (await client.get(Uri.parse("https://discuss.flarum.org/api/tags"))).body;
+
+  print(FlarumTagsData.formBase(FlarumBaseData.formJson(data)).tagsList.length);
+
+  client.close();
 }
