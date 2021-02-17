@@ -21,6 +21,10 @@ class FlarumBaseData {
     return FlarumBaseData(m["links"], m["data"], m["included"]);
   }
 
+  FlarumBaseData forkData(dynamic data) {
+    return FlarumBaseData(links, data, included);
+  }
+
   @override
   String toString() {
     return {"links": this.links, "data": this.data, "included": this.included}

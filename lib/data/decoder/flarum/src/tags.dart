@@ -22,8 +22,7 @@ class FlarumTagsData extends FlarumBaseData {
     final List<FlarumTagData> tagsList = [];
 
     (flarumBaseData.data as List).forEach((element) {
-      tagsList.add(FlarumTagData.formBase(FlarumBaseData(
-          flarumBaseData.links, element, flarumBaseData.included)));
+      tagsList.add(FlarumTagData.formBase(flarumBaseData.forkData(element)));
     });
 
     return FlarumTagsData(flarumBaseData.links, flarumBaseData.data,
@@ -78,7 +77,7 @@ class FlarumTagData extends FlarumBaseData {
 
   bool get canAddToDiscussion => this.attributes["canAddToDiscussion"];
 
-  Map get relationships => this.attributes["relationships"];
+  Map get relationships => this.data["relationships"];
 
   String get parentTagsId => this.relationships["parent"]["data"]["id"];
 }

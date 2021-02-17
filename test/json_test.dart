@@ -3,11 +3,13 @@ import 'package:http/http.dart' as http;
 
 void main() async {
   final http.Client client = http.Client();
+  print("----------------flarum----------------");
   String data =
       (await client.get(Uri.parse("https://discuss.flarum.org/api"))).body;
 
   print(FlarumSiteData.formBase(FlarumBaseData.formJson(data)).title);
 
+  print("----------------tags----------------");
   data =
       (await client.get(Uri.parse("https://discuss.flarum.org/api/tags"))).body;
 
@@ -19,8 +21,18 @@ void main() async {
     if (element.isChild) {
       print("ParentTagsId :${element.parentTagsId}");
     }
-    print(
-        "-----------------------------------------------------------------------------");
+    print("\n");
+  });
+
+  print("----------------groups----------------");
+
+  data = (await client.get(Uri.parse("https://discuss.flarum.org/api/groups")))
+      .body;
+
+  FlarumGroupsData.formBase(FlarumBaseData.formJson(data))
+      .groupsList
+      .forEach((element) {
+    print(element.nameSingular);
   });
 
   client.close();
