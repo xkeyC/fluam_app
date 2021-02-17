@@ -19,43 +19,43 @@ class FlarumSiteData extends FlarumBaseData {
         flarumBaseData.links, flarumBaseData.data, flarumBaseData.included);
   }
 
-  Map get dataMapSource => this.data["attributes"];
+  Map get attributes => this.data["attributes"];
 
   String get id => this.data["id"];
 
-  String get title => dataMapSource["title"];
+  String get title => attributes["title"];
 
-  String get description => dataMapSource["description"];
+  String get description => attributes["description"];
 
-  String get baseUrl => dataMapSource["baseUrl"];
+  String get baseUrl => attributes["baseUrl"];
 
-  String get basePath => dataMapSource["basePath"];
+  String get basePath => attributes["basePath"];
 
-  String get apiUrl => dataMapSource["apiUrl"];
+  String get apiUrl => attributes["apiUrl"];
 
-  String get welcomeTitle => dataMapSource["welcomeTitle"];
+  String get welcomeTitle => attributes["welcomeTitle"];
 
-  String get welcomeMessage => dataMapSource["welcomeMessage"];
+  String get welcomeMessage => attributes["welcomeMessage"];
 
-  String get themePrimaryColor => dataMapSource["themePrimaryColor"];
+  String get themePrimaryColor => attributes["themePrimaryColor"];
 
-  String get themeSecondaryColor => dataMapSource["themeSecondaryColor"];
+  String get themeSecondaryColor => attributes["themeSecondaryColor"];
 
-  String get logoUrl => dataMapSource["logoUrl"];
+  String get logoUrl => attributes["logoUrl"];
 
-  String get faviconUrl => dataMapSource["faviconUrl"];
+  String get faviconUrl => attributes["faviconUrl"];
 
-  bool get allowSignUp => dataMapSource["allowSignUp"];
+  bool get allowSignUp => attributes["allowSignUp"];
 
-  bool get canStartDiscussion => dataMapSource["canStartDiscussion"];
+  bool get canStartDiscussion => attributes["canStartDiscussion"];
 
-  bool get canViewUserList => dataMapSource["canViewUserList"];
+  bool get canViewUserList => attributes["canViewUserList"];
 
-  bool get canViewFlags => dataMapSource["canViewFlags"];
+  bool get canViewFlags => attributes["canViewFlags"];
 
-  String get guidelinesUrl => dataMapSource["guidelinesUrl"];
+  String get guidelinesUrl => attributes["guidelinesUrl"];
 
-  bool get canRequestUsername => dataMapSource["guidelinesUrl"];
+  bool get canRequestUsername => attributes["guidelinesUrl"];
 
-  bool get canRequestNickname => dataMapSource["canRequestNickname"];
+  bool get canRequestNickname => attributes["canRequestNickname"];
 }

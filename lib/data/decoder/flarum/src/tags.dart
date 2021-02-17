@@ -50,33 +50,35 @@ class FlarumTagData extends FlarumBaseData {
         flarumBaseData.links, flarumBaseData.data, flarumBaseData.included);
   }
 
-  Map get dataMapSource => this.data["attributes"];
+  Map get attributes => this.data["attributes"];
 
   String get id => this.data["id"];
 
-  String get name => this.dataMapSource["name"];
+  String get name => this.attributes["name"];
 
-  String get description => this.dataMapSource["description"];
+  String get description => this.attributes["description"];
 
-  String get slug => this.dataMapSource["slug"];
+  String get slug => this.attributes["slug"];
 
-  String get color => this.dataMapSource["color"];
+  String get color => this.attributes["color"];
 
-  String get icon => this.dataMapSource["icon"];
+  String get icon => this.attributes["icon"];
 
-  String get discussionCount => this.dataMapSource["discussionCount"];
+  String get discussionCount => this.attributes["discussionCount"];
 
-  int get position => this.dataMapSource["position"];
+  int get position => this.attributes["position"];
 
-  bool get isChild => this.dataMapSource["isChild"];
+  bool get isChild => this.attributes["isChild"];
 
-  bool get isHidden => this.dataMapSource["isHidden"];
+  bool get isHidden => this.attributes["isHidden"];
 
-  String get lastPostedAt => this.dataMapSource["lastPostedAt"];
+  String get lastPostedAt => this.attributes["lastPostedAt"];
 
-  bool get canStartDiscussion => this.dataMapSource["canStartDiscussion"];
+  bool get canStartDiscussion => this.attributes["canStartDiscussion"];
 
-  bool get canAddToDiscussion => this.dataMapSource["canAddToDiscussion"];
+  bool get canAddToDiscussion => this.attributes["canAddToDiscussion"];
 
-  String get parentTagsId => this.data["relationships"]["parent"]["data"]["id"];
+  Map get relationships => this.attributes["relationships"];
+
+  String get parentTagsId => this.relationships["parent"]["data"]["id"];
 }
