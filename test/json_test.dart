@@ -21,7 +21,6 @@ void main() async {
     if (element.isChild) {
       print("ParentTagsId :${element.parentTagsId}");
     }
-    print("\n");
   });
 
   print("----------------groups----------------");
@@ -33,6 +32,17 @@ void main() async {
       .groupsList
       .forEach((element) {
     print(element.nameSingular);
+  });
+
+  print("----------------posts----------------");
+
+  data = (await client.get(Uri.parse("https://discuss.flarum.org/api/posts")))
+      .body;
+
+  FlarumPostsData.formBase(FlarumBaseData.formJson(data))
+      .postsList
+      .forEach((element) {
+    print(element.contentHtml);
   });
 
   client.close();
