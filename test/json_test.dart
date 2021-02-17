@@ -45,5 +45,17 @@ void main() async {
     print(element.contentHtml);
   });
 
+  print("----------------discussions----------------");
+
+  data = (await client
+          .get(Uri.parse("https://discuss.flarum.org/api/discussions")))
+      .body;
+
+  FlarumDiscussionsData.formBase(FlarumBaseData.formJson(data))
+      .discussionsList
+      .forEach((element) {
+    print(element.title);
+  });
+
   client.close();
 }

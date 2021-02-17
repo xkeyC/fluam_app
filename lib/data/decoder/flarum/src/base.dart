@@ -35,6 +35,9 @@ class FlarumBaseData {
     if (dataIsMap) {
       return data["type"] == typeName;
     } else if (dataIsList) {
+      if ((data as List).length == 0) {
+        return true;
+      }
       return data[0]["type"] == typeName;
     } else {
       return false;
