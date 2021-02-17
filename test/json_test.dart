@@ -1,5 +1,4 @@
 import 'package:fluam_app/data/decoder/flarum/flarum.dart';
-import 'package:fluam_app/data/decoder/flarum/src/tags.dart';
 import 'package:http/http.dart' as http;
 
 void main() async {
@@ -12,7 +11,17 @@ void main() async {
   data =
       (await client.get(Uri.parse("https://discuss.flarum.org/api/tags"))).body;
 
-  print(FlarumTagsData.formBase(FlarumBaseData.formJson(data)).tagsList.length);
+  FlarumTagsData.formBase(FlarumBaseData.formJson(data))
+      .tagsList
+      .forEach((element) {
+    print(
+        "TAG: ${element.name} IsChild:${element.isChild} Position:${element.position}");
+    if (element.isChild) {
+      print("ParentTagsId :${element.parentTagsId}");
+    }
+    print(
+        "-----------------------------------------------------------------------------");
+  });
 
   client.close();
 }

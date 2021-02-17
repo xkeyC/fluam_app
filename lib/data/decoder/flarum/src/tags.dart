@@ -66,7 +66,7 @@ class FlarumTagData extends FlarumBaseData {
 
   String get discussionCount => this.dataMapSource["discussionCount"];
 
-  String get position => this.dataMapSource["position"];
+  int get position => this.dataMapSource["position"];
 
   bool get isChild => this.dataMapSource["isChild"];
 
@@ -77,4 +77,6 @@ class FlarumTagData extends FlarumBaseData {
   bool get canStartDiscussion => this.dataMapSource["canStartDiscussion"];
 
   bool get canAddToDiscussion => this.dataMapSource["canAddToDiscussion"];
+
+  String get parentTagsId => this.data["relationships"]["parent"]["data"]["id"];
 }
