@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import '../flarum.dart';
+
 class FlarumBaseData {
   final FlarumLinkData links;
   final dynamic data;
-  final List included;
+  final FlarumIncludedData included;
 
   FlarumBaseData(this.links, this.data, this.included);
 
@@ -18,8 +20,8 @@ class FlarumBaseData {
 
   factory FlarumBaseData.formJson(String jsonData) {
     Map m = json.decode(jsonData);
-    return FlarumBaseData(
-        FlarumLinkData.formJsonMap(m["links"]), m["data"], m["included"]);
+    return FlarumBaseData(FlarumLinkData.formJsonMap(m["links"]), m["data"],
+        FlarumIncludedData.formJsonMapList(m["included"]));
   }
 
   FlarumBaseData forkData(dynamic data) {
@@ -62,23 +64,97 @@ class FlarumLinkData {
 }
 
 class FlarumRelationshipsData {
-  String type;
-  String id;
+  final String type;
+  final String id;
+  final Map sourceMap;
 
-  FlarumRelationshipsData(this.type, this.id);
+  FlarumRelationshipsData(this.type, this.id, this.sourceMap);
 
   factory FlarumRelationshipsData.formJsonMap(Map m) {
     if (m == null) {
       return null;
     }
-    return FlarumRelationshipsData(m["type"], m["id"]);
+    return FlarumRelationshipsData(m["type"], m["id"], m);
   }
 
-  static List<FlarumRelationshipsData> formJsonMapList(List<Map> l) {
+  static List<FlarumRelationshipsData> formJsonMapList(List l) {
+    if (l == null) {
+      return null;
+    }
     List<FlarumRelationshipsData> list = [];
     l.forEach((element) {
       list.add(FlarumRelationshipsData.formJsonMap(element));
     });
     return list;
+  }
+}
+
+class FlarumIncludedData {
+  final Map<String, FlarumPostData> posts;
+  final Map<String, FlarumGroupData> groups;
+  final Map<String, FlarumDiscussionData> discussions;
+  final Map<String, FlarumTagData> tags;
+  final Map<String, FlarumUserData> users;
+
+  FlarumIncludedData(
+      this.posts, this.groups, this.discussions, this.tags, this.users);
+
+  factory FlarumIncludedData.formJsonMapList(List l) {
+    Map<String, FlarumPostData> posts;
+    Map<String, FlarumGroupData> groups;
+    Map<String, FlarumDiscussionData> discussions;
+    Map<String, FlarumTagData> tags;
+    Map<String, FlarumUserData> users;
+
+    final rl = FlarumRelationshipsData.formJsonMapList(l);
+    if (rl == null) {
+      return null;
+    }
+    rl.forEach((r) {
+      switch (r.type) {
+        case FlarumPostData.typeName:
+          if (posts == null) {
+            posts = {};
+          }
+          final v =
+              FlarumPostData.formBase(FlarumBaseData(null, r.sourceMap, null));
+          posts.addAll({v.id: v});
+          break;
+        case FlarumGroupData.typeName:
+          if (groups == null) {
+            groups = {};
+          }
+          final v =
+              FlarumGroupData.formBase(FlarumBaseData(null, r.sourceMap, null));
+          groups.addAll({v.id: v});
+          break;
+        case FlarumDiscussionData.typeName:
+          if (discussions == null) {
+            discussions = {};
+          }
+          final v = FlarumDiscussionData.formBase(
+              FlarumBaseData(null, r.sourceMap, null));
+          discussions.addAll({v.id: v});
+          break;
+        case FlarumTagData.typeName:
+          if (tags == null) {
+            tags = {};
+          }
+          final v =
+              FlarumTagData.formBase(FlarumBaseData(null, r.sourceMap, null));
+          tags.addAll({v.id: v});
+          break;
+        case FlarumUserData.typeName:
+          if (users == null) {
+            users = {};
+          }
+          final v =
+              FlarumUserData.formBase(FlarumBaseData(null, r.sourceMap, null));
+          users.addAll({v.id: v});
+          break;
+      }
+    });
+
+    return FlarumIncludedData(posts, groups, discussions, tags, users);
   }
 }

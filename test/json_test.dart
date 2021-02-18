@@ -1,5 +1,4 @@
 import 'package:fluam_app/data/decoder/flarum/flarum.dart';
-import 'package:fluam_app/data/decoder/flarum/src/users.dart';
 import 'package:http/http.dart' as http;
 
 void main() async {
@@ -67,6 +66,7 @@ void main() async {
       .usersList
       .forEach((element) {
     print(element.username);
+    print(element.included.groups.length);
   });
 
   client.close();

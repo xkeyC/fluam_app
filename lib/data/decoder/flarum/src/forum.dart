@@ -3,7 +3,7 @@ import 'base.dart';
 class FlarumSiteData extends FlarumBaseData {
   static const String typeName = "forums";
 
-  FlarumSiteData(FlarumLinkData links, data, List included)
+  FlarumSiteData(FlarumLinkData links, data, FlarumIncludedData included)
       : super(links, data, included);
 
   factory FlarumSiteData.formBase(FlarumBaseData flarumBaseData) {

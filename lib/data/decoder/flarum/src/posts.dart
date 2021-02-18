@@ -5,7 +5,8 @@ class FlarumPostsData extends FlarumBaseData {
 
   final List<FlarumPostData> postsList;
 
-  FlarumPostsData(FlarumLinkData links, data, List included, this.postsList)
+  FlarumPostsData(
+      FlarumLinkData links, data, FlarumIncludedData included, this.postsList)
       : super(links, data, included);
 
   factory FlarumPostsData.formBase(FlarumBaseData flarumBaseData) {
@@ -33,7 +34,7 @@ class FlarumPostsData extends FlarumBaseData {
 class FlarumPostData extends FlarumBaseData {
   static const String typeName = "posts";
 
-  FlarumPostData(FlarumLinkData links, data, List included)
+  FlarumPostData(FlarumLinkData links, data, FlarumIncludedData included)
       : super(links, data, included);
 
   factory FlarumPostData.formBase(FlarumBaseData flarumBaseData) {
