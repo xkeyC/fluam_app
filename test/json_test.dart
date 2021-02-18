@@ -19,7 +19,7 @@ void main() async {
     print(
         "TAG: ${element.name} IsChild:${element.isChild} Position:${element.position}");
     if (element.isChild) {
-      print("ParentTagsId :${element.parentTagsId}");
+      print("ParentTagsId :${element.parentTags.id}");
     }
   });
 

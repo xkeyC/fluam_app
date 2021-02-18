@@ -60,3 +60,25 @@ class FlarumLinkData {
     return FlarumLinkData(m["first"], m["prev"], m["next"]);
   }
 }
+
+class FlarumRelationshipsData {
+  String type;
+  String id;
+
+  FlarumRelationshipsData(this.type, this.id);
+
+  factory FlarumRelationshipsData.formJsonMap(Map m) {
+    if (m == null) {
+      return null;
+    }
+    return FlarumRelationshipsData(m["type"], m["id"]);
+  }
+
+  static List<FlarumRelationshipsData> formJsonMapList(List<Map> l) {
+    List<FlarumRelationshipsData> list = [];
+    l.forEach((element) {
+      list.add(FlarumRelationshipsData.formJsonMap(element));
+    });
+    return list;
+  }
+}

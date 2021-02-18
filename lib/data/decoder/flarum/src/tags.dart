@@ -80,5 +80,6 @@ class FlarumTagData extends FlarumBaseData {
 
   Map get relationships => this.data["relationships"];
 
-  String get parentTagsId => this.relationships["parent"]["data"]["id"];
+  FlarumRelationshipsData get parentTags =>
+      FlarumRelationshipsData.formJsonMap(this.relationships["parent"]["data"]);
 }

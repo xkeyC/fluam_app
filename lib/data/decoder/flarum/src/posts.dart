@@ -80,13 +80,20 @@ class FlarumPostData extends FlarumBaseData {
 
   Map get relationships => this.data["relationships"];
 
-  String get userId => this.relationships["user"]["data"]["id"];
+  FlarumRelationshipsData get user =>
+      FlarumRelationshipsData.formJsonMap(this.relationships["user"]["data"]);
 
-  String get editedUserId => this.relationships["editedUser"]["data"]["id"];
+  FlarumRelationshipsData get editedUser => FlarumRelationshipsData.formJsonMap(
+      this.relationships["editedUser"]["data"]);
 
-  String get discussionId => this.relationships["discussion"]["data"]["id"];
+  FlarumRelationshipsData get discussion => FlarumRelationshipsData.formJsonMap(
+      this.relationships["discussion"]["data"]);
 
-  List get likes => this.relationships["discussion"]["data"];
+  List<FlarumRelationshipsData> get likes =>
+      FlarumRelationshipsData.formJsonMapList(
+          this.relationships["likes"]["data"]);
 
-  List get mentionedBy => this.relationships["mentionedBy"]["data"];
+  List<FlarumRelationshipsData> get mentionedBy =>
+      FlarumRelationshipsData.formJsonMapList(
+          this.relationships["mentionedBy"]["data"]);
 }
