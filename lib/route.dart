@@ -1,4 +1,5 @@
 import 'package:fluam_app/conf.dart';
+import 'package:fluam_app/ui/AddSiteUI.dart';
 import 'package:fluam_app/ui/MainUI.dart';
 import 'package:fluam_app/ui/MainUI_desktop.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,16 @@ class AppRoute {
         return MainUIDesktop();
       }
       return MainUI();
+    }), (route) => route == null);
+  }
+
+  static Future goAddSiteUIAndRemoveUntil(BuildContext context,
+      {bool firstSite}) {
+    return Navigator.pushAndRemoveUntil(context,
+        MaterialPageRoute(builder: (context) {
+      return AddSiteUI(
+        firstSite: firstSite,
+      );
     }), (route) => route == null);
   }
 }
