@@ -1,4 +1,5 @@
 import 'package:fluam_app/data/decoder/flarum/flarum.dart';
+import 'package:fluam_app/data/decoder/flarum/src/users.dart';
 import 'package:http/http.dart' as http;
 
 void main() async {
@@ -56,6 +57,17 @@ void main() async {
     print(element.title);
   });
   print(d.links.next);
+
+  print("----------------users----------------");
+
+  data = (await client.get(Uri.parse("https://discuss.flarum.org/api/users")))
+      .body;
+
+  FlarumUsersData.formBase(FlarumBaseData.formJson(data))
+      .usersList
+      .forEach((element) {
+    print(element.username);
+  });
 
   client.close();
 }
