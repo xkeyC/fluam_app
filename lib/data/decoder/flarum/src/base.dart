@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 class FlarumBaseData {
-  final Map links;
+  final FlarumLinkData links;
   final dynamic data;
   final List included;
 
@@ -18,7 +18,8 @@ class FlarumBaseData {
 
   factory FlarumBaseData.formJson(String jsonData) {
     Map m = json.decode(jsonData);
-    return FlarumBaseData(m["links"], m["data"], m["included"]);
+    return FlarumBaseData(
+        FlarumLinkData.formJsonMap(m["links"]), m["data"], m["included"]);
   }
 
   FlarumBaseData forkData(dynamic data) {
@@ -42,5 +43,20 @@ class FlarumBaseData {
     } else {
       return false;
     }
+  }
+}
+
+class FlarumLinkData {
+  final String first;
+  final String prev;
+  final String next;
+
+  FlarumLinkData(this.first, this.prev, this.next);
+
+  factory FlarumLinkData.formJsonMap(Map m) {
+    if (m == null) {
+      return null;
+    }
+    return FlarumLinkData(m["first"], m["prev"], m["next"]);
   }
 }

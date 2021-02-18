@@ -5,7 +5,7 @@ class FlarumGroupsData extends FlarumBaseData {
 
   final List<FlarumGroupData> groupsList;
 
-  FlarumGroupsData(Map links, data, List included, this.groupsList)
+  FlarumGroupsData(FlarumLinkData links, data, List included, this.groupsList)
       : super(links, data, included);
 
   factory FlarumGroupsData.formBase(FlarumBaseData flarumBaseData) {
@@ -33,7 +33,7 @@ class FlarumGroupsData extends FlarumBaseData {
 class FlarumGroupData extends FlarumBaseData {
   static const String typeName = "groups";
 
-  FlarumGroupData(Map links, data, List included)
+  FlarumGroupData(FlarumLinkData links, data, List included)
       : super(links, data, included);
 
   factory FlarumGroupData.formBase(FlarumBaseData flarumBaseData) {

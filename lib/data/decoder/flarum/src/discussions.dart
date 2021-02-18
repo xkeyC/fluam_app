@@ -5,7 +5,8 @@ class FlarumDiscussionsData extends FlarumBaseData {
 
   final List<FlarumDiscussionData> discussionsList;
 
-  FlarumDiscussionsData(Map links, data, List included, this.discussionsList)
+  FlarumDiscussionsData(
+      FlarumLinkData links, data, List included, this.discussionsList)
       : super(links, data, included);
 
   factory FlarumDiscussionsData.formBase(FlarumBaseData flarumBaseData) {
@@ -33,7 +34,7 @@ class FlarumDiscussionsData extends FlarumBaseData {
 class FlarumDiscussionData extends FlarumBaseData {
   static const String typeName = "discussions";
 
-  FlarumDiscussionData(Map links, data, List included)
+  FlarumDiscussionData(FlarumLinkData links, data, List included)
       : super(links, data, included);
 
   factory FlarumDiscussionData.formBase(FlarumBaseData flarumBaseData) {

@@ -51,11 +51,11 @@ void main() async {
           .get(Uri.parse("https://discuss.flarum.org/api/discussions")))
       .body;
 
-  FlarumDiscussionsData.formBase(FlarumBaseData.formJson(data))
-      .discussionsList
-      .forEach((element) {
+  final d = FlarumDiscussionsData.formBase(FlarumBaseData.formJson(data));
+  d.discussionsList.forEach((element) {
     print(element.title);
   });
+  print(d.links.next);
 
   client.close();
 }

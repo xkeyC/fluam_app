@@ -5,7 +5,7 @@ class FlarumTagsData extends FlarumBaseData {
 
   final List<FlarumTagData> tagsList;
 
-  FlarumTagsData(Map links, data, List included, this.tagsList)
+  FlarumTagsData(FlarumLinkData links, data, List included, this.tagsList)
       : super(links, data, included);
 
   factory FlarumTagsData.formBase(FlarumBaseData flarumBaseData) {
@@ -33,7 +33,8 @@ class FlarumTagsData extends FlarumBaseData {
 class FlarumTagData extends FlarumBaseData {
   static const String typeName = FlarumTagsData.typeName;
 
-  FlarumTagData(Map links, data, List included) : super(links, data, included);
+  FlarumTagData(FlarumLinkData links, data, List included)
+      : super(links, data, included);
 
   factory FlarumTagData.formBase(FlarumBaseData flarumBaseData) {
     if (flarumBaseData == null || flarumBaseData.dataIsNull) {
