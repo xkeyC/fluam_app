@@ -1,3 +1,4 @@
+import 'package:fluam_app/api.dart';
 import 'package:fluam_app/util/StringUtil.dart';
 import 'package:flutter/material.dart';
 
@@ -36,6 +37,7 @@ class _AddSiteMainPage extends StatefulWidget {
 }
 
 class _AddSiteMainPageState extends State<_AddSiteMainPage> {
+  /// -2,ERROR -1,not URL 0,URL ok 1,loading 2,http ok
   int loadStatus = -1;
   TextEditingController urlTextController = TextEditingController();
 
@@ -53,9 +55,10 @@ class _AddSiteMainPageState extends State<_AddSiteMainPage> {
         children: [
           Text(
             widget.firstSite
-                ? "Welcome! Add Your First Flarum Site"
-                : "Add Flarum Site",
+                ? "Welcome! \nAdd Your First Flarum Site:"
+                : "Add Flarum Site:",
             style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
           ),
           SizedBox(
             height: 50,
@@ -68,7 +71,11 @@ class _AddSiteMainPageState extends State<_AddSiteMainPage> {
             child: TextFormField(
               enabled: loadStatus != 1,
               controller: urlTextController,
-              decoration: InputDecoration(labelText: "URL (must use https)"),
+              decoration: InputDecoration(
+                  labelText: "flarum site URL,must use https",
+                  errorText: loadStatus == -2
+                      ? "ERROR! please check network and URL"
+                      : null),
               onChanged: (String text) {
                 if (StringUtil.isHTTPSUrl(text)) {
                   if (loadStatus != 1 && loadStatus != 0) {
@@ -91,14 +98,31 @@ class _AddSiteMainPageState extends State<_AddSiteMainPage> {
             width: 48,
             child: Builder(
               builder: (BuildContext context) {
-                if (loadStatus == 1) {
+                if (loadStatus == -2) {
                   return FloatingActionButton(
-                    backgroundColor: Colors.grey,
+                    backgroundColor: Colors.red,
                     elevation: 3,
                     onPressed: null,
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation(Colors.white),
+                    child: Icon(
+                      Icons.error,
+                      color: Colors.white,
                     ),
+                  );
+                }
+                if (loadStatus == 1 || loadStatus == 2) {
+                  return FloatingActionButton(
+                    backgroundColor:
+                        loadStatus == 1 ? Colors.grey : Colors.green,
+                    elevation: 3,
+                    onPressed: null,
+                    child: loadStatus == 1
+                        ? CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation(Colors.white),
+                          )
+                        : Icon(
+                            Icons.check,
+                            color: Colors.white,
+                          ),
                   );
                 } else {
                   return FloatingActionButton(
@@ -106,12 +130,22 @@ class _AddSiteMainPageState extends State<_AddSiteMainPage> {
                         loadStatus == 0 ? Colors.blueAccent : Colors.grey,
                     elevation: 3,
                     onPressed: loadStatus == 0
-                        ? () {
+                        ? () async {
                             setState(() {
                               loadStatus = 1;
                             });
 
-                            /// getting info
+                            try {
+                              await AppWebApi.getFlarumSiteData(
+                                  urlTextController.text);
+                              setState(() {
+                                loadStatus = 2;
+                              });
+                            } catch (e) {
+                              setState(() {
+                                loadStatus = -2;
+                              });
+                            }
                           }
                         : null,
                     child: Icon(Icons.navigate_next),
