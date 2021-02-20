@@ -5,9 +5,9 @@ class FlarumGroupsData extends FlarumBaseData {
 
   final List<FlarumGroupData> groupsList;
 
-  FlarumGroupsData(
-      FlarumLinkData links, data, FlarumIncludedData included, this.groupsList)
-      : super(links, data, included);
+  FlarumGroupsData(FlarumLinkData links, data, FlarumIncludedData included,
+      String sourceJsonString, this.groupsList)
+      : super(links, data, included, sourceJsonString);
 
   factory FlarumGroupsData.formBase(FlarumBaseData flarumBaseData) {
     if (flarumBaseData == null || flarumBaseData.dataIsNull) {
@@ -27,15 +27,16 @@ class FlarumGroupsData extends FlarumBaseData {
     });
 
     return FlarumGroupsData(flarumBaseData.links, flarumBaseData.data,
-        flarumBaseData.included, groupsList);
+        flarumBaseData.included, flarumBaseData.sourceJsonString, groupsList);
   }
 }
 
 class FlarumGroupData extends FlarumBaseData {
   static const String typeName = "groups";
 
-  FlarumGroupData(FlarumLinkData links, data, FlarumIncludedData included)
-      : super(links, data, included);
+  FlarumGroupData(FlarumLinkData links, data, FlarumIncludedData included,
+      String sourceJsonString)
+      : super(links, data, included, sourceJsonString);
 
   factory FlarumGroupData.formBase(FlarumBaseData flarumBaseData) {
     if (flarumBaseData == null || flarumBaseData.dataIsNull) {
@@ -47,8 +48,8 @@ class FlarumGroupData extends FlarumBaseData {
     if (!flarumBaseData.checkDataType(typeName)) {
       throw "The Data not FlarumGroupData";
     }
-    return FlarumGroupData(
-        flarumBaseData.links, flarumBaseData.data, flarumBaseData.included);
+    return FlarumGroupData(flarumBaseData.links, flarumBaseData.data,
+        flarumBaseData.included, flarumBaseData.sourceJsonString);
   }
 
   String get id => this.data["id"];

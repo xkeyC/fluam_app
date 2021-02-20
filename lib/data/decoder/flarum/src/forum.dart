@@ -3,8 +3,9 @@ import 'base.dart';
 class FlarumSiteData extends FlarumBaseData {
   static const String typeName = "forums";
 
-  FlarumSiteData(FlarumLinkData links, data, FlarumIncludedData included)
-      : super(links, data, included);
+  FlarumSiteData(FlarumLinkData links, data, FlarumIncludedData included,
+      String sourceJsonString)
+      : super(links, data, included, sourceJsonString);
 
   factory FlarumSiteData.formBase(FlarumBaseData flarumBaseData) {
     if (flarumBaseData == null || flarumBaseData.dataIsNull) {
@@ -16,8 +17,8 @@ class FlarumSiteData extends FlarumBaseData {
     if (!flarumBaseData.checkDataType(typeName)) {
       throw "The Data not FlarumSiteData";
     }
-    return FlarumSiteData(
-        flarumBaseData.links, flarumBaseData.data, flarumBaseData.included);
+    return FlarumSiteData(flarumBaseData.links, flarumBaseData.data,
+        flarumBaseData.included, flarumBaseData.sourceJsonString);
   }
 
   Map get attributes => this.data["attributes"];

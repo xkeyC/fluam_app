@@ -47,6 +47,28 @@ class _AddSiteMainPageState extends State<_AddSiteMainPage> {
     super.initState();
   }
 
+  void _addSite(BuildContext context) async {
+    /// set Loading
+    setState(() {
+      loadStatus = 1;
+    });
+
+    try {
+      final site = await AppWebApi.getFlarumSiteData(urlTextController.text);
+      print(site.siteConnectionSpeedLevel);
+
+      /// set Ok
+      setState(() {
+        loadStatus = 2;
+      });
+    } catch (e) {
+      /// set Error
+      setState(() {
+        loadStatus = -2;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -130,22 +152,8 @@ class _AddSiteMainPageState extends State<_AddSiteMainPage> {
                         loadStatus == 0 ? Colors.blueAccent : Colors.grey,
                     elevation: 3,
                     onPressed: loadStatus == 0
-                        ? () async {
-                            setState(() {
-                              loadStatus = 1;
-                            });
-
-                            try {
-                              await AppWebApi.getFlarumSiteData(
-                                  urlTextController.text);
-                              setState(() {
-                                loadStatus = 2;
-                              });
-                            } catch (e) {
-                              setState(() {
-                                loadStatus = -2;
-                              });
-                            }
+                        ? () {
+                            _addSite(context);
                           }
                         : null,
                     child: Icon(Icons.navigate_next),

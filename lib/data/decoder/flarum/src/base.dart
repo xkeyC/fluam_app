@@ -6,8 +6,9 @@ class FlarumBaseData {
   final FlarumLinkData links;
   final dynamic data;
   final FlarumIncludedData included;
+  final String sourceJsonString;
 
-  FlarumBaseData(this.links, this.data, this.included);
+  FlarumBaseData(this.links, this.data, this.included, this.sourceJsonString);
 
   bool get dataIsMap => this.data is Map;
 
@@ -21,11 +22,11 @@ class FlarumBaseData {
   factory FlarumBaseData.formJson(String jsonData) {
     Map m = json.decode(jsonData);
     return FlarumBaseData(FlarumLinkData.formJsonMap(m["links"]), m["data"],
-        FlarumIncludedData.formJsonMapList(m["included"]));
+        FlarumIncludedData.formJsonMapList(m["included"]), jsonData);
   }
 
   FlarumBaseData forkData(dynamic data) {
-    return FlarumBaseData(links, data, included);
+    return FlarumBaseData(links, data, included, sourceJsonString);
   }
 
   @override
@@ -116,40 +117,40 @@ class FlarumIncludedData {
           if (posts == null) {
             posts = {};
           }
-          final v =
-              FlarumPostData.formBase(FlarumBaseData(null, r.sourceMap, null));
+          final v = FlarumPostData.formBase(FlarumBaseData(
+              null, r.sourceMap, null, json.encode(r.sourceMap)));
           posts.addAll({v.id: v});
           break;
         case FlarumGroupData.typeName:
           if (groups == null) {
             groups = {};
           }
-          final v =
-              FlarumGroupData.formBase(FlarumBaseData(null, r.sourceMap, null));
+          final v = FlarumGroupData.formBase(FlarumBaseData(
+              null, r.sourceMap, null, json.encode(r.sourceMap)));
           groups.addAll({v.id: v});
           break;
         case FlarumDiscussionData.typeName:
           if (discussions == null) {
             discussions = {};
           }
-          final v = FlarumDiscussionData.formBase(
-              FlarumBaseData(null, r.sourceMap, null));
+          final v = FlarumDiscussionData.formBase(FlarumBaseData(
+              null, r.sourceMap, null, json.encode(r.sourceMap)));
           discussions.addAll({v.id: v});
           break;
         case FlarumTagData.typeName:
           if (tags == null) {
             tags = {};
           }
-          final v =
-              FlarumTagData.formBase(FlarumBaseData(null, r.sourceMap, null));
+          final v = FlarumTagData.formBase(FlarumBaseData(
+              null, r.sourceMap, null, json.encode(r.sourceMap)));
           tags.addAll({v.id: v});
           break;
         case FlarumUserData.typeName:
           if (users == null) {
             users = {};
           }
-          final v =
-              FlarumUserData.formBase(FlarumBaseData(null, r.sourceMap, null));
+          final v = FlarumUserData.formBase(FlarumBaseData(
+              null, r.sourceMap, null, json.encode(r.sourceMap)));
           users.addAll({v.id: v});
           break;
       }

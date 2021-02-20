@@ -5,9 +5,9 @@ class FlarumUsersData extends FlarumBaseData {
 
   final List<FlarumUserData> usersList;
 
-  FlarumUsersData(
-      FlarumLinkData links, data, FlarumIncludedData included, this.usersList)
-      : super(links, data, included);
+  FlarumUsersData(FlarumLinkData links, data, FlarumIncludedData included,
+      String sourceJsonString, this.usersList)
+      : super(links, data, included, sourceJsonString);
 
   factory FlarumUsersData.formBase(FlarumBaseData flarumBaseData) {
     if (flarumBaseData == null || flarumBaseData.dataIsNull) {
@@ -27,15 +27,16 @@ class FlarumUsersData extends FlarumBaseData {
     });
 
     return FlarumUsersData(flarumBaseData.links, flarumBaseData.data,
-        flarumBaseData.included, usersList);
+        flarumBaseData.included, flarumBaseData.sourceJsonString, usersList);
   }
 }
 
 class FlarumUserData extends FlarumBaseData {
   static const String typeName = "users";
 
-  FlarumUserData(FlarumLinkData links, data, FlarumIncludedData included)
-      : super(links, data, included);
+  FlarumUserData(FlarumLinkData links, data, FlarumIncludedData included,
+      String sourceJsonString)
+      : super(links, data, included, sourceJsonString);
 
   factory FlarumUserData.formBase(FlarumBaseData flarumBaseData) {
     if (flarumBaseData == null || flarumBaseData.dataIsNull) {
@@ -47,8 +48,8 @@ class FlarumUserData extends FlarumBaseData {
     if (!flarumBaseData.checkDataType(typeName)) {
       throw "The Data not FlarumUsersData";
     }
-    return FlarumUserData(
-        flarumBaseData.links, flarumBaseData.data, flarumBaseData.included);
+    return FlarumUserData(flarumBaseData.links, flarumBaseData.data,
+        flarumBaseData.included, flarumBaseData.sourceJsonString);
   }
 
   Map get attributes => this.data["attributes"];

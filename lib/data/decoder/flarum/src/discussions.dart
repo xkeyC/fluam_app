@@ -6,8 +6,8 @@ class FlarumDiscussionsData extends FlarumBaseData {
   final List<FlarumDiscussionData> discussionsList;
 
   FlarumDiscussionsData(FlarumLinkData links, data, FlarumIncludedData included,
-      this.discussionsList)
-      : super(links, data, included);
+      String sourceJsonString, this.discussionsList)
+      : super(links, data, included, sourceJsonString);
 
   factory FlarumDiscussionsData.formBase(FlarumBaseData flarumBaseData) {
     if (flarumBaseData == null || flarumBaseData.dataIsNull) {
@@ -26,16 +26,21 @@ class FlarumDiscussionsData extends FlarumBaseData {
           .add(FlarumDiscussionData.formBase(flarumBaseData.forkData(element)));
     });
 
-    return FlarumDiscussionsData(flarumBaseData.links, flarumBaseData.data,
-        flarumBaseData.included, discussionsList);
+    return FlarumDiscussionsData(
+        flarumBaseData.links,
+        flarumBaseData.data,
+        flarumBaseData.included,
+        flarumBaseData.sourceJsonString,
+        discussionsList);
   }
 }
 
 class FlarumDiscussionData extends FlarumBaseData {
   static const String typeName = "discussions";
 
-  FlarumDiscussionData(FlarumLinkData links, data, FlarumIncludedData included)
-      : super(links, data, included);
+  FlarumDiscussionData(FlarumLinkData links, data, FlarumIncludedData included,
+      String sourceJsonString)
+      : super(links, data, included, sourceJsonString);
 
   factory FlarumDiscussionData.formBase(FlarumBaseData flarumBaseData) {
     if (flarumBaseData == null || flarumBaseData.dataIsNull) {
@@ -47,8 +52,8 @@ class FlarumDiscussionData extends FlarumBaseData {
     if (!flarumBaseData.checkDataType(typeName)) {
       throw "The Data not FlarumDiscussionsData";
     }
-    return FlarumDiscussionData(
-        flarumBaseData.links, flarumBaseData.data, flarumBaseData.included);
+    return FlarumDiscussionData(flarumBaseData.links, flarumBaseData.data,
+        flarumBaseData.included, flarumBaseData.sourceJsonString);
   }
 
   String get id => this.data["id"];
