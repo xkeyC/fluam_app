@@ -1,6 +1,9 @@
 import 'package:fluam_app/api.dart';
+import 'package:fluam_app/data/app/FlarumSiteInfo.dart';
 import 'package:fluam_app/util/StringUtil.dart';
 import 'package:flutter/material.dart';
+
+typedef void SiteInfoCallBack(FlarumSiteInfo info);
 
 class AddSiteUI extends StatefulWidget {
   final bool firstSite;
@@ -12,6 +15,9 @@ class AddSiteUI extends StatefulWidget {
 }
 
 class _AddSiteUIState extends State<AddSiteUI> {
+  PageController controller = PageController();
+  FlarumSiteInfo siteInfo;
+
   @override
   void initState() {
     super.initState();
@@ -21,16 +27,100 @@ class _AddSiteUIState extends State<AddSiteUI> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: PageView(
+      controller: controller,
       physics: NeverScrollableScrollPhysics(),
-      children: [_AddSiteMainPage(widget.firstSite)],
+      children: [
+        _AddSiteMainPage(
+          true,
+          siteInfoCallBack: (info) async {
+            setState(() {
+              siteInfo = info;
+            });
+            await Future.delayed(Duration(milliseconds: 300));
+            controller.animateToPage(1,
+                duration: Duration(milliseconds: 300),
+                curve: Curves.easeOutQuint);
+          },
+        ),
+        _CheckSiteInfoPage(siteInfo)
+      ],
     ));
   }
 }
 
+/// Checking info Page
+class _CheckSiteInfoPage extends StatefulWidget {
+  final FlarumSiteInfo info;
+
+  const _CheckSiteInfoPage(this.info, {Key key}) : super(key: key);
+
+  @override
+  _CheckSiteInfoPageState createState() => _CheckSiteInfoPageState();
+}
+
+class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
+  @override
+  Widget build(BuildContext context) {
+    FlarumSiteInfo info = widget.info;
+    return info == null
+        ? SizedBox()
+        : Scaffold(
+            body: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  /// site LOGO
+                  Image.network(info.data.faviconUrl),
+
+                  /// site Title
+                  Padding(
+                    padding: EdgeInsets.only(top: 20, bottom: 20),
+                    child: Text(
+                      info.data.title,
+                      style:
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+
+                  /// Welcome Info
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    child: Card(
+                      child: Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              info.data.welcomeTitle,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(StringUtil.getHtmlAllText(
+                                info.data.welcomeMessage))
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+  }
+}
+
+/// Main page, check Url and get Info
 class _AddSiteMainPage extends StatefulWidget {
   final bool firstSite;
+  final SiteInfoCallBack siteInfoCallBack;
 
-  const _AddSiteMainPage(this.firstSite, {Key key}) : super(key: key);
+  const _AddSiteMainPage(this.firstSite, {Key key, this.siteInfoCallBack})
+      : super(key: key);
 
   @override
   _AddSiteMainPageState createState() => _AddSiteMainPageState();
@@ -55,12 +145,12 @@ class _AddSiteMainPageState extends State<_AddSiteMainPage> {
 
     try {
       final site = await AppWebApi.getFlarumSiteData(urlTextController.text);
-      print(site.siteConnectionSpeedLevel);
 
       /// set Ok
       setState(() {
         loadStatus = 2;
       });
+      widget.siteInfoCallBack(site);
     } catch (e) {
       /// set Error
       setState(() {
