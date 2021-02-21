@@ -2,20 +2,33 @@ package main
 
 import (
 	"fmt"
+	"github.com/adrg/xdg"
+	"github.com/go-flutter-desktop/go-flutter"
+	"github.com/juju/fslock"
+	"github.com/pkg/errors"
+	"github.com/sqweek/dialog"
 	"image"
 	_ "image/png"
 	"os"
 	"path/filepath"
 	"strings"
-
-	"github.com/go-flutter-desktop/go-flutter"
-	"github.com/pkg/errors"
 )
 
 // vmArguments may be set by hover at compile-time
 var vmArguments string
 
 func main() {
+	var lockFile = xdg.CacheHome + "/fluam.lock"
+
+	l := fslock.New(lockFile)
+	if l.TryLock() != nil {
+		_ = dialog.Message("%s", "Fluam is running, please don't open it repeatedly.").Title("ERROR").YesNo()
+		return
+	}
+	go func() {
+		_ = l.Lock()
+	}()
+
 	// DO NOT EDIT, add options in options.go
 	mainOptions := []flutter.Option{
 		flutter.OptionVMArguments(strings.Split(vmArguments, ";")),
