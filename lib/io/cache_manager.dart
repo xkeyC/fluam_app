@@ -49,6 +49,8 @@ class AppCacheManager {
     }
 
     final req = await _httpClient.getUrl(Uri.parse(url));
+    req.headers.add("User-Agent",
+        "Fluam/cache_manager A cross-platform flarum client. (github.com/fluam/fluam_app)");
     final result = await req.close();
     file.create(recursive: true);
     final w = file.openWrite();

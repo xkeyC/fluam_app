@@ -46,7 +46,15 @@ class _AddSiteUIState extends State<AddSiteUI> {
                 curve: Curves.easeOutQuint);
           },
         ),
-        _CheckSiteInfoPage(siteInfo, widget.firstSite)
+        _CheckSiteInfoPage(
+          siteInfo,
+          widget.firstSite,
+          onBack: () {
+            controller.animateToPage(0,
+                duration: Duration(milliseconds: 300),
+                curve: Curves.easeOutQuint);
+          },
+        )
       ],
     ));
   }
@@ -56,8 +64,9 @@ class _AddSiteUIState extends State<AddSiteUI> {
 class _CheckSiteInfoPage extends StatefulWidget {
   final FlarumSiteInfo info;
   final bool firstSite;
+  final VoidCallback onBack;
 
-  const _CheckSiteInfoPage(this.info, this.firstSite, {Key key})
+  const _CheckSiteInfoPage(this.info, this.firstSite, {Key key, this.onBack})
       : super(key: key);
 
   @override
@@ -216,7 +225,7 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                 FloatingActionButton(
                   backgroundColor: Colors.grey,
                   mini: true,
-                  onPressed: () {},
+                  onPressed: widget.onBack,
                   child: Icon(Icons.close),
                 ),
                 FloatingActionButton(
