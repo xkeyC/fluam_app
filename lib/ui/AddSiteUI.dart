@@ -1,7 +1,10 @@
 import 'package:fluam_app/api.dart';
 import 'package:fluam_app/data/app/FlarumSiteInfo.dart';
+import 'package:fluam_app/ui/widgets.dart';
 import 'package:fluam_app/util/StringUtil.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 typedef void SiteInfoCallBack(FlarumSiteInfo info);
 
@@ -42,7 +45,7 @@ class _AddSiteUIState extends State<AddSiteUI> {
                 curve: Curves.easeOutQuint);
           },
         ),
-        _CheckSiteInfoPage(siteInfo)
+        _CheckSiteInfoPage(siteInfo, widget.firstSite)
       ],
     ));
   }
@@ -51,14 +54,18 @@ class _AddSiteUIState extends State<AddSiteUI> {
 /// Checking info Page
 class _CheckSiteInfoPage extends StatefulWidget {
   final FlarumSiteInfo info;
+  final bool firstSite;
 
-  const _CheckSiteInfoPage(this.info, {Key key}) : super(key: key);
+  const _CheckSiteInfoPage(this.info, this.firstSite, {Key key})
+      : super(key: key);
 
   @override
   _CheckSiteInfoPageState createState() => _CheckSiteInfoPageState();
 }
 
 class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
+  bool isSpeedChecking = false;
+
   @override
   Widget build(BuildContext context) {
     FlarumSiteInfo info = widget.info;
@@ -87,7 +94,7 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                     width: MediaQuery.of(context).size.width * 0.8,
                     child: Card(
                       child: Padding(
-                        padding: EdgeInsets.all(10),
+                        padding: EdgeInsets.all(20),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -100,15 +107,129 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                             SizedBox(
                               height: 10,
                             ),
-                            Text(StringUtil.getHtmlAllText(
-                                info.data.welcomeMessage))
+                            Text(
+                              StringUtil.getHtmlAllText(
+                                  info.data.welcomeMessage),
+                              textAlign: TextAlign.center,
+                            )
                           ],
                         ),
                       ),
                     ),
-                  )
+                  ),
+
+                  /// Site Conf
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    child: Card(
+                      child: Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            ListTile(
+                              title: Text(
+                                "Conf",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 20),
+                              ),
+                            ),
+                            ListTile(
+                              title: RichText(
+                                text: TextSpan(
+                                    text: "SPEED LEVEL:  ",
+                                    style: TextStyle(
+                                      color: getTextColor(context),
+                                      fontSize: 18,
+                                    ),
+                                    children: [
+                                      WidgetSpan(
+                                        child: RatingBarIndicator(
+                                          itemBuilder: (BuildContext context,
+                                                  int index) =>
+                                              Icon(
+                                            Icons.star,
+                                            color: Colors.amber,
+                                          ),
+                                          itemCount: 5,
+                                          direction: Axis.horizontal,
+                                          rating: 5.00 -
+                                              info.siteConnectionSpeedLevel,
+                                          itemSize: 28,
+                                        ),
+                                      )
+                                    ]),
+                              ),
+                              subtitle: Text(
+                                  "A good connection speed will improve your experience."),
+                              trailing: IconButton(
+                                onPressed: isSpeedChecking
+                                    ? null
+                                    : () async {
+                                        /// speed check
+                                        setState(() {
+                                          isSpeedChecking = true;
+                                        });
+                                        try {
+                                          final i =
+                                              await AppWebApi.getFlarumSiteData(
+                                                  info.data.baseUrl);
+                                          if (i != null) {
+                                            info = i;
+                                          }
+                                        } catch (e) {}
+                                        setState(() {
+                                          isSpeedChecking = false;
+                                        });
+                                      },
+                                icon: isSpeedChecking
+                                    ? CircularProgressIndicator()
+                                    : Icon(Icons.refresh),
+                              ),
+                            ),
+                            ListTile(
+                              title: Text(
+                                "Follow This Site",
+                              ),
+                              subtitle: Text(
+                                  "This site will appear on the homepage and displayed together with other sites."),
+                              leading: Checkbox(
+                                onChanged: (bool value) {},
+                                value: false,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
+            ),
+
+            /// bottom bar
+            bottomNavigationBar: ButtonBar(
+              alignment: MainAxisAlignment.center,
+              buttonPadding: EdgeInsets.only(left: 20, right: 20),
+              children: [
+                FloatingActionButton(
+                  backgroundColor: Colors.grey,
+                  mini: true,
+                  onPressed: () {},
+                  child: Icon(Icons.close),
+                ),
+                FloatingActionButton(
+                  backgroundColor: Colors.green,
+                  onPressed: () {},
+                  child: Icon(Icons.check),
+                ),
+                FloatingActionButton(
+                  mini: true,
+                  backgroundColor: Colors.grey,
+                  onPressed: () {},
+                  child: FaIcon(FontAwesomeIcons.chrome),
+                )
+              ],
             ),
           );
   }
@@ -223,6 +344,7 @@ class _AddSiteMainPageState extends State<_AddSiteMainPage> {
                 }
                 if (loadStatus == 1 || loadStatus == 2) {
                   return FloatingActionButton(
+                    heroTag: loadStatus == 2 ? "check_button" : null,
                     backgroundColor:
                         loadStatus == 1 ? Colors.grey : Colors.green,
                     elevation: 3,

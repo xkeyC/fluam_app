@@ -12,9 +12,15 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  # some ICON
   font_awesome_flutter: ^8.11.0
+  # http io
   http: ^0.13.0
+  # html decoder
   html: ^0.15.0
+  # show site start level
+  flutter_rating_bar: ^4.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

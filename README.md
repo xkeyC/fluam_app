@@ -1,6 +1,6 @@
 # fluam_app
 
-A flarum (flarum.org) application, Seamlessly uses all the flarum sites you add.
+A flarum (flarum.org) application, Seamlessly uses all the flarum sites of your added.
 
 ## Supported platforms
 * Android (6.0+)
