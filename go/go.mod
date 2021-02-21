@@ -5,7 +5,6 @@ go 1.15
 require (
 	github.com/go-flutter-desktop/go-flutter v0.43.0
 	github.com/go-flutter-desktop/hover v0.46.2 // indirect
-	github.com/go-flutter-desktop/plugins/path_provider v0.4.0
 	github.com/google/uuid v1.2.0 // indirect
 	github.com/pkg/errors v0.9.1
 	github.com/spf13/cobra v1.1.3 // indirect

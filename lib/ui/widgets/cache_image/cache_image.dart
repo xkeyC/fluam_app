@@ -44,6 +44,7 @@ class _CacheImageState extends State<CacheImage> {
         ? Icon(
             Icons.image,
             size: widget.loaderSize,
+            color: Colors.grey,
           )
         : Image.file(imageFile);
   }

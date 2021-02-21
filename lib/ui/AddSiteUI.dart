@@ -75,10 +75,36 @@ class _CheckSiteInfoPage extends StatefulWidget {
 
 class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
   bool isSpeedChecking = false;
+  FlarumSiteInfo info;
+
+  void _checkSpeed() async {
+    setState(() {
+      isSpeedChecking = true;
+    });
+    try {
+      final i = await AppWebApi.getFlarumSiteData(info.data.baseUrl);
+      if (i != null) {
+        info = i;
+      }
+    } catch (e) {}
+    if (mounted) {
+      setState(() {
+        isSpeedChecking = false;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    info = widget.info;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    FlarumSiteInfo info = widget.info;
+    if (info == null) {
+      info = widget.info;
+    }
     return info == null
         ? SizedBox()
         : Scaffold(
@@ -173,25 +199,7 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                               subtitle: Text(
                                   "A good connection speed will improve your experience."),
                               trailing: IconButton(
-                                onPressed: isSpeedChecking
-                                    ? null
-                                    : () async {
-                                        /// speed check
-                                        setState(() {
-                                          isSpeedChecking = true;
-                                        });
-                                        try {
-                                          final i =
-                                              await AppWebApi.getFlarumSiteData(
-                                                  info.data.baseUrl);
-                                          if (i != null) {
-                                            info = i;
-                                          }
-                                        } catch (e) {}
-                                        setState(() {
-                                          isSpeedChecking = false;
-                                        });
-                                      },
+                                onPressed: isSpeedChecking ? null : _checkSpeed,
                                 icon: isSpeedChecking
                                     ? CircularProgressIndicator()
                                     : Icon(Icons.refresh),
