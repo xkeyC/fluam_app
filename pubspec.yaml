@@ -25,6 +25,8 @@ dependencies:
   hive_flutter: ^0.3.1
   # for get App path
   path_provider: ^1.6.27
+  # for use some crypto encoder
+  crypto: ^2.1.0
 
 dev_dependencies:
   flutter_test:

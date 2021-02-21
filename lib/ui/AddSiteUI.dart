@@ -1,6 +1,7 @@
 import 'package:fluam_app/api.dart';
 import 'package:fluam_app/data/app/FlarumSiteInfo.dart';
 import 'package:fluam_app/ui/widgets.dart';
+import 'package:fluam_app/ui/widgets/cache_image/cache_image.dart';
 import 'package:fluam_app/util/StringUtil.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -77,7 +78,7 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   /// site LOGO
-                  Image.network(info.data.faviconUrl),
+                  CacheImage(info.data.faviconUrl),
 
                   /// site Title
                   Padding(
