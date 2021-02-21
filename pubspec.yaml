@@ -20,10 +20,17 @@ dependencies:
   html: ^0.15.0
   # show site start level
   flutter_rating_bar: ^4.0.0
+  # for save conf
+  hive: ^1.4.4+1
+  hive_flutter: ^0.3.1
+  # for get App path
+  path_provider: ^1.6.27
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  hive_generator: ^0.8.2
+  build_runner: ^1.11.5
 flutter:
   uses-material-design: true
   assets:

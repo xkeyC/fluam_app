@@ -3,6 +3,8 @@ import 'package:fluam_app/route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import '../conf.dart';
+
 class SplashUI extends StatefulWidget {
   @override
   _SplashUIState createState() => _SplashUIState();
@@ -41,10 +43,11 @@ class _SplashUIState extends State<SplashUI> with TickerProviderStateMixin {
     super.initState();
   }
 
-  void initData() {
-    Future.delayed(Duration(seconds: 1)).then((_) async {
+  void initData() async {
+    try {
+      final code = await AppConf.initApp();
       int waitTime = 3000;
-      if (true) {
+      if (code == 1) {
         flutterLogoDuration = 1000;
         setState(() {
           _flutterLogoStyle = FlutterLogoStyle.horizontal;
@@ -69,7 +72,7 @@ class _SplashUIState extends State<SplashUI> with TickerProviderStateMixin {
 
       AppRoute.goAddSiteUIAndRemoveUntil(_scaffold.currentContext,
           firstSite: true);
-    });
+    } catch (e) {}
   }
 
   @override
