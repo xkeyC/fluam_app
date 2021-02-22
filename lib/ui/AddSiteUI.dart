@@ -97,6 +97,7 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
   @override
   void initState() {
     info = widget.info;
+    _checkSpeed();
     super.initState();
   }
 

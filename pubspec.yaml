@@ -35,6 +35,9 @@ dependency_overrides:
   ffi: ^1.0.0
   win32: ^2.0.0
   path_provider: ^2.0.0-nullsafety.1
+  path_provider_windows: ^2.0.0
+  path_provider_linux: ^2.0.0
+  path_provider_macos: ^2.0.0
 
 dev_dependencies:
   flutter_test:
