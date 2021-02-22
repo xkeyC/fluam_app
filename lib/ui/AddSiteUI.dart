@@ -210,8 +210,8 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                               title: Text(
                                 "Follow This Site",
                               ),
-                              subtitle: Text(
-                                  "This site will appear on the homepage and displayed together with other sites."),
+                              subtitle:
+                                  Text("This site will show on your Home Page"),
                               leading: Checkbox(
                                 onChanged: (bool value) {},
                                 value: false,
