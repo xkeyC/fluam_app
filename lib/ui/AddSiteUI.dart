@@ -76,6 +76,7 @@ class _CheckSiteInfoPage extends StatefulWidget {
 
 class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
   bool isSpeedChecking = false;
+  bool follow = false;
   FlarumSiteInfo info;
 
   void _checkSpeed() async {
@@ -86,6 +87,7 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
       final i = await AppWebApi.getFlarumSiteData(info.data.baseUrl);
       if (i != null) {
         info = i;
+        follow = i.siteConnectionSpeedLevel < 2;
       }
     } catch (e) {}
     if (mounted) {
@@ -95,9 +97,64 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
     }
   }
 
+  void _followSite(bool value) {
+    if (value) {
+      /// if site speed not good
+      if (!(info.siteConnectionSpeedLevel < 2)) {
+        /// show Dialog
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text(S.of(context).title_warning),
+                content: Text(S.of(context).c_site_speed_warning),
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        setState(() {
+                          follow = true;
+                        });
+                      },
+                      child: Text(S.of(context).title_yes)),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        _checkSpeed();
+                      },
+                      child: Text(S.of(context).title_retest_speed)),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text(S.of(context).title_no))
+                ],
+              );
+            });
+        return;
+      }
+    }
+    setState(() {
+      follow = value;
+    });
+  }
+
+  String _getIconUrl() {
+    if (info.data.logoUrl != null) {
+      return info.data.logoUrl;
+    } else if (info.data.faviconUrl != null) {
+      return info.data.faviconUrl;
+    } else {
+      return "https://discuss.flarum.org/assets/logo-y6hlll2o.png";
+    }
+  }
+
   @override
   void initState() {
     info = widget.info;
+    if (info.siteConnectionSpeedLevel < 2) {
+      follow = true;
+    }
     _checkSpeed();
     super.initState();
   }
@@ -115,7 +172,7 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   /// site LOGO
-                  CacheImage(info.data.faviconUrl),
+                  CacheImage(_getIconUrl()),
 
                   /// site Title
                   Padding(
@@ -172,6 +229,8 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                                     fontWeight: FontWeight.bold, fontSize: 20),
                               ),
                             ),
+
+                            /// SPEED LEVEL
                             ListTile(
                               title: RichText(
                                 text: TextSpan(
@@ -198,7 +257,7 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                                       )
                                     ]),
                               ),
-                              subtitle: Text(S.of(context).c_speed_level),
+                              subtitle: Text(S.of(context).c_site_speed_level),
                               trailing: IconButton(
                                 onPressed: isSpeedChecking ? null : _checkSpeed,
                                 icon: isSpeedChecking
@@ -206,14 +265,16 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                                     : Icon(Icons.refresh),
                               ),
                             ),
+
+                            /// Site Follow
                             ListTile(
                               title: Text(
                                 S.of(context).title_site_follow,
                               ),
                               subtitle: Text(S.of(context).c_site_follow),
                               leading: Checkbox(
-                                onChanged: (bool value) {},
-                                value: false,
+                                onChanged: _followSite,
+                                value: follow,
                               ),
                             )
                           ],

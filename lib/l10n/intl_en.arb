@@ -1,12 +1,17 @@
 {
-"@@locale": "en",
+  "@@locale": "en",
   "title_add_site_first": "Welcome! \\nAdd Your First Flarum Site:",
   "title_add_site": "Add Flarum Site:",
   "title_site_conf": "Site Conf",
   "title_SPEED_LEVEL": "SPEED LEVEL:  ",
   "title_site_follow": "Follow This Site",
+  "title_warning": "WARNING",
+  "title_yes": "YES",
+  "title_no": "NO",
+  "title_retest_speed": "RETEST SPEED",
   "c_site_url_label": "Flarum site URL,Must use HTTPS",
   "c_site_url_label_error": "ERROR! Please check network or URL",
-  "c_speed_level": "A good connection speed will improve your experience.",
+  "c_site_speed_level": "A good connection speed will improve your experience.",
+  "c_site_speed_warning": "The speed of this site is not good, which may affect your experience, do you continue to follow?",
   "c_site_follow": "This site will show on your Home Page"
 }

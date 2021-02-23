@@ -5,8 +5,13 @@
   "title_site_conf": "站点配置",
   "title_SPEED_LEVEL": "速度等级:  ",
   "title_site_follow": "关注此站点",
+  "title_warning": "警告",
+  "title_yes": "是的",
+  "title_no": "不",
+  "title_retest_speed": "重新测速",
   "c_site_url_label": "Flarum 站点链接，必须使用 HTTPS",
   "c_site_url_label_error": "出错了！请检查网络或链接。",
-  "c_speed_level": "优秀的连接速度可以提高您的浏览体验。",
+  "c_site_speed_level": "优秀的连接速度可以提高您的浏览体验。",
+  "c_site_speed_warning": "此站点速度不佳，可能会影响您的使用体验，是否继续关注？",
   "c_site_follow": "这个站点将会出现在您的首页"
 }

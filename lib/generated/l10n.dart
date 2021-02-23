@@ -85,6 +85,46 @@ class S {
     );
   }
 
+  /// `WARNING`
+  String get title_warning {
+    return Intl.message(
+      'WARNING',
+      name: 'title_warning',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `YES`
+  String get title_yes {
+    return Intl.message(
+      'YES',
+      name: 'title_yes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `NO`
+  String get title_no {
+    return Intl.message(
+      'NO',
+      name: 'title_no',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `RETEST SPEED`
+  String get title_retest_speed {
+    return Intl.message(
+      'RETEST SPEED',
+      name: 'title_retest_speed',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Flarum site URL,Must use HTTPS`
   String get c_site_url_label {
     return Intl.message(
@@ -106,10 +146,20 @@ class S {
   }
 
   /// `A good connection speed will improve your experience.`
-  String get c_speed_level {
+  String get c_site_speed_level {
     return Intl.message(
       'A good connection speed will improve your experience.',
-      name: 'c_speed_level',
+      name: 'c_site_speed_level',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The speed of this site is not good, which may affect your experience, do you continue to follow?`
+  String get c_site_speed_warning {
+    return Intl.message(
+      'The speed of this site is not good, which may affect your experience, do you continue to follow?',
+      name: 'c_site_speed_warning',
       desc: '',
       args: [],
     );

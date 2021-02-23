@@ -22,13 +22,18 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
     "c_site_follow" : MessageLookupByLibrary.simpleMessage("This site will show on your Home Page"),
+    "c_site_speed_level" : MessageLookupByLibrary.simpleMessage("A good connection speed will improve your experience."),
+    "c_site_speed_warning" : MessageLookupByLibrary.simpleMessage("The speed of this site is not good, which may affect your experience, do you continue to follow?"),
     "c_site_url_label" : MessageLookupByLibrary.simpleMessage("Flarum site URL,Must use HTTPS"),
     "c_site_url_label_error" : MessageLookupByLibrary.simpleMessage("ERROR! Please check network or URL"),
-    "c_speed_level" : MessageLookupByLibrary.simpleMessage("A good connection speed will improve your experience."),
     "title_SPEED_LEVEL" : MessageLookupByLibrary.simpleMessage("SPEED LEVEL:  "),
     "title_add_site" : MessageLookupByLibrary.simpleMessage("Add Flarum Site:"),
     "title_add_site_first" : MessageLookupByLibrary.simpleMessage("Welcome! \\nAdd Your First Flarum Site:"),
+    "title_no" : MessageLookupByLibrary.simpleMessage("NO"),
+    "title_retest_speed" : MessageLookupByLibrary.simpleMessage("RETEST SPEED"),
     "title_site_conf" : MessageLookupByLibrary.simpleMessage("Site Conf"),
-    "title_site_follow" : MessageLookupByLibrary.simpleMessage("Follow This Site")
+    "title_site_follow" : MessageLookupByLibrary.simpleMessage("Follow This Site"),
+    "title_warning" : MessageLookupByLibrary.simpleMessage("WARNING"),
+    "title_yes" : MessageLookupByLibrary.simpleMessage("YES")
   };
 }
