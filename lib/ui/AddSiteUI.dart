@@ -243,11 +243,23 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                                       WidgetSpan(
                                         child: RatingBarIndicator(
                                           itemBuilder: (BuildContext context,
-                                                  int index) =>
-                                              Icon(
-                                            Icons.star,
-                                            color: Colors.amber,
-                                          ),
+                                              int index) {
+                                            Color c = Colors.amber;
+                                            if (info.siteConnectionSpeedLevel <=
+                                                1) {
+                                              c = Colors.green;
+                                            } else if (info
+                                                    .siteConnectionSpeedLevel <=
+                                                2) {
+                                              c = Colors.amber;
+                                            } else {
+                                              c = Colors.red;
+                                            }
+                                            return Icon(
+                                              Icons.star,
+                                              color: c,
+                                            );
+                                          },
                                           itemCount: 5,
                                           direction: Axis.horizontal,
                                           rating: 5.00 -
