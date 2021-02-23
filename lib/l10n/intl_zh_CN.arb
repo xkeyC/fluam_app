@@ -1,0 +1,12 @@
+{
+  "@@locale": "zh_CN",
+  "title_add_site_first": "欢迎！ \n添加您的第一个 Flarum 站点：",
+  "title_add_site": "添加 Flarum 站点：",
+  "title_site_conf": "站点配置",
+  "title_SPEED_LEVEL": "速度等级:  ",
+  "title_site_follow": "关注此站点",
+  "c_site_url_label": "Flarum 站点链接，必须使用 HTTPS",
+  "c_site_url_label_error": "出错了！请检查网络或链接。",
+  "c_speed_level": "优秀的连接速度可以提高您的浏览体验。",
+  "c_site_follow": "这个站点将会出现在您的首页"
+}

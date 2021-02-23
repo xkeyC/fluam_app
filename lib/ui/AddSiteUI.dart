@@ -1,5 +1,6 @@
 import 'package:fluam_app/api.dart';
 import 'package:fluam_app/data/app/FlarumSiteInfo.dart';
+import 'package:fluam_app/generated/l10n.dart';
 import 'package:fluam_app/ui/widgets.dart';
 import 'package:fluam_app/ui/widgets/cache_image/cache_image.dart';
 import 'package:fluam_app/util/StringUtil.dart';
@@ -131,7 +132,7 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                     width: MediaQuery.of(context).size.width * 0.8,
                     child: Card(
                       child: Padding(
-                        padding: EdgeInsets.all(20),
+                        padding: EdgeInsets.all(10),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -142,7 +143,7 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                                   fontSize: 18, fontWeight: FontWeight.bold),
                             ),
                             SizedBox(
-                              height: 10,
+                              height: 15,
                             ),
                             Text(
                               StringUtil.getHtmlAllText(
@@ -166,7 +167,7 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                           children: [
                             ListTile(
                               title: Text(
-                                "Conf",
+                                S.of(context).title_site_conf,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 20),
                               ),
@@ -174,7 +175,7 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                             ListTile(
                               title: RichText(
                                 text: TextSpan(
-                                    text: "SPEED LEVEL:  ",
+                                    text: S.of(context).title_SPEED_LEVEL,
                                     style: TextStyle(
                                       color: getTextColor(context),
                                       fontSize: 18,
@@ -197,8 +198,7 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                                       )
                                     ]),
                               ),
-                              subtitle: Text(
-                                  "A good connection speed will improve your experience."),
+                              subtitle: Text(S.of(context).c_speed_level),
                               trailing: IconButton(
                                 onPressed: isSpeedChecking ? null : _checkSpeed,
                                 icon: isSpeedChecking
@@ -208,10 +208,9 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                             ),
                             ListTile(
                               title: Text(
-                                "Follow This Site",
+                                S.of(context).title_site_follow,
                               ),
-                              subtitle:
-                                  Text("This site will show on your Home Page"),
+                              subtitle: Text(S.of(context).c_site_follow),
                               leading: Checkbox(
                                 onChanged: (bool value) {},
                                 value: false,
@@ -307,8 +306,8 @@ class _AddSiteMainPageState extends State<_AddSiteMainPage> {
         children: [
           Text(
             widget.firstSite
-                ? "Welcome! \nAdd Your First Flarum Site:"
-                : "Add Flarum Site:",
+                ? S.of(context).title_add_site_first
+                : S.of(context).title_add_site,
             style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
           ),
@@ -324,9 +323,9 @@ class _AddSiteMainPageState extends State<_AddSiteMainPage> {
               enabled: loadStatus != 1,
               controller: urlTextController,
               decoration: InputDecoration(
-                  labelText: "flarum site URL,must use https",
+                  labelText: S.of(context).c_site_url_label,
                   errorText: loadStatus == -2
-                      ? "ERROR! please check network and URL"
+                      ? S.of(context).c_site_url_label_error
                       : null),
               onChanged: (String text) {
                 if (StringUtil.isHTTPSUrl(text)) {
@@ -363,7 +362,6 @@ class _AddSiteMainPageState extends State<_AddSiteMainPage> {
                 }
                 if (loadStatus == 1 || loadStatus == 2) {
                   return FloatingActionButton(
-                    heroTag: loadStatus == 2 ? "check_button" : null,
                     backgroundColor:
                         loadStatus == 1 ? Colors.grey : Colors.green,
                     elevation: 3,

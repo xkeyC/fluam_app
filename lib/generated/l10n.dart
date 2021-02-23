@@ -35,7 +35,95 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
+  /// `Welcome! \nAdd Your First Flarum Site:`
+  String get title_add_site_first {
+    return Intl.message(
+      'Welcome! \nAdd Your First Flarum Site:',
+      name: 'title_add_site_first',
+      desc: '',
+      args: [],
+    );
+  }
 
+  /// `Add Flarum Site:`
+  String get title_add_site {
+    return Intl.message(
+      'Add Flarum Site:',
+      name: 'title_add_site',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Site Conf`
+  String get title_site_conf {
+    return Intl.message(
+      'Site Conf',
+      name: 'title_site_conf',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `SPEED LEVEL:  `
+  String get title_SPEED_LEVEL {
+    return Intl.message(
+      'SPEED LEVEL:  ',
+      name: 'title_SPEED_LEVEL',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Follow This Site`
+  String get title_site_follow {
+    return Intl.message(
+      'Follow This Site',
+      name: 'title_site_follow',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Flarum site URL,Must use HTTPS`
+  String get c_site_url_label {
+    return Intl.message(
+      'Flarum site URL,Must use HTTPS',
+      name: 'c_site_url_label',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `ERROR! Please check network or URL`
+  String get c_site_url_label_error {
+    return Intl.message(
+      'ERROR! Please check network or URL',
+      name: 'c_site_url_label_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `A good connection speed will improve your experience.`
+  String get c_speed_level {
+    return Intl.message(
+      'A good connection speed will improve your experience.',
+      name: 'c_speed_level',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This site will show on your Home Page`
+  String get c_site_follow {
+    return Intl.message(
+      'This site will show on your Home Page',
+      name: 'c_site_follow',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
@@ -44,7 +132,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   List<Locale> get supportedLocales {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
-      Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans', countryCode: 'CN'),
+      Locale.fromSubtags(languageCode: 'zh', countryCode: 'CN'),
     ];
   }
 
