@@ -1,5 +1,5 @@
 {
-  "@@locale": "zh_CN",
+  "@@locale": "",
   "title_add_site_first": "欢迎！ \n添加您的第一个 Flarum 站点：",
   "title_add_site": "添加 Flarum 站点：",
   "title_site_conf": "站点配置",

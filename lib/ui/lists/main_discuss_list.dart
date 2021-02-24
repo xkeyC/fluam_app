@@ -1,9 +1,13 @@
 import 'package:fluam_app/api.dart';
+import 'package:fluam_app/conf.dart';
 import 'package:fluam_app/data/app/FlarumSiteInfo.dart';
 import 'package:fluam_app/data/decoder/flarum/flarum.dart';
 import 'package:fluam_app/ui/widgets/flarum_html_content.dart';
 import 'package:fluam_app/ui/widgets/flarum_user_avatar.dart';
+import 'package:fluam_app/util/StringUtil.dart';
 import 'package:flutter/material.dart';
+import 'package:waterfall_flow/waterfall_flow.dart';
+import 'package:webscrollbar/webscrollbar.dart';
 
 class MainDiscussList extends StatefulWidget {
   final List<FlarumSiteInfo> sites;
@@ -17,6 +21,7 @@ class MainDiscussList extends StatefulWidget {
 class _MainDiscussListState extends State<MainDiscussList> {
   int pageIndex = 0;
   List<Widget> widgets = [];
+  ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
@@ -41,16 +46,35 @@ class _MainDiscussListState extends State<MainDiscussList> {
       return Center(
         child: Text("no followSites"),
       );
-    }
-    return widgets.length == 0
-        ? Center(
-            child: CircularProgressIndicator(),
-          )
-        : ListView.builder(
+    } else if (widgets.length == 0) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    } else {
+      if (AppConf.isDesktop) {
+        return WebScrollBar(
+          visibleHeight: MediaQuery.of(context).size.height,
+          controller: scrollController,
+          child: WaterfallFlow.builder(
+              controller: scrollController,
+              itemCount: widgets.length,
+              gridDelegate: SliverWaterfallFlowDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: 5.0,
+                mainAxisSpacing: 5.0,
+              ),
+              itemBuilder: (BuildContext context, int index) {
+                return widgets[index];
+              }),
+        );
+      } else {
+        return ListView.builder(
             itemCount: widgets.length,
             itemBuilder: (context, index) {
               return widgets[index];
             });
+      }
+    }
   }
 }
 
@@ -108,7 +132,9 @@ class _DiscussCard extends StatelessWidget {
                 /// content
                 SizedBox(
                     width: MediaQuery.of(context).size.width,
-                    child: FlarumHTMLContent(firstPost.contentHtml))
+                    child: FlarumHTMLContent(
+                        StringUtil.getHtmlContentSummary(firstPost.contentHtml)
+                            .outerHtml))
               ],
             ),
           ),

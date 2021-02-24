@@ -6,8 +6,10 @@ import 'package:html/parser.dart' as html;
 
 class FlarumHTMLContent extends StatelessWidget {
   final String htmlString;
+  final bool summary;
 
-  const FlarumHTMLContent(this.htmlString, {Key key}) : super(key: key);
+  const FlarumHTMLContent(this.htmlString, {Key key, this.summary = false})
+      : super(key: key);
 
   /// Recursive decoding
   List<InlineSpan> _htmlToRichSpan(BuildContext context,
@@ -89,7 +91,6 @@ class FlarumHTMLContent extends StatelessWidget {
                 break;
             }
           } else {
-            print(element.localName);
             _htmlToRichSpan(context, element.children, list);
           }
       }
