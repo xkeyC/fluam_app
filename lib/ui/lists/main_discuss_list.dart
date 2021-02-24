@@ -1,6 +1,7 @@
 import 'package:fluam_app/api.dart';
 import 'package:fluam_app/data/app/FlarumSiteInfo.dart';
 import 'package:fluam_app/data/decoder/flarum/flarum.dart';
+import 'package:fluam_app/ui/widgets/flarum_html_content.dart';
 import 'package:fluam_app/ui/widgets/flarum_user_avatar.dart';
 import 'package:flutter/material.dart';
 
@@ -106,9 +107,8 @@ class _DiscussCard extends StatelessWidget {
 
                 /// content
                 SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: Text(firstPost.contentHtml),
-                )
+                    width: MediaQuery.of(context).size.width,
+                    child: FlarumHTMLContent(firstPost.contentHtml))
               ],
             ),
           ),
