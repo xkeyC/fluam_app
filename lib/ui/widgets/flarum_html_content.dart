@@ -17,22 +17,43 @@ class FlarumHTMLContent extends StatelessWidget {
         case "p":
         case "ul":
           list.add(WidgetSpan(
-              child: HtmlWidget(
-            element.outerHtml,
-            hyperlinkColor: Color.fromARGB(255, 243, 99, 34),
-            onTapUrl: (str) {},
+              child: Padding(
+            padding: EdgeInsets.all(10),
+            child: getHtmlWidget(context, element.outerHtml),
           )));
           break;
         case "blockquote":
           list.add(WidgetSpan(
-              child: Card(
-            elevation: 1,
-            color: Color.fromARGB(255, 231, 237, 243),
-            child: Padding(
-              padding: EdgeInsets.all(10),
-              child: HtmlWidget(element.outerHtml),
+              child: Padding(
+            padding: EdgeInsets.all(10),
+            child: Card(
+              elevation: 1,
+              color: Color.fromARGB(255, 231, 237, 243),
+              child: Padding(
+                padding: EdgeInsets.all(10),
+                child: getHtmlWidget(context, element.outerHtml),
+              ),
             ),
           )));
+          break;
+        case "code":
+          list.add(TextSpan(children: [
+            WidgetSpan(
+              child: Card(
+                color: Colors.black,
+                elevation: 1,
+                child: Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Text(
+                    element.text,
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+            ),
+            TextSpan(text: "\n"),
+          ]));
+
           break;
         default:
           if (element.children.length == 0) {
@@ -76,11 +97,19 @@ class FlarumHTMLContent extends StatelessWidget {
     return list;
   }
 
+  Widget getHtmlWidget(BuildContext context, String html) {
+    return HtmlWidget(
+      html,
+      hyperlinkColor: Color.fromARGB(255, 243, 99, 34),
+      onTapUrl: (str) {},
+    );
+  }
+
   // ignore: non_constant_identifier_names
   InlineSpan _makeHTML_H(
       BuildContext context, dom.Element element, double fontSize) {
     return TextSpan(
-        text: "${element.text}\n",
+        text: "\n${element.text}\n",
         style: TextStyle(
             color: getTextColor(context),
             fontSize: fontSize,
