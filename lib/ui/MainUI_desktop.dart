@@ -2,6 +2,8 @@ import 'package:fluam_app/ui/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../conf.dart';
+import 'lists/main_discuss_list.dart';
 import 'widgets/hamburger_scaffold/flutter_hamburger_scaffold.dart';
 
 class MainUIDesktop extends StatefulWidget {
@@ -45,7 +47,7 @@ class _MainUIDesktopState extends State<MainUIDesktop> {
         indicatorColor: Colors.white,
         children: _menuItems,
       ),
-      body: Text(""),
+      body: MainDiscussList(AppConf.followSites),
     );
   }
 

@@ -1,6 +1,9 @@
+import 'package:fluam_app/conf.dart';
 import 'package:fluam_app/ui/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import 'lists/main_discuss_list.dart';
 
 class MainUI extends StatefulWidget {
   @override
@@ -14,14 +17,9 @@ class _MainUIState extends State<MainUI> {
       appBar: makeAppBar(context,
           title: makeTitleText(context, "Main", textAlign: TextAlign.center),
           centerTitle: true,
-          actions: [
-            IconButton(
-                icon: Icon(
-                  Icons.account_circle,
-                  color: getTextColor(context),
-                ),
-                onPressed: () {})
-          ]),
+          actions: []),
+      backgroundColor: getScaffoldBackground(context),
+      body: MainDiscussList(AppConf.followSites),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         heroTag: "main_fab",

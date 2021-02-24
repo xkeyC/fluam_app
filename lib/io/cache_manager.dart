@@ -9,6 +9,8 @@ class AppCacheManager {
   static int _maxCacheCount;
   static HttpClient _httpClient;
 
+  static Map<String, Future<File>> loadingMap = {};
+
   static Future<void> init(String cachePath, int maxCacheCount) async {
     _cachePath = cachePath;
     _maxCacheCount = maxCacheCount;
@@ -31,6 +33,10 @@ class AppCacheManager {
     final String fileName = getFileName(url);
     final File file = File(_cachePath + "/$fileName");
 
+    if (loadingMap.keys.contains(fileName)) {
+      return loadingMap[fileName];
+    }
+
     /// if File exists,return file
     if (await file.exists()) {
       if (await _dbHasFile(fileName)) {
@@ -46,7 +52,12 @@ class AppCacheManager {
     if (await getCacheListLen() > _maxCacheCount) {
       await removeLastFile();
     }
+    loadingMap.addAll({fileName: _getFileWithUrl(file, url, fileName)});
+    return loadingMap[fileName];
+  }
 
+  static Future<File> _getFileWithUrl(
+      File file, String url, String fileName) async {
     final req = await _httpClient.getUrl(Uri.parse(url));
     req.headers.add("User-Agent",
         "Fluam/cache_manager A cross-platform flarum client. (github.com/fluam/fluam_app)");
@@ -57,6 +68,7 @@ class AppCacheManager {
     w.flush();
     await w.close();
     await _addFileInDB(fileName);
+    loadingMap.remove(fileName);
     return file;
   }
 

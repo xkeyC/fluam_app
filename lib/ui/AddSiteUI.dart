@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../conf.dart';
+
 typedef void SiteInfoCallBack(FlarumSiteInfo info);
 
 class AddSiteUI extends StatefulWidget {
@@ -147,6 +149,7 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
   void _addSite() async {
     info.following = follow;
     await info.saveSite();
+    await AppConf.updateSiteList();
     AppRoute.goMainAndRemoveUntil(context);
   }
 
@@ -183,7 +186,10 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   /// site LOGO
-                  CacheImage(_getIconUrl()),
+                  CacheImage(
+                    _getIconUrl(),
+                    loaderSize: 48,
+                  ),
 
                   /// site Title
                   Padding(
