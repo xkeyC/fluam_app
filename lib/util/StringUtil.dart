@@ -39,6 +39,10 @@ class StringUtil {
             return;
           }
           if (element.text != "") {
+            if (element.localName == "code" && element.text.length > 120) {
+              element.text = element.text.substring(0, 120);
+              element.text += "...";
+            }
             textLen = textLen + element.text.length;
             summary.add(element);
           }
