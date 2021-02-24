@@ -24,6 +24,7 @@ class _MainUIState extends State<MainUI> {
           ]),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
+        heroTag: "main_fab",
         backgroundColor: getAppbarBackGroundColor(context),
         child: FaIcon(
           FontAwesomeIcons.pencilAlt,

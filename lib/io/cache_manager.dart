@@ -1,7 +1,6 @@
-import 'dart:convert';
 import 'dart:io';
 
-import 'package:crypto/crypto.dart';
+import 'package:fluam_app/util/StringUtil.dart';
 import 'package:hive/hive.dart';
 
 class AppCacheManager {
@@ -94,6 +93,6 @@ class AppCacheManager {
   }
 
   static String getFileName(String url) {
-    return sha1.convert(utf8.encode(url)).toString();
+    return StringUtil.getSha1(url);
   }
 }

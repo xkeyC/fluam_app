@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
 import 'package:html/parser.dart' show parse;
 
 class StringUtil {
@@ -8,5 +11,9 @@ class StringUtil {
   static String getHtmlAllText(String htmlString) {
     final doc = parse(htmlString);
     return doc.body.text;
+  }
+
+  static String getSha1(String str) {
+    return sha1.convert(utf8.encode(str)).toString();
   }
 }

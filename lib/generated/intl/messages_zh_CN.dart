@@ -21,11 +21,11 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
-    "c_site_follow" : MessageLookupByLibrary.simpleMessage("这个站点将会出现在您的首页"),
+    "c_site_follow" : MessageLookupByLibrary.simpleMessage("这个网站将会出现在您的首页"),
     "c_site_speed_level" : MessageLookupByLibrary.simpleMessage("优秀的连接速度可以提高您的浏览体验。"),
     "c_site_speed_warning" : MessageLookupByLibrary.simpleMessage("此站点速度不佳，可能会影响您的使用体验，是否继续关注？"),
     "c_site_url_label" : MessageLookupByLibrary.simpleMessage("Flarum 站点链接，必须使用 HTTPS"),
-    "c_site_url_label_error" : MessageLookupByLibrary.simpleMessage("出错了！请检查网络或链接。"),
+    "c_site_url_label_error" : MessageLookupByLibrary.simpleMessage("出错了！请检网络是否正常，链接是否正确。"),
     "title_SPEED_LEVEL" : MessageLookupByLibrary.simpleMessage("速度等级:  "),
     "title_add_site" : MessageLookupByLibrary.simpleMessage("添加 Flarum 站点："),
     "title_add_site_first" : MessageLookupByLibrary.simpleMessage("欢迎！ \n添加您的第一个 Flarum 站点："),

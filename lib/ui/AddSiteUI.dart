@@ -1,6 +1,7 @@
 import 'package:fluam_app/api.dart';
 import 'package:fluam_app/data/app/FlarumSiteInfo.dart';
 import 'package:fluam_app/generated/l10n.dart';
+import 'package:fluam_app/route.dart';
 import 'package:fluam_app/ui/widgets.dart';
 import 'package:fluam_app/ui/widgets/cache_image/cache_image.dart';
 import 'package:fluam_app/util/StringUtil.dart';
@@ -35,6 +36,7 @@ class _AddSiteUIState extends State<AddSiteUI> {
       controller: controller,
       physics: NeverScrollableScrollPhysics(),
       children: [
+        /// check Url page
         _AddSiteMainPage(
           true,
           siteInfoCallBack: (info) async {
@@ -47,6 +49,8 @@ class _AddSiteUIState extends State<AddSiteUI> {
                 curve: Curves.easeOutQuint);
           },
         ),
+
+        /// info Page
         _CheckSiteInfoPage(
           siteInfo,
           widget.firstSite,
@@ -137,6 +141,13 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
     setState(() {
       follow = value;
     });
+  }
+
+  /// add Site Info to siteList
+  void _addSite() async {
+    info.following = follow;
+    await info.saveSite();
+    AppRoute.goMainAndRemoveUntil(context);
   }
 
   String _getIconUrl() {
@@ -304,17 +315,20 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
               buttonPadding: EdgeInsets.only(left: 20, right: 20),
               children: [
                 FloatingActionButton(
+                  heroTag: UniqueKey(),
                   backgroundColor: Colors.grey,
                   mini: true,
                   onPressed: widget.onBack,
                   child: Icon(Icons.close),
                 ),
                 FloatingActionButton(
+                  heroTag: "main_fab",
                   backgroundColor: Colors.green,
-                  onPressed: () {},
+                  onPressed: _addSite,
                   child: Icon(Icons.check),
                 ),
                 FloatingActionButton(
+                  heroTag: UniqueKey(),
                   mini: true,
                   backgroundColor: Colors.grey,
                   onPressed: () {},
@@ -339,7 +353,7 @@ class _AddSiteMainPage extends StatefulWidget {
 }
 
 class _AddSiteMainPageState extends State<_AddSiteMainPage> {
-  /// -2,ERROR -1,not URL 0,URL ok 1,loading 2,http ok
+  /// -2,ERROR -1,not URL 0,URL ok 1,loading 2,http ok -3,site added
   int loadStatus = -1;
   TextEditingController urlTextController = TextEditingController();
 
@@ -350,13 +364,21 @@ class _AddSiteMainPageState extends State<_AddSiteMainPage> {
   }
 
   void _addSite(BuildContext context) async {
+    final String url = urlTextController.text;
+
     /// set Loading
     setState(() {
       loadStatus = 1;
     });
 
     try {
-      final site = await AppWebApi.getFlarumSiteData(urlTextController.text);
+      if (await FlarumSiteInfo.hasSite(url)) {
+        setState(() {
+          loadStatus = -3;
+        });
+        return;
+      }
+      final site = await AppWebApi.getFlarumSiteData(url);
 
       /// set Ok
       setState(() {

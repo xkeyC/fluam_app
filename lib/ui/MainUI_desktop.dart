@@ -53,6 +53,7 @@ class _MainUIDesktopState extends State<MainUIDesktop> {
     switch (fabStatus) {
       case 0:
         return FloatingActionButton.extended(
+          heroTag: "main_fab",
           icon: FaIcon(
             FontAwesomeIcons.pencilAlt,
             color: getTextColor(context),
@@ -63,6 +64,7 @@ class _MainUIDesktopState extends State<MainUIDesktop> {
         );
       case 1:
         return FloatingActionButton(
+          heroTag: "main_fab",
           child: FaIcon(
             FontAwesomeIcons.pencilAlt,
             color: getTextColor(context),

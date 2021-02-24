@@ -68,10 +68,13 @@ class _SplashUIState extends State<SplashUI> with TickerProviderStateMixin {
       _appLogoController.forward();
       await Future.delayed(Duration(milliseconds: waitTime));
 
-      ///AppRoute.goMainAndRemoveUntil(_scaffold.currentContext);
+      if (AppConf.sites.length == 0) {
+        AppRoute.goAddSiteUIAndRemoveUntil(_scaffold.currentContext,
+            firstSite: true);
+        return;
+      }
 
-      AppRoute.goAddSiteUIAndRemoveUntil(_scaffold.currentContext,
-          firstSite: true);
+      AppRoute.goMainAndRemoveUntil(_scaffold.currentContext);
     } catch (e) {}
   }
 
