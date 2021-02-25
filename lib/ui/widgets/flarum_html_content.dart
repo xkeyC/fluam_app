@@ -87,7 +87,6 @@ class FlarumHTMLContent extends StatelessWidget {
                 ));
                 break;
               default:
-                print(element.localName);
                 break;
             }
           } else {
