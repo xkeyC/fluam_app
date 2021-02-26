@@ -26,7 +26,6 @@ class AppCacheManager {
         print("delete lost cache DB:$name");
       }
     });
-    await box.close();
   }
 
   static Future<File> getFile(String url) async {
@@ -52,6 +51,7 @@ class AppCacheManager {
     if (await getCacheListLen() > _maxCacheCount) {
       await removeLastFile();
     }
+    print("add Cache:$fileName");
     loadingMap.addAll({fileName: _getFileWithUrl(file, url, fileName)});
     return loadingMap[fileName];
   }

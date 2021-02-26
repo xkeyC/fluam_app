@@ -56,6 +56,7 @@ class _MainDiscussListState extends State<MainDiscussList> {
           visibleHeight: MediaQuery.of(context).size.height,
           controller: scrollController,
           child: WaterfallFlow.builder(
+              physics: NeverScrollableScrollPhysics(),
               controller: scrollController,
               itemCount: widgets.length,
               gridDelegate: SliverWaterfallFlowDelegateWithFixedCrossAxisCount(

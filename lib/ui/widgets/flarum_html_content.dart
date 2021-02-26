@@ -101,7 +101,9 @@ class FlarumHTMLContent extends StatelessWidget {
     return HtmlWidget(
       html,
       hyperlinkColor: Color.fromARGB(255, 243, 99, 34),
-      onTapUrl: (str) {},
+      onTapUrl: (str) {
+        print("tapUrl:$str");
+      },
     );
   }
 

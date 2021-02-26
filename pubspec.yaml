@@ -29,9 +29,10 @@ dependencies:
   crypto: ^2.1.0
   # for windows
   win32: ^1.7.1
-  ffi: ^0.1.3
+  # for desktop
   waterfall_flow: ^2.0.5
   webscrollbar: ^0.0.2
+  ffi: ^0.1.3
 
 dependency_overrides:
   ffi: ^1.0.0

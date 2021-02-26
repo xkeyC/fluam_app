@@ -12,7 +12,7 @@ class TagA {
   BuildOp get buildOp => BuildOp(
         defaultStyles: (_) {
           final styles = {
-            kCssTextDecoration: kCssTextDecorationNone,
+            kCssTextDecoration: kCssTextDecorationUnderline,
             kCssFontWeight: kCssFontWeightBold
           };
 
