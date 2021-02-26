@@ -9,15 +9,21 @@ class FlarumUserAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (avatarUrl == null) {
-      return Icon(
-        Icons.account_circle,
-        size: 48,
+      return ClipOval(
+        child: Icon(
+          Icons.account_circle,
+          size: 48,
+        ),
       );
     }
-    return ClipOval(
-      child: CacheImage(
-        avatarUrl,
-        loaderSize: 48,
+    return SizedBox(
+      width: 48,
+      height: 48,
+      child: ClipOval(
+        child: CacheImage(
+          avatarUrl,
+          loaderSize: 48,
+        ),
       ),
     );
   }
