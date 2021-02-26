@@ -45,7 +45,7 @@ class _MainUIState extends State<MainUI> {
             ),
             IconButton(
               icon: Icon(
-                Icons.apps,
+                Icons.widgets,
               ),
               onPressed: () {},
             ),

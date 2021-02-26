@@ -111,7 +111,7 @@ class SitesHorizonList extends StatelessWidget {
       SizedBox(
           height: 64,
           child: Tooltip(
-            message: "All",
+            message: "All Following",
             child: TextButton(
               onPressed: () {
                 siteIndexCallBack(0);

@@ -14,7 +14,7 @@ class MainUIDesktop extends StatefulWidget {
 class _MainUIDesktopState extends State<MainUIDesktop> {
   List<HamburgerMenuItem> _menuItems = [
     HamburgerMenuItem('Main', Icons.home, "_main"),
-    HamburgerMenuItem('Sites', Icons.apps, "_sites"),
+    HamburgerMenuItem('Sites', Icons.widgets, "_sites"),
     HamburgerMenuItem('Me', Icons.account_circle, "_me"),
   ];
 
