@@ -11,3 +11,7 @@ A flarum (flarum.org) application, Seamlessly uses all the flarum sites of your 
 * Linux
 * MacOS
 * Windows
+
+## How to Build?
+
+https://flutter.dev/docs
