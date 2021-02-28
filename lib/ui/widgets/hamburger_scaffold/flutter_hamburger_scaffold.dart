@@ -105,7 +105,7 @@ class _HamburgerDrawerState extends State<HamburgerDrawer> {
   }
 }
 
-typedef HamburgerMenuCallback(String value);
+typedef HamburgerMenuCallback(int value);
 
 class HamburgerMenu extends StatefulWidget {
   final Color unselectedColor, selectedColor, indicatorColor;
@@ -217,7 +217,7 @@ class _HamburgerMenuState extends State<HamburgerMenu> {
 class HamburgerMenuItem {
   final String title;
   final IconData icon;
-  final String value;
+  final int value;
 
   HamburgerMenuItem(this.title, this.icon, this.value);
 }

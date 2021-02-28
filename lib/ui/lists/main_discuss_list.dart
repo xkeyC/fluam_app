@@ -8,6 +8,7 @@ import 'package:fluam_app/ui/widgets/flarum_html_content.dart';
 import 'package:fluam_app/ui/widgets/flarum_user_avatar.dart';
 import 'package:fluam_app/util/StringUtil.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:waterfall_flow/waterfall_flow.dart';
 import 'package:webscrollbar/webscrollbar.dart';
 
@@ -45,6 +46,11 @@ class _MainDiscussListState extends State<MainDiscussList> {
     }
   }
 
+  /// addFollow
+  void _addFollowSite() {
+    /// TODO
+  }
+
   @override
   Widget build(BuildContext context) {
     if (widget.sites == null || widget.sites.length == 0) {
@@ -66,6 +72,11 @@ class _MainDiscussListState extends State<MainDiscussList> {
             widget.sites,
             siteIndex: siteIndex,
             siteIndexCallBack: (index) {
+              final i = index - 1;
+              if (i == -2) {
+                _addFollowSite();
+                return;
+              }
               setState(() {
                 siteIndex = index;
               });
@@ -105,50 +116,44 @@ class SitesHorizonList extends StatelessWidget {
       {Key key, this.siteIndexCallBack, this.siteIndex = -1})
       : super(key: key);
 
+  Widget makeButton(
+      BuildContext context, String tipText, int index, Widget icon) {
+    return SizedBox(
+        height: 64,
+        child: Tooltip(
+          message: tipText,
+          child: TextButton(
+            onPressed: () {
+              siteIndexCallBack(index);
+            },
+            child: icon,
+          ),
+        ));
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Widget> widgets = [
-      SizedBox(
-          height: 64,
-          child: Tooltip(
-            message: "All Following",
-            child: TextButton(
-              onPressed: () {
-                siteIndexCallBack(0);
-              },
-              child: Icon(
-                Icons.apps,
-                color: getTextColor(context),
-              ),
-            ),
+      makeButton(
+          context,
+          "All Following",
+          0,
+          Icon(
+            Icons.apps,
+            color: getTextColor(context),
           ))
     ];
     sites.asMap().forEach((index, site) {
-      widgets.add(SizedBox(
-          height: 64,
-          child: Tooltip(
-            message: site.data.title,
-            child: TextButton(
-              onPressed: () {
-                siteIndexCallBack(index + 1);
-              },
-              child: CacheImage(site.data.faviconUrl),
-            ),
-          )));
+      widgets.add(makeButton(context, site.data.title, index + 1,
+          CacheImage(site.data.faviconUrl)));
     });
-    widgets.add(SizedBox(
-        height: 64,
-        child: Tooltip(
-          message: "Add Site",
-          child: TextButton(
-            onPressed: () {
-              siteIndexCallBack(-1);
-            },
-            child: Icon(
-              Icons.add,
-              color: getTextColor(context),
-            ),
-          ),
+    widgets.add(makeButton(
+        context,
+        "add Site",
+        -1,
+        FaIcon(
+          FontAwesomeIcons.plus,
+          color: getTextColor(context),
         )));
     if (sites == null || sites.length == 0) {
       return SizedBox();

@@ -13,12 +13,14 @@ class MainUIDesktop extends StatefulWidget {
 
 class _MainUIDesktopState extends State<MainUIDesktop> {
   List<HamburgerMenuItem> _menuItems = [
-    HamburgerMenuItem('Main', Icons.home, "_main"),
-    HamburgerMenuItem('Sites', Icons.widgets, "_sites"),
-    HamburgerMenuItem('Me', Icons.account_circle, "_me"),
+    HamburgerMenuItem('Main', Icons.home, 0),
+    HamburgerMenuItem('Sites', Icons.widgets, 1),
+    HamburgerMenuItem('Me', Icons.account_circle, 2),
   ];
 
   int fabStatus = 0;
+
+  int pageIndex = 0;
 
   @override
   void initState() {
@@ -33,9 +35,10 @@ class _MainUIDesktopState extends State<MainUIDesktop> {
       centerTitle: false,
       floatingActionButton: _getFab(context),
       hamburgerMenu: HamburgerMenu(
-        onClick: (String value) {
+        onClick: (int value) {
           setState(() {
-            if (value == "_main") {
+            pageIndex = value;
+            if (value == 0) {
               fabStatus = 0;
             } else {
               fabStatus = -1;
@@ -47,7 +50,10 @@ class _MainUIDesktopState extends State<MainUIDesktop> {
         indicatorColor: Colors.white,
         children: _menuItems,
       ),
-      body: MainDiscussList(AppConf.followSites),
+      body: IndexedStack(
+        index: pageIndex,
+        children: [MainDiscussList(AppConf.followSites), Text("1"), Text("2")],
+      ),
     );
   }
 
