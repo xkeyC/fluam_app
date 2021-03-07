@@ -10,8 +10,6 @@ import 'package:fluam_app/util/StringUtil.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:waterfall_flow/waterfall_flow.dart';
-import 'package:webscrollbar/webscrollbar.dart';
-
 typedef SiteIndexCallBack(int index);
 
 class MainDiscussList extends StatefulWidget {
@@ -63,7 +61,6 @@ class _MainDiscussListState extends State<MainDiscussList> {
       );
     } else {
       final view = CustomScrollView(
-        physics: AppConf.isDesktop ? NeverScrollableScrollPhysics() : null,
         controller: scrollController,
         semanticChildCount: widgets.length,
         slivers: [
@@ -94,14 +91,10 @@ class _MainDiscussListState extends State<MainDiscussList> {
           )
         ],
       );
-
-      if (AppConf.isDesktop) {
-        return WebScrollBar(
-            visibleHeight: MediaQuery.of(context).size.height,
-            controller: scrollController,
-            child: view);
-      }
-      return view;
+      return Scrollbar(
+          controller: scrollController,
+          isAlwaysShown: AppConf.isDesktop,
+          child: view);
     }
   }
 }

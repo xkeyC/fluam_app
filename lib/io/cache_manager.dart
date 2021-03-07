@@ -13,6 +13,10 @@ class AppCacheManager {
 
   static Future<void> init(String cachePath, int maxCacheCount) async {
     _cachePath = cachePath;
+    final dir =  Directory(cachePath);
+    if (! await dir.exists()) {
+      dir.create(recursive: true);
+    }
     _maxCacheCount = maxCacheCount;
     _httpClient = HttpClient();
     await _checkDB();
