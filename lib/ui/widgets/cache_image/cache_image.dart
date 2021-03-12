@@ -16,12 +16,16 @@ class CacheImage extends StatefulWidget {
   _CacheImageState createState() => _CacheImageState();
 }
 
-class _CacheImageState extends State<CacheImage> {
+class _CacheImageState extends State<CacheImage>
+    with AutomaticKeepAliveClientMixin {
   File imageFile;
   StreamSubscription fileStream;
 
   @override
   void initState() {
+    if (fileStream != null) {
+      return;
+    }
     fileStream = AppCacheManager.getFile(widget.url).asStream().listen((file) {
       setState(() {
         imageFile = file;
@@ -40,6 +44,7 @@ class _CacheImageState extends State<CacheImage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return imageFile == null
         ? Icon(
             Icons.image,
@@ -48,4 +53,7 @@ class _CacheImageState extends State<CacheImage> {
           )
         : Image.file(imageFile);
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

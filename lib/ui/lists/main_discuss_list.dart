@@ -2,6 +2,7 @@ import 'package:fluam_app/api.dart';
 import 'package:fluam_app/conf.dart';
 import 'package:fluam_app/data/app/FlarumSiteInfo.dart';
 import 'package:fluam_app/data/decoder/flarum/flarum.dart';
+import 'package:fluam_app/route.dart';
 import 'package:fluam_app/ui/widgets.dart';
 import 'package:fluam_app/ui/widgets/cache_image/cache_image.dart';
 import 'package:fluam_app/ui/widgets/flarum_html_content.dart';
@@ -47,24 +48,50 @@ class _MainDiscussListState extends State<MainDiscussList> {
         widget.fabStatueCallBack(1);
       }
     });
-    _loadData();
+    _loadData(-1, 0);
     super.initState();
   }
 
-  void _loadData() async {
-    if (widget.sites != null && widget.sites.length != 0) {
-      final discussions =
-          await AppWebApi.getDiscussionsList(widget.sites[0].data, pageIndex);
+  void _loadData(int siteIndex, int page) async {
+    if (page == 0) {
+      setState(() {
+        widgets = [];
+      });
+    }
+    if (siteIndex == -1) {
+      /// load All
+      /// TODO
+    } else {
+      final discussions = await AppWebApi.getDiscussionsList(
+          widget.sites[siteIndex].data, pageIndex);
       discussions.discussionsList.forEach((element) {
-        widgets.add(_DiscussCard(widget.sites[0].data, element));
+        widgets.add(_DiscussCard(widget.sites[siteIndex].data, element));
       });
       setState(() {});
     }
   }
 
   /// addFollow
-  void _addFollowSite() {
+  void _addFollowSite(BuildContext context) {
     /// TODO
+    ///
+
+    ///
+    /// 👇 for debug
+    AppRoute.goAddSiteUI(context);
+  }
+
+  void _updateCurrentSite(BuildContext context, int index) {
+    print(index);
+    if (index == 0) {
+      /// All site
+      _loadData(-1, 0);
+    } else {
+      _loadData(index - 1, 0);
+    }
+    setState(() {
+      this.siteIndex = index;
+    });
   }
 
   @override
@@ -72,10 +99,6 @@ class _MainDiscussListState extends State<MainDiscussList> {
     if (widget.sites == null || widget.sites.length == 0) {
       return Center(
         child: Text("no followSites"),
-      );
-    } else if (widgets.length == 0) {
-      return Center(
-        child: CircularProgressIndicator(),
       );
     } else {
       final view = CustomScrollView(
@@ -89,24 +112,33 @@ class _MainDiscussListState extends State<MainDiscussList> {
             siteIndexCallBack: (index) {
               final i = index - 1;
               if (i == -2) {
-                _addFollowSite();
+                _addFollowSite(context);
                 return;
               }
-              setState(() {
-                siteIndex = index;
-              });
+              _updateCurrentSite(context, index);
             },
           )),
-          SliverWaterfallFlow(
-            gridDelegate: SliverWaterfallFlowDelegateWithFixedCrossAxisCount(
-              crossAxisCount: AppConf.isDesktop ? 3 : 1,
-              crossAxisSpacing: 5.0,
-              mainAxisSpacing: 5.0,
-            ),
-            delegate: SliverChildBuilderDelegate((BuildContext c, int index) {
-              return widgets[index];
-            }, childCount: widgets.length),
-          )
+          (widgets == null || widgets.length == 0)
+              ? SliverWaterfallFlow.count(
+                  crossAxisCount: 1,
+                  children: [
+                    Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  ],
+                )
+              : SliverWaterfallFlow(
+                  gridDelegate:
+                      SliverWaterfallFlowDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: AppConf.isDesktop ? 3 : 1,
+                    crossAxisSpacing: 5.0,
+                    mainAxisSpacing: 5.0,
+                  ),
+                  delegate:
+                      SliverChildBuilderDelegate((BuildContext c, int index) {
+                    return widgets[index];
+                  }, childCount: widgets.length),
+                )
         ],
       );
       return Scrollbar(
@@ -155,8 +187,18 @@ class SitesHorizonList extends StatelessWidget {
           ))
     ];
     sites.asMap().forEach((index, site) {
-      widgets.add(makeButton(context, site.data.title, index + 1,
-          CacheImage(site.data.faviconUrl)));
+      widgets.add(makeButton(
+          context,
+          site.data.title,
+          index + 1,
+          SizedBox(
+            child: CacheImage(
+              site.data.faviconUrl,
+              loaderSize: 0,
+            ),
+            height: 42,
+            width: 42,
+          )));
     });
     widgets.add(makeButton(
         context,

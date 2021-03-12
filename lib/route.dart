@@ -15,13 +15,19 @@ class AppRoute {
     }), (route) => route == null);
   }
 
-  static Future goAddSiteUIAndRemoveUntil(BuildContext context,
-      {bool firstSite}) {
-    return Navigator.pushAndRemoveUntil(context,
-        MaterialPageRoute(builder: (context) {
+  static Future goAddSiteUI(BuildContext context, {bool firstSite = false}) {
+    if (firstSite) {
+      return Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (context) {
+        return AddSiteUI(
+          firstSite: firstSite,
+        );
+      }), (route) => route == null);
+    }
+    return Navigator.push(context, MaterialPageRoute(builder: (context) {
       return AddSiteUI(
         firstSite: firstSite,
       );
-    }), (route) => route == null);
+    }));
   }
 }

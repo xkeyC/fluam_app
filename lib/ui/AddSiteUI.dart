@@ -34,36 +34,50 @@ class _AddSiteUIState extends State<AddSiteUI> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: PageView(
-      controller: controller,
-      physics: NeverScrollableScrollPhysics(),
-      children: [
-        /// check Url page
-        _AddSiteMainPage(
-          true,
-          siteInfoCallBack: (info) async {
-            setState(() {
-              siteInfo = info;
-            });
-            await Future.delayed(Duration(milliseconds: 300));
-            controller.animateToPage(1,
-                duration: Duration(milliseconds: 300),
-                curve: Curves.easeOutQuint);
-          },
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          leading: widget.firstSite
+              ? null
+              : IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(
+                    Icons.close,
+                    color: getTextColor(context),
+                  )),
         ),
+        body: PageView(
+          controller: controller,
+          physics: NeverScrollableScrollPhysics(),
+          children: [
+            /// check Url page
+            _AddSiteMainPage(
+              widget.firstSite,
+              siteInfoCallBack: (info) async {
+                setState(() {
+                  siteInfo = info;
+                });
+                await Future.delayed(Duration(milliseconds: 300));
+                controller.animateToPage(1,
+                    duration: Duration(milliseconds: 300),
+                    curve: Curves.easeOutQuint);
+              },
+            ),
 
-        /// info Page
-        _CheckSiteInfoPage(
-          siteInfo,
-          widget.firstSite,
-          onBack: () {
-            controller.animateToPage(0,
-                duration: Duration(milliseconds: 300),
-                curve: Curves.easeOutQuint);
-          },
-        )
-      ],
-    ));
+            /// info Page
+            _CheckSiteInfoPage(
+              siteInfo,
+              widget.firstSite,
+              onBack: () {
+                controller.animateToPage(0,
+                    duration: Duration(milliseconds: 300),
+                    curve: Curves.easeOutQuint);
+              },
+            )
+          ],
+        ));
   }
 }
 

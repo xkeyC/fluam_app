@@ -19,7 +19,10 @@ class _MainUIState extends State<MainUI> {
           centerTitle: true,
           actions: []),
       backgroundColor: getScaffoldBackground(context),
-      body: MainDiscussList(AppConf.followSites),
+      body: MainDiscussList(
+        AppConf.followSites,
+        fabStatueCallBack: (int status) {},
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         heroTag: "main_fab",
