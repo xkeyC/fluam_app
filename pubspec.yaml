@@ -13,7 +13,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   # some ICON
-  font_awesome_flutter: ^8.11.0
+  font_awesome_flutter: ^8.12.0
   # http io
   http: ^0.13.0
   # html decoder
@@ -28,7 +28,7 @@ dependencies:
   # for use some crypto encoder
   crypto: ^3.0.0
   # for windows
-  win32: ^2.0.0
+  win32: ^2.0.2
   # for desktop
   waterfall_flow: ^2.0.5
   ffi: ^1.0.0

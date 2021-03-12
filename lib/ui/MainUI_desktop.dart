@@ -52,7 +52,21 @@ class _MainUIDesktopState extends State<MainUIDesktop> {
       ),
       body: IndexedStack(
         index: pageIndex,
-        children: [MainDiscussList(AppConf.followSites), Text("1"), Text("2")],
+        children: [
+          MainDiscussList(
+            AppConf.followSites,
+            fabStatueCallBack: (int status) {
+              if (fabStatus == status) {
+                return;
+              }
+              setState(() {
+                fabStatus = status;
+              });
+            },
+          ),
+          Text("1"),
+          Text("2")
+        ],
       ),
     );
   }

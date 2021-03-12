@@ -10,12 +10,17 @@ import 'package:fluam_app/util/StringUtil.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:waterfall_flow/waterfall_flow.dart';
+
 typedef SiteIndexCallBack(int index);
+typedef FabStatueCallBack(int index);
 
 class MainDiscussList extends StatefulWidget {
   final List<FlarumSiteInfo> sites;
+  final FabStatueCallBack fabStatueCallBack;
 
-  const MainDiscussList(this.sites, {Key key}) : super(key: key);
+  const MainDiscussList(this.sites, {Key key, this.fabStatueCallBack})
+      : assert(fabStatueCallBack != null),
+        super(key: key);
 
   @override
   _MainDiscussListState createState() => _MainDiscussListState();
@@ -29,6 +34,19 @@ class _MainDiscussListState extends State<MainDiscussList> {
 
   @override
   void initState() {
+    scrollController.addListener(() {
+      if (scrollController.offset == 0) {
+        /// show All fab
+        widget.fabStatueCallBack(0);
+      } else if (scrollController.offset ==
+          scrollController.position.maxScrollExtent) {
+        /// hide fab
+        widget.fabStatueCallBack(-1);
+      } else {
+        /// show mini fab
+        widget.fabStatueCallBack(1);
+      }
+    });
     _loadData();
     super.initState();
   }
