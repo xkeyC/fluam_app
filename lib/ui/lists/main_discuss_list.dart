@@ -81,7 +81,11 @@ class _MainDiscussListState extends State<MainDiscussList> {
             if (!info.data.discussionsList.asMap().containsKey(i)) {
               break;
             }
-            widgets.add(_DiscussCard(info.site, info.data.discussionsList[i]));
+            widgets.add(_DiscussCard(
+              info.site,
+              info.data.discussionsList[i],
+              shoeSiteBanner: true,
+            ));
           }
         }
         setState(() {});
@@ -295,8 +299,10 @@ class SitesHorizonList extends StatelessWidget {
 class _DiscussCard extends StatelessWidget {
   final FlarumSiteData siteData;
   final FlarumDiscussionData discussionData;
+  final bool shoeSiteBanner;
 
-  const _DiscussCard(this.siteData, this.discussionData, {Key key})
+  const _DiscussCard(this.siteData, this.discussionData,
+      {Key key, this.shoeSiteBanner = false})
       : super(key: key);
 
   @override
@@ -352,37 +358,47 @@ class _DiscussCard extends StatelessWidget {
                         : FlarumHTMLContent(StringUtil.getHtmlContentSummary(
                                 firstPost.contentHtml)
                             .outerHtml)),
-                Divider(
-                  height: 2,
-                  color: Colors.grey,
-                ),
-                SizedBox(
-                  height: 5,
-                ),
 
-                /// site banner
-                Row(
-                  children: [
-                    SizedBox(
-                      child: CacheImage(siteData.faviconUrl),
-                      width: 32,
-                      height: 32,
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Expanded(
-                        child: Text(
-                      siteData.title,
-                      overflow: TextOverflow.clip,
-                    ))
-                  ],
-                )
+                shoeSiteBanner ? makeSiteBanner(context) : SizedBox()
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget makeSiteBanner(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Divider(
+          height: 2,
+          color: Colors.grey,
+        ),
+        SizedBox(
+          height: 5,
+        ),
+
+        /// site banner
+        Row(
+          children: [
+            SizedBox(
+              child: CacheImage(siteData.faviconUrl),
+              width: 32,
+              height: 32,
+            ),
+            SizedBox(
+              width: 5,
+            ),
+            Expanded(
+                child: Text(
+              siteData.title,
+              overflow: TextOverflow.clip,
+            ))
+          ],
+        )
+      ],
     );
   }
 }
