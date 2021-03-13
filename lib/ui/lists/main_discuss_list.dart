@@ -9,6 +9,7 @@ import 'package:fluam_app/ui/widgets/cache_image/cache_image.dart';
 import 'package:fluam_app/ui/widgets/flarum_html_content.dart';
 import 'package:fluam_app/ui/widgets/flarum_user_avatar.dart';
 import 'package:fluam_app/util/StringUtil.dart';
+import 'package:fluam_app/util/color.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:waterfall_flow/waterfall_flow.dart';
@@ -28,11 +29,11 @@ class MainDiscussList extends StatefulWidget {
   _MainDiscussListState createState() => _MainDiscussListState();
 }
 
-class _MainDiscussListState extends State<MainDiscussList> {
+class _MainDiscussListState extends State<MainDiscussList>
+    with TickerProviderStateMixin {
   int pageIndex = 0;
   List<Widget> widgets = [];
   ScrollController scrollController = ScrollController();
-  int siteIndex = 0;
 
   /// siteConf id,pageIndex
   static Map<String, int> sitePageMap;
@@ -145,9 +146,6 @@ class _MainDiscussListState extends State<MainDiscussList> {
     } else {
       _loadData(index - 1, 0);
     }
-    setState(() {
-      this.siteIndex = index;
-    });
   }
 
   @override
@@ -164,7 +162,6 @@ class _MainDiscussListState extends State<MainDiscussList> {
           SliverToBoxAdapter(
               child: SitesHorizonList(
             widget.sites,
-            siteIndex: siteIndex,
             siteIndexCallBack: (index) {
               final i = index - 1;
               if (i == -2) {
@@ -203,17 +200,36 @@ class _MainDiscussListState extends State<MainDiscussList> {
           child: view);
     }
   }
+
+  Widget makeButton(
+      BuildContext context, String tipText, int index, Widget icon) {
+    return SizedBox(
+        height: 64,
+        child: Tooltip(
+          message: tipText,
+          child: TextButton(
+            onPressed: () {},
+            child: icon,
+          ),
+        ));
+  }
 }
 
 /// Site list
-class SitesHorizonList extends StatelessWidget {
+/// Site list
+class SitesHorizonList extends StatefulWidget {
   final List<FlarumSiteInfo> sites;
-  final int siteIndex;
   final SiteIndexCallBack siteIndexCallBack;
 
-  const SitesHorizonList(this.sites,
-      {Key key, this.siteIndexCallBack, this.siteIndex = -1})
+  const SitesHorizonList(this.sites, {Key key, this.siteIndexCallBack})
       : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => SitesHorizonListState();
+}
+
+class SitesHorizonListState extends State<SitesHorizonList> {
+  int siteIndex = 0;
 
   Widget makeButton(
       BuildContext context, String tipText, int index, Widget icon) {
@@ -223,7 +239,13 @@ class SitesHorizonList extends StatelessWidget {
           message: tipText,
           child: TextButton(
             onPressed: () {
-              siteIndexCallBack(index);
+              widget.siteIndexCallBack(index);
+              if (index == -1) {
+                return;
+              }
+              setState(() {
+                siteIndex = index;
+              });
             },
             child: icon,
           ),
@@ -242,7 +264,7 @@ class SitesHorizonList extends StatelessWidget {
             color: getTextColor(context),
           ))
     ];
-    sites.asMap().forEach((index, site) {
+    widget.sites.asMap().forEach((index, site) {
       widgets.add(makeButton(
           context,
           site.data.title,
@@ -264,7 +286,7 @@ class SitesHorizonList extends StatelessWidget {
           FontAwesomeIcons.plus,
           color: getTextColor(context),
         )));
-    if (sites == null || sites.length == 0) {
+    if (widget.sites == null || widget.sites.length == 0) {
       return SizedBox();
     }
     return Padding(
@@ -369,24 +391,19 @@ class _DiscussCard extends StatelessWidget {
   }
 
   Widget makeSiteBanner(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Divider(
-          height: 2,
-          color: Colors.grey,
-        ),
-        SizedBox(
-          height: 5,
-        ),
-
-        /// site banner
-        Row(
+    Color backgroundColor =
+        HexColor.fromHex(siteData.themePrimaryColor).withAlpha(160);
+    return ActionChip(
+      backgroundColor: backgroundColor,
+      onPressed: () {},
+      label: Padding(
+        padding: EdgeInsets.all(5),
+        child: Row(
           children: [
             SizedBox(
               child: CacheImage(siteData.faviconUrl),
-              width: 32,
-              height: 32,
+              width: 18,
+              height: 18,
             ),
             SizedBox(
               width: 5,
@@ -395,10 +412,14 @@ class _DiscussCard extends StatelessWidget {
                 child: Text(
               siteData.title,
               overflow: TextOverflow.clip,
+              style: TextStyle(
+                  fontSize: 12,
+                  color: getTextColorWithBackgroundColor(
+                      context, backgroundColor)),
             ))
           ],
-        )
-      ],
+        ),
+      ),
     );
   }
 }

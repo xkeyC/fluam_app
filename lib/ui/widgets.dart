@@ -39,7 +39,12 @@ Widget makeTitleText(BuildContext context, String text, {TextAlign textAlign}) {
 
 Color getTextColor(BuildContext context) {
   Color backgroundColor = getAppbarBackGroundColor(context);
-  return backgroundColor.computeLuminance() < 0.5 ? Colors.white : Colors.black;
+  return getTextColorWithBackgroundColor(context, backgroundColor);
+}
+
+Color getTextColorWithBackgroundColor(
+    BuildContext context, Color backgroundColor) {
+  return backgroundColor.computeLuminance() < 0.4 ? Colors.white : Colors.black;
 }
 
 Color getAppbarBackGroundColor(BuildContext context) {
