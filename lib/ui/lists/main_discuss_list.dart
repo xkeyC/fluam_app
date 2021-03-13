@@ -303,8 +303,10 @@ class _DiscussCard extends StatelessWidget {
   Widget build(BuildContext context) {
     FlarumUserData userData =
         discussionData.included.users[discussionData.user.id];
-    FlarumPostData firstPost =
-        discussionData.included.posts[discussionData.firstPost.id];
+    FlarumPostData firstPost;
+    try {
+      firstPost = discussionData.included.posts[discussionData.firstPost.id];
+    } catch (_) {}
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Padding(
@@ -345,9 +347,37 @@ class _DiscussCard extends StatelessWidget {
                 /// content
                 SizedBox(
                     width: MediaQuery.of(context).size.width,
-                    child: FlarumHTMLContent(
-                        StringUtil.getHtmlContentSummary(firstPost.contentHtml)
-                            .outerHtml))
+                    child: firstPost == null
+                        ? Text("...")
+                        : FlarumHTMLContent(StringUtil.getHtmlContentSummary(
+                                firstPost.contentHtml)
+                            .outerHtml)),
+                Divider(
+                  height: 2,
+                  color: Colors.grey,
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+
+                /// site banner
+                Row(
+                  children: [
+                    SizedBox(
+                      child: CacheImage(siteData.faviconUrl),
+                      width: 32,
+                      height: 32,
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Expanded(
+                        child: Text(
+                      siteData.title,
+                      overflow: TextOverflow.clip,
+                    ))
+                  ],
+                )
               ],
             ),
           ),
