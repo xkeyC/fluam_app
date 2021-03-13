@@ -1,5 +1,5 @@
 import 'package:fluam_app/api.dart';
-import 'package:fluam_app/data/app/FlarumSiteInfo.dart';
+import 'package:fluam_app/data/app/FlarumSite.dart';
 import 'package:fluam_app/generated/l10n.dart';
 import 'package:fluam_app/route.dart';
 import 'package:fluam_app/ui/widgets.dart';

@@ -94,3 +94,10 @@ class FlarumSiteInfo {
     });
   }
 }
+
+class FlarumSitePageIndex {
+  final FlarumSiteData data;
+  final int index;
+
+  FlarumSitePageIndex(this.data, this.index);
+}

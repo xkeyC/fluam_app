@@ -1,6 +1,6 @@
 import 'package:path_provider/path_provider.dart';
 
-import 'data/app/FlarumSiteInfo.dart';
+import 'data/app/FlarumSite.dart';
 import 'io/cache_manager.dart';
 import 'io/hive_db.dart';
 

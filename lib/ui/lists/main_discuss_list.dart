@@ -1,6 +1,7 @@
 import 'package:fluam_app/api.dart';
 import 'package:fluam_app/conf.dart';
-import 'package:fluam_app/data/app/FlarumSiteInfo.dart';
+import 'package:fluam_app/data/app/Flarum.dart';
+import 'package:fluam_app/data/app/FlarumSite.dart';
 import 'package:fluam_app/data/decoder/flarum/flarum.dart';
 import 'package:fluam_app/route.dart';
 import 'package:fluam_app/ui/widgets.dart';
@@ -33,8 +34,12 @@ class _MainDiscussListState extends State<MainDiscussList> {
   ScrollController scrollController = ScrollController();
   int siteIndex = 0;
 
+  /// siteConf id,pageIndex
+  static Map<String, int> sitePageMap;
+
   @override
   void initState() {
+    /// init sitePageMap
     scrollController.addListener(() {
       if (scrollController.offset == 0) {
         /// show All fab
@@ -56,15 +61,35 @@ class _MainDiscussListState extends State<MainDiscussList> {
     if (page == 0) {
       setState(() {
         widgets = [];
+        sitePageMap = {};
       });
     }
     if (siteIndex == -1) {
-      /// load All
-      /// TODO
+      /// load All Site
+      if (!sitePageMap.containsKey("_lastPageIndex")) {
+        sitePageMap.addAll({"_lastPageIndex": 0});
+      }
+      final r = _splitSites(sitePageMap["_lastPageIndex"]);
+      List<Future<FlarumDiscussionsInfo>> getTask = [];
+      r.forEach((s) {
+        getTask.add(AppWebApi.getDiscussionsList(s.data, s.index));
+      });
+      try {
+        final List<FlarumDiscussionsInfo> result = await (Future.wait(getTask));
+        for (int i = 0; i < 20; i++) {
+          for (var info in result) {
+            if (!info.data.discussionsList.asMap().containsKey(i)) {
+              break;
+            }
+            widgets.add(_DiscussCard(info.site, info.data.discussionsList[i]));
+          }
+        }
+        setState(() {});
+      } catch (e) {}
     } else {
-      final discussions = await AppWebApi.getDiscussionsList(
+      final info = await AppWebApi.getDiscussionsList(
           widget.sites[siteIndex].data, pageIndex);
-      discussions.discussionsList.forEach((element) {
+      info.data.discussionsList.forEach((element) {
         widgets.add(_DiscussCard(widget.sites[siteIndex].data, element));
       });
       setState(() {});
@@ -79,6 +104,33 @@ class _MainDiscussListState extends State<MainDiscussList> {
     ///
     /// 👇 for debug
     AppRoute.goAddSiteUI(context);
+  }
+
+  List<FlarumSitePageIndex> _splitSites(int index) {
+    List<FlarumSitePageIndex> siteIndex = [];
+    final followSites = AppConf.followSites;
+    int getCount = 5;
+    if (followSites.length < 5) {
+      getCount = followSites.length;
+    }
+    while (getCount > 0) {
+      if (!(followSites.length > index)) {
+        index = 0;
+      }
+      final site = followSites[index];
+      if (!sitePageMap.containsKey(site.id)) {
+        sitePageMap.addAll({site.id: 0});
+      }
+      int pageIndex = sitePageMap[site.id];
+      siteIndex.add((FlarumSitePageIndex(site.data, pageIndex)));
+      getCount--;
+      index++;
+      sitePageMap[site.id]++;
+    }
+
+    sitePageMap.addAll({"_lastPageIndex": index});
+
+    return siteIndex;
   }
 
   void _updateCurrentSite(BuildContext context, int index) {

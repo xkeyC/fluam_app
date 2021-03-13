@@ -1,8 +1,8 @@
 import 'package:fluam_app/data/decoder/flarum/flarum.dart';
-import 'package:fluam_app/data/decoder/flarum/src/discussions.dart';
 import 'package:fluam_app/io/http.dart';
 
-import 'data/app/FlarumSiteInfo.dart';
+import 'data/app/Flarum.dart';
+import 'data/app/FlarumSite.dart';
 
 class AppWebApi {
   /// get siteInfo with Url
@@ -15,11 +15,13 @@ class AppWebApi {
   }
 
   /// get getDiscussionsList with siteData
-  static Future<FlarumDiscussionsData> getDiscussionsList(
+  static Future<FlarumDiscussionsInfo> getDiscussionsList(
       FlarumSiteData site, int index) async {
+    index = index * 20;
     final r = await http.get("${site.apiUrl}/"
-        "discussions?include=user,lastPostedUser,firstPost,tags&sort&page[offset]");
-    return FlarumDiscussionsData.formBase(FlarumBaseData.formJson((r.body)));
+        "discussions?include=user,lastPostedUser,firstPost,tags&sort&page[offset]=$index");
+    return FlarumDiscussionsInfo(site,
+        FlarumDiscussionsData.formBase(FlarumBaseData.formJson((r.body))));
   }
 
   static AppHttp _h;
