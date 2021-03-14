@@ -2,8 +2,12 @@
 
 A flarum (flarum.org) application, Seamlessly uses all the flarum sites of your added.
 
-![image.png](https://i.loli.net/2021/02/26/WtiI61OsEGUYTco.png)
-![image.png](https://i.loli.net/2021/02/26/dWeElxH6T5tAYaB.png)
+![image.png](https://i.loli.net/2021/03/14/bZ6G21goekisBc4.png)
+![image.png](https://i.loli.net/2021/03/14/BS1ZM4Oscplbw8z.png)
+![image.png](https://i.loli.net/2021/03/14/iN3d2X8H9lGaj6O.png)
+![image.png](https://i.loli.net/2021/03/14/nJsEtCW2h4XBHGl.png)
+![image.png](https://i.loli.net/2021/03/14/5FaHtmTN7j8sK1X.png)
+
 
 ## Supported platforms
 * Android (6.0+)
