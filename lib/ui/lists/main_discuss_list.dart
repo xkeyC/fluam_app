@@ -273,6 +273,7 @@ class SitesHorizonListState extends State<SitesHorizonList> {
             child: CacheImage(
               site.data.faviconUrl,
               loaderSize: 0,
+              nullUrlWidget: makeNoIconSiteIcon(context, site.data.title),
             ),
             height: 42,
             width: 42,
@@ -401,7 +402,11 @@ class _DiscussCard extends StatelessWidget {
         child: Row(
           children: [
             SizedBox(
-              child: CacheImage(siteData.faviconUrl),
+              child: CacheImage(siteData.faviconUrl,
+                  nullUrlWidget: makeNoIconSiteIcon(context, siteData.title,
+                      size: 14,
+                      textColor: getTextColorWithBackgroundColor(
+                          context, backgroundColor))),
               width: 18,
               height: 18,
             ),

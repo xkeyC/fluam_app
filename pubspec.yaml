@@ -28,9 +28,9 @@ dependencies:
   # for use some crypto encoder
   crypto: ^3.0.0
   # for windows
-  win32: ^2.0.3
+  win32: ^2.0.4
   # for desktop
-  waterfall_flow: ^2.0.5
+  waterfall_flow: ^3.0.1
   ffi: ^1.0.0
 
 

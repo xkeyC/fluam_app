@@ -6,11 +6,12 @@ import 'package:flutter/material.dart';
 
 class CacheImage extends StatefulWidget {
   final String url;
+  final Widget nullUrlWidget;
 
   /// loader
   final double loaderSize;
 
-  CacheImage(this.url, {this.loaderSize = 64});
+  CacheImage(this.url, {this.loaderSize = 64, this.nullUrlWidget});
 
   @override
   _CacheImageState createState() => _CacheImageState();
@@ -23,7 +24,7 @@ class _CacheImageState extends State<CacheImage>
 
   @override
   void initState() {
-    if (fileStream != null) {
+    if (fileStream != null || widget.url == null || widget.url == "") {
       return;
     }
     fileStream = AppCacheManager.getFile(widget.url).asStream().listen((file) {
@@ -45,6 +46,14 @@ class _CacheImageState extends State<CacheImage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
+    if (widget.url == null || widget.url == "") {
+      if (widget.nullUrlWidget != null) {
+        return widget.nullUrlWidget;
+      }
+      return SizedBox();
+    }
+
     return imageFile == null
         ? Icon(
             Icons.image,

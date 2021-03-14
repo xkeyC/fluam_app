@@ -79,3 +79,14 @@ bool isDarkMode(BuildContext context) {
 
 const RadiusDialogShape =
     RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15)));
+
+Widget makeNoIconSiteIcon(BuildContext context, String title,
+    {double size = 22, Color textColor = Colors.black}) {
+  return Center(
+    child: Text(
+      title[0],
+      style: TextStyle(
+          color: textColor, fontSize: size, fontWeight: FontWeight.bold),
+    ),
+  );
+}
