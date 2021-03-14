@@ -377,7 +377,10 @@ class _DiscussCard extends StatelessWidget {
                 SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: firstPost == null
-                        ? Text("...\n")
+                        ? Padding(
+                            padding: EdgeInsets.only(bottom: 5),
+                            child: Text("..."),
+                          )
                         : FlarumHTMLContent(StringUtil.getHtmlContentSummary(
                                 firstPost.contentHtml)
                             .outerHtml)),
