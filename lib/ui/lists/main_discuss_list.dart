@@ -129,6 +129,7 @@ class _MainDiscussListState extends State<MainDiscussList>
   }
 
   _loadSite(FlarumSiteInfo site, {String url = ""}) async {
+    pageHaveNext = false;
     isLoading = true;
     FlarumDiscussionsInfo info;
     if (url == "") {
