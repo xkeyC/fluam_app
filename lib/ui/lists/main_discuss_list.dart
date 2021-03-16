@@ -36,6 +36,12 @@ class _MainDiscussListState extends State<MainDiscussList>
   List<Widget> widgets = [];
   ScrollController scrollController = ScrollController();
 
+  bool pageHaveNext = false;
+  String singleSiteNextPageUrl = "";
+  int siteIndex = -1;
+
+  bool isLoading = false;
+
   /// siteConf id,pageIndex
   static Map<String, int> sitePageMap;
 
@@ -48,18 +54,26 @@ class _MainDiscussListState extends State<MainDiscussList>
         widget.fabStatueCallBack(0);
       } else if (scrollController.offset ==
           scrollController.position.maxScrollExtent) {
-        /// hide fab
+        /// show Loading or hide fab
+        if (pageHaveNext) {
+          widget.fabStatueCallBack(2);
+          _pageGONext();
+          return;
+        }
         widget.fabStatueCallBack(-1);
       } else {
         /// show mini fab
         widget.fabStatueCallBack(1);
       }
     });
-    _loadData(-1, 0);
+    _loadData(siteIndex, 0);
     super.initState();
   }
 
-  void _loadData(int siteIndex, int page) async {
+  _loadData(int siteIndex, int page) async {
+    print("siteIndex:$siteIndex pageIndex:$page");
+    isLoading = true;
+    pageHaveNext = false;
     if (page == 0) {
       setState(() {
         widgets = [];
@@ -83,9 +97,16 @@ class _MainDiscussListState extends State<MainDiscussList>
             if (!info.data.discussionsList.asMap().containsKey(i)) {
               break;
             }
+            final d = info.data.discussionsList[i];
+            if (!pageHaveNext &&
+                d.links != null &&
+                d.links.next != null &&
+                d.links.next != "") {
+              pageHaveNext = true;
+            }
             widgets.add(_DiscussCard(
               info.site.data,
-              info.data.discussionsList[i],
+              d,
               shoeSiteBanner: true,
             ));
           }
@@ -93,13 +114,46 @@ class _MainDiscussListState extends State<MainDiscussList>
         setState(() {});
       } catch (e) {}
     } else {
-      final info = await AppWebApi.getDiscussionsList(
-          widget.sites[siteIndex], pageIndex);
-      info.data.discussionsList.forEach((element) {
-        widgets.add(_DiscussCard(widget.sites[siteIndex].data, element));
-      });
-      setState(() {});
+      await _loadSite(widget.sites[siteIndex]);
     }
+    isLoading = false;
+  }
+
+  _loadSite(FlarumSiteInfo site, {String url = ""}) async {
+    isLoading = true;
+    FlarumDiscussionsInfo info;
+    if (url == "") {
+      info = await AppWebApi.getDiscussionsList(widget.sites[siteIndex], 0);
+    } else {
+      info = await AppWebApi.getDiscussionsListWithUrl(site, url);
+    }
+    info.data.discussionsList.forEach((d) {
+      if (!pageHaveNext &&
+          d.links != null &&
+          d.links.next != null &&
+          d.links.next != "") {
+        singleSiteNextPageUrl = d.links.next;
+        pageHaveNext = true;
+      }
+      widgets.add(_DiscussCard(widget.sites[siteIndex].data, d));
+    });
+    setState(() {});
+    isLoading = false;
+  }
+
+  void _pageGONext() async {
+    pageIndex++;
+    if (isLoading) {
+      return;
+    }
+    if (siteIndex == -1) {
+      await _loadData(siteIndex, pageIndex);
+    } else {
+      await _loadSite(widget.sites[siteIndex], url: singleSiteNextPageUrl);
+    }
+    widget.fabStatueCallBack(1);
+    scrollController.animateTo(scrollController.offset + 200,
+        duration: Duration(milliseconds: 500), curve: Curves.fastOutSlowIn);
   }
 
   /// addFollow
@@ -140,13 +194,14 @@ class _MainDiscussListState extends State<MainDiscussList>
   }
 
   void _updateCurrentSite(BuildContext context, int index) {
-    print(index);
+    pageIndex = 0;
     if (index == 0) {
       /// All site
-      _loadData(-1, 0);
+      siteIndex = -1;
     } else {
-      _loadData(index - 1, 0);
+      siteIndex = index - 1;
     }
+    _loadData(siteIndex, pageIndex);
   }
 
   @override
@@ -178,7 +233,15 @@ class _MainDiscussListState extends State<MainDiscussList>
                   crossAxisCount: 1,
                   children: [
                     Center(
-                      child: CircularProgressIndicator(),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(
+                            height: 20,
+                          ),
+                          CircularProgressIndicator()
+                        ],
+                      ),
                     )
                   ],
                 )

@@ -72,10 +72,14 @@ class _MainUIDesktopState extends State<MainUIDesktop> {
   }
 
   Widget _getFab(BuildContext context) {
+    bool isExtended = fabStatus == 0;
+
     switch (fabStatus) {
       case 0:
+      case 1:
         return FloatingActionButton.extended(
           heroTag: "main_fab",
+          isExtended: isExtended,
           icon: FaIcon(
             FontAwesomeIcons.pencilAlt,
             color: getTextColor(context),
@@ -84,18 +88,19 @@ class _MainUIDesktopState extends State<MainUIDesktop> {
           onPressed: () {},
           backgroundColor: getAppbarBackGroundColor(context),
         );
-      case 1:
-        return FloatingActionButton(
-          heroTag: "main_fab",
-          child: FaIcon(
-            FontAwesomeIcons.pencilAlt,
-            color: getTextColor(context),
+      case 2:
+        return FloatingActionButton.extended(
+          onPressed: null,
+          isExtended: false,
+          icon: SizedBox(
+            child: CircularProgressIndicator(),
+            width: 24,
+            height: 24,
           ),
-          onPressed: () {},
           backgroundColor: getAppbarBackGroundColor(context),
+          label: null,
         );
-      default:
-        return null;
     }
+    return null;
   }
 }

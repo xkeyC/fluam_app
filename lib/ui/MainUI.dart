@@ -11,6 +11,8 @@ class MainUI extends StatefulWidget {
 }
 
 class _MainUIState extends State<MainUI> {
+  bool fabIsLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,16 +23,25 @@ class _MainUIState extends State<MainUI> {
       backgroundColor: getScaffoldBackground(context),
       body: MainDiscussList(
         AppConf.followSites,
-        fabStatueCallBack: (int status) {},
+        fabStatueCallBack: (int status) {
+          final v = status == 2;
+          if (fabIsLoading != v) {
+            setState(() {
+              fabIsLoading = v;
+            });
+          }
+        },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         heroTag: "main_fab",
         backgroundColor: getAppbarBackGroundColor(context),
-        child: FaIcon(
-          FontAwesomeIcons.pencilAlt,
-          color: getTextColor(context),
-        ),
+        child: fabIsLoading
+            ? CircularProgressIndicator()
+            : FaIcon(
+                FontAwesomeIcons.pencilAlt,
+                color: getTextColor(context),
+              ),
         onPressed: () {},
       ),
       bottomNavigationBar: BottomAppBar(

@@ -18,8 +18,15 @@ class AppWebApi {
   static Future<FlarumDiscussionsInfo> getDiscussionsList(
       FlarumSiteInfo site, int index) async {
     index = index * 20;
-    final r = await http.get("${site.data.apiUrl}/"
+    return getDiscussionsListWithUrl(
+        site,
+        "${site.data.apiUrl}/"
         "discussions?include=user,lastPostedUser,firstPost,tags&sort&page[offset]=$index");
+  }
+
+  static Future<FlarumDiscussionsInfo> getDiscussionsListWithUrl(
+      FlarumSiteInfo site, String url) async {
+    final r = await http.get(url);
     return FlarumDiscussionsInfo(site,
         FlarumDiscussionsData.formBase(FlarumBaseData.formJson((r.body))));
   }
