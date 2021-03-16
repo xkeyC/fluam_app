@@ -67,15 +67,20 @@ class _AddSiteUIState extends State<AddSiteUI> {
             ),
 
             /// info Page
-            _CheckSiteInfoPage(
-              siteInfo,
-              widget.firstSite,
-              onBack: () {
-                controller.animateToPage(0,
-                    duration: Duration(milliseconds: 300),
-                    curve: Curves.easeOutQuint);
-              },
-            )
+            siteInfo == null
+                ? SizedBox()
+                : _CheckSiteInfoPage(
+                    siteInfo,
+                    widget.firstSite,
+                    onBack: () {
+                      setState(() {
+                        siteInfo = null;
+                      });
+                      controller.animateToPage(0,
+                          duration: Duration(milliseconds: 300),
+                          curve: Curves.easeOutQuint);
+                    },
+                  )
           ],
         ));
   }
