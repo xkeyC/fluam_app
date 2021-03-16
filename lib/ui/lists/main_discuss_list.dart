@@ -6,6 +6,7 @@ import 'package:fluam_app/data/decoder/flarum/flarum.dart';
 import 'package:fluam_app/route.dart';
 import 'package:fluam_app/ui/widgets.dart';
 import 'package:fluam_app/ui/widgets/cache_image/cache_image.dart';
+import 'package:fluam_app/ui/widgets/desktop_scroll/desktop_scroll.dart';
 import 'package:fluam_app/ui/widgets/flarum_html_content.dart';
 import 'package:fluam_app/ui/widgets/flarum_user_avatar.dart';
 import 'package:fluam_app/util/StringUtil.dart';
@@ -158,6 +159,7 @@ class _MainDiscussListState extends State<MainDiscussList>
       final view = CustomScrollView(
         controller: scrollController,
         semanticChildCount: widgets.length,
+        physics: AppConf.isDesktop ? NeverScrollableScrollPhysics() : null,
         slivers: [
           SliverToBoxAdapter(
               child: SitesHorizonList(
@@ -194,10 +196,19 @@ class _MainDiscussListState extends State<MainDiscussList>
                 )
         ],
       );
-      return Scrollbar(
+      final v = Scrollbar(
           controller: scrollController,
           isAlwaysShown: AppConf.isDesktop,
           child: view);
+      if (AppConf.isDesktop) {
+        return SmoothScrollDesktop(
+          controller: scrollController,
+          child: v,
+          scrollSpeed: 200,
+          scrollAnimationLength: 200,
+        );
+      }
+      return v;
     }
   }
 
