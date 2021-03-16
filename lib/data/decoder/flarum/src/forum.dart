@@ -8,7 +8,7 @@ class FlarumSiteData extends FlarumBaseData {
       : super(links, data, included, sourceJsonString);
 
   factory FlarumSiteData.formBase(FlarumBaseData flarumBaseData) {
-    if (flarumBaseData == null || flarumBaseData.dataIsNull) {
+    if (flarumBaseData.dataIsNull) {
       throw "The Data must not be null";
     }
     if (!flarumBaseData.dataIsMap) {

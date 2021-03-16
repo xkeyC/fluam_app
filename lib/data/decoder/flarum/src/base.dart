@@ -14,10 +14,7 @@ class FlarumBaseData {
 
   bool get dataIsList => this.data is List;
 
-  bool get dataIsNull =>
-      this.data == null ||
-      (dataIsList && (data as List).length == 0) ||
-      (dataIsMap) && (data as Map) == {};
+  bool get dataIsNull => this.data == null;
 
   factory FlarumBaseData.formJson(String jsonData) {
     Map m = json.decode(jsonData);

@@ -45,6 +45,9 @@ class _MainDiscussListState extends State<MainDiscussList>
   /// siteConf id,pageIndex
   static Map<String, int> sitePageMap;
 
+  /// if site loaded END,ignore it.
+  static List<String> ignoredSiteList;
+
   @override
   void initState() {
     /// init sitePageMap
@@ -71,20 +74,18 @@ class _MainDiscussListState extends State<MainDiscussList>
   }
 
   _loadData(int siteIndex, int page) async {
-    print("siteIndex:$siteIndex pageIndex:$page");
     isLoading = true;
     pageHaveNext = false;
     if (page == 0) {
       setState(() {
         widgets = [];
         sitePageMap = {};
+        ignoredSiteList = [];
       });
+      sitePageMap.addAll({"_lastPageIndex": 0});
     }
     if (siteIndex == -1) {
       /// load All Site
-      if (!sitePageMap.containsKey("_lastPageIndex")) {
-        sitePageMap.addAll({"_lastPageIndex": 0});
-      }
       final r = _splitSites(sitePageMap["_lastPageIndex"]);
       List<Future<FlarumDiscussionsInfo>> getTask = [];
       r.forEach((s) {
@@ -94,8 +95,14 @@ class _MainDiscussListState extends State<MainDiscussList>
         final List<FlarumDiscussionsInfo> result = await (Future.wait(getTask));
         for (int i = 0; i < 20; i++) {
           for (var info in result) {
+            if (info.data.discussionsList.length == 0) {
+              if (!ignoredSiteList.contains(info.site.id)) {
+                ignoredSiteList.add(info.site.id);
+              }
+              continue;
+            }
             if (!info.data.discussionsList.asMap().containsKey(i)) {
-              break;
+              continue;
             }
             final d = info.data.discussionsList[i];
             if (!pageHaveNext &&
@@ -112,7 +119,9 @@ class _MainDiscussListState extends State<MainDiscussList>
           }
         }
         setState(() {});
-      } catch (e) {}
+      } catch (e) {
+        print(e);
+      }
     } else {
       await _loadSite(widget.sites[siteIndex]);
     }
@@ -170,18 +179,23 @@ class _MainDiscussListState extends State<MainDiscussList>
     List<FlarumSitePageIndex> siteIndex = [];
     final followSites = AppConf.followSites;
     int getCount = 5;
-    if (followSites.length < 5) {
-      getCount = followSites.length;
+    if (followSites.length - ignoredSiteList.length < 5) {
+      getCount = (followSites.length - ignoredSiteList.length);
     }
     while (getCount > 0) {
       if (!(followSites.length > index)) {
         index = 0;
       }
       final site = followSites[index];
+      if (ignoredSiteList.contains(site.id)) {
+        index++;
+        continue;
+      }
       if (!sitePageMap.containsKey(site.id)) {
         sitePageMap.addAll({site.id: 0});
       }
       int pageIndex = sitePageMap[site.id];
+      print("[siteSplit] ${site.data.title} index: $pageIndex");
       siteIndex.add((FlarumSitePageIndex(site, pageIndex)));
       getCount--;
       index++;

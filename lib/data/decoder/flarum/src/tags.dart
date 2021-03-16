@@ -10,7 +10,7 @@ class FlarumTagsData extends FlarumBaseData {
       : super(links, data, included, sourceJsonString);
 
   factory FlarumTagsData.formBase(FlarumBaseData flarumBaseData) {
-    if (flarumBaseData == null || flarumBaseData.dataIsNull) {
+    if (flarumBaseData.dataIsNull) {
       throw "The Data must not be null";
     }
     if (!flarumBaseData.dataIsList) {
@@ -39,7 +39,7 @@ class FlarumTagData extends FlarumBaseData {
       : super(links, data, included, sourceJsonString);
 
   factory FlarumTagData.formBase(FlarumBaseData flarumBaseData) {
-    if (flarumBaseData == null || flarumBaseData.dataIsNull) {
+    if (flarumBaseData.dataIsNull) {
       throw "The Data must not be null";
     }
     if (!flarumBaseData.dataIsMap) {
