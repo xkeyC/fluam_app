@@ -16,9 +16,9 @@ class AppWebApi {
 
   /// get getDiscussionsList with siteData
   static Future<FlarumDiscussionsInfo> getDiscussionsList(
-      FlarumSiteData site, int index) async {
+      FlarumSiteInfo site, int index) async {
     index = index * 20;
-    final r = await http.get("${site.apiUrl}/"
+    final r = await http.get("${site..data.apiUrl}/"
         "discussions?include=user,lastPostedUser,firstPost,tags&sort&page[offset]=$index");
     return FlarumDiscussionsInfo(site,
         FlarumDiscussionsData.formBase(FlarumBaseData.formJson((r.body))));

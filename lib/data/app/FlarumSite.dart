@@ -96,8 +96,8 @@ class FlarumSiteInfo {
 }
 
 class FlarumSitePageIndex {
-  final FlarumSiteData data;
+  final FlarumSiteInfo info;
   final int index;
 
-  FlarumSitePageIndex(this.data, this.index);
+  FlarumSitePageIndex(this.info, this.index);
 }

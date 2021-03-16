@@ -73,7 +73,7 @@ class _MainDiscussListState extends State<MainDiscussList>
       final r = _splitSites(sitePageMap["_lastPageIndex"]);
       List<Future<FlarumDiscussionsInfo>> getTask = [];
       r.forEach((s) {
-        getTask.add(AppWebApi.getDiscussionsList(s.data, s.index));
+        getTask.add(AppWebApi.getDiscussionsList(s.info, s.index));
       });
       try {
         final List<FlarumDiscussionsInfo> result = await (Future.wait(getTask));
@@ -83,7 +83,7 @@ class _MainDiscussListState extends State<MainDiscussList>
               break;
             }
             widgets.add(_DiscussCard(
-              info.site,
+              info.site.data,
               info.data.discussionsList[i],
               shoeSiteBanner: true,
             ));
@@ -93,7 +93,7 @@ class _MainDiscussListState extends State<MainDiscussList>
       } catch (e) {}
     } else {
       final info = await AppWebApi.getDiscussionsList(
-          widget.sites[siteIndex].data, pageIndex);
+          widget.sites[siteIndex], pageIndex);
       info.data.discussionsList.forEach((element) {
         widgets.add(_DiscussCard(widget.sites[siteIndex].data, element));
       });
@@ -127,7 +127,7 @@ class _MainDiscussListState extends State<MainDiscussList>
         sitePageMap.addAll({site.id: 0});
       }
       int pageIndex = sitePageMap[site.id];
-      siteIndex.add((FlarumSitePageIndex(site.data, pageIndex)));
+      siteIndex.add((FlarumSitePageIndex(site, pageIndex)));
       getCount--;
       index++;
       sitePageMap[site.id]++;
@@ -216,7 +216,6 @@ class _MainDiscussListState extends State<MainDiscussList>
 }
 
 /// Site list
-/// Site list
 class SitesHorizonList extends StatefulWidget {
   final List<FlarumSiteInfo> sites;
   final SiteIndexCallBack siteIndexCallBack;
@@ -270,11 +269,9 @@ class SitesHorizonListState extends State<SitesHorizonList> {
           site.data.title,
           index + 1,
           SizedBox(
-            child: CacheImage(
-              site.data.faviconUrl,
-              loaderSize: 0,
-              nullUrlWidget: makeNoIconSiteIcon(context, site.data.title),
-            ),
+            child: site.data.faviconUrl == null
+                ? makeNoIconSiteIcon(context, site.data.title)
+                : Image.network(site.data.faviconUrl),
             height: 42,
             width: 42,
           )));
