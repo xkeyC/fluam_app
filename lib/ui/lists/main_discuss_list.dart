@@ -60,7 +60,7 @@ class _MainDiscussListState extends State<MainDiscussList>
         /// show Loading or hide fab
         if (pageHaveNext) {
           widget.fabStatueCallBack(2);
-          _pageGONext();
+          _pageGoNext();
           return;
         }
         widget.fabStatueCallBack(-1);
@@ -150,17 +150,22 @@ class _MainDiscussListState extends State<MainDiscussList>
     isLoading = false;
   }
 
-  void _pageGONext() async {
-    pageIndex++;
+  void _pageGoNext() async {
     if (isLoading) {
       return;
     }
+    pageIndex++;
     if (siteIndex == -1) {
       await _loadData(siteIndex, pageIndex);
     } else {
       await _loadSite(widget.sites[siteIndex], url: singleSiteNextPageUrl);
     }
     widget.fabStatueCallBack(1);
+
+    /// Wait for the ui to finish rendering.
+    await Future.delayed(Duration(milliseconds: 100));
+
+    /// update scroll
     scrollController.animateTo(scrollController.offset + 200,
         duration: Duration(milliseconds: 500), curve: Curves.fastOutSlowIn);
   }
