@@ -36,8 +36,9 @@ class _MainDiscussListState extends State<MainDiscussList>
     with TickerProviderStateMixin {
   int pageIndex = 0;
 
-  //List<Widget> widgets = [];
-  List<FlarumDiscussionInfo> listData;
+  List<Widget> widgets = [];
+
+  //List<FlarumDiscussionInfo> listData;
   ScrollController scrollController = ScrollController();
 
   bool pageHaveNext = false;
@@ -83,8 +84,8 @@ class _MainDiscussListState extends State<MainDiscussList>
     if (page == 0) {
       sitePageMap = {};
       setState(() {
-        //widgets = [];
-        listData = [];
+        widgets = [];
+        //listData = [];
         ignoredSiteList = [];
       });
       sitePageMap.addAll({"_lastPageIndex": 0});
@@ -116,7 +117,8 @@ class _MainDiscussListState extends State<MainDiscussList>
                 d.links.next != "") {
               pageHaveNext = true;
             }
-            listData.add(FlarumDiscussionInfo(info.site, d));
+            //listData.add(FlarumDiscussionInfo(info.site, d));
+            widgets.add(_DiscussCard(FlarumDiscussionInfo(info.site, d)));
           }
         }
         setState(() {});
@@ -146,7 +148,8 @@ class _MainDiscussListState extends State<MainDiscussList>
         singleSiteNextPageUrl = d.links.next;
         pageHaveNext = true;
       }
-      listData.add(FlarumDiscussionInfo(info.site, d));
+      //listData.add(FlarumDiscussionInfo(info.site, d));
+      widgets.add(_DiscussCard(FlarumDiscussionInfo(info.site, d)));
     });
     setState(() {});
     isLoading = false;
@@ -234,7 +237,7 @@ class _MainDiscussListState extends State<MainDiscussList>
     } else {
       final view = CustomScrollView(
         controller: scrollController,
-        semanticChildCount: listData.length,
+        semanticChildCount: widgets.length,
         physics: AppConf.isDesktop ? NeverScrollableScrollPhysics() : null,
         slivers: [
           SliverToBoxAdapter(
@@ -249,7 +252,7 @@ class _MainDiscussListState extends State<MainDiscussList>
               _updateCurrentSite(context, index);
             },
           )),
-          (listData == null || listData.length == 0)
+          (widgets == null || widgets.length == 0)
               ? SliverWaterfallFlow.count(
                   crossAxisCount: 1,
                   children: [
@@ -275,11 +278,13 @@ class _MainDiscussListState extends State<MainDiscussList>
                   ),
                   delegate:
                       SliverChildBuilderDelegate((BuildContext c, int index) {
+                    return widgets[index];
+                    /*
                     return _DiscussCard(
                       listData[index],
                       shoeSiteBanner: siteIndex == -1,
-                    );
-                  }, childCount: listData.length),
+                    );*/
+                  }, childCount: widgets.length),
                 )
         ],
       );
