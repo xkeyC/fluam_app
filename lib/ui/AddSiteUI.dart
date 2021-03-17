@@ -8,6 +8,7 @@ import 'package:fluam_app/util/StringUtil.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart' as url_launcher;
 
 import '../conf.dart';
 
@@ -356,7 +357,10 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                   heroTag: UniqueKey(),
                   mini: true,
                   backgroundColor: Colors.grey,
-                  onPressed: () {},
+                  onPressed: () {
+                    /// open Url
+                    url_launcher.launch(info.data.baseUrl);
+                  },
                   child: FaIcon(FontAwesomeIcons.chrome),
                 )
               ],

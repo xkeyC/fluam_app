@@ -5,6 +5,7 @@ import 'package:fluam_app/data/app/FlarumSite.dart';
 import 'package:fluam_app/data/decoder/flarum/flarum.dart';
 import 'package:fluam_app/route.dart';
 import 'package:fluam_app/ui/widgets.dart';
+import 'package:fluam_app/ui/widgets/bouncing_box.dart';
 import 'package:fluam_app/ui/widgets/cache_image/cache_image.dart';
 import 'package:fluam_app/ui/widgets/desktop_scroll/desktop_scroll.dart';
 import 'package:fluam_app/ui/widgets/flarum_html_content.dart';
@@ -13,6 +14,7 @@ import 'package:fluam_app/util/StringUtil.dart';
 import 'package:fluam_app/util/color.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart' as url_launcher;
 import 'package:waterfall_flow/waterfall_flow.dart';
 
 typedef SiteIndexCallBack(int index);
@@ -427,57 +429,67 @@ class _DiscussCard extends StatelessWidget {
     try {
       firstPost = discussionData.included.posts[discussionData.firstPost.id];
     } catch (_) {}
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: Padding(
-        padding: const EdgeInsets.only(
-          top: 10,
-          left: 10,
-          right: 10,
-        ),
-        child: Card(
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: const BorderRadius.all(Radius.circular(6)),
+    return BouncingBox(
+      onTap: () async {
+        /// open Card page
+        /// for preview,use Browser
+        await Future.delayed(Duration(milliseconds: 300));
+        url_launcher.launch("${siteData.baseUrl}/d/${discussionData.id}");
+      },
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: Padding(
+          padding: const EdgeInsets.only(
+            top: 10,
+            left: 10,
+            right: 10,
           ),
-          child: Padding(
-            padding: EdgeInsets.only(top: 10, bottom: 20, left: 20, right: 20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                /// Title
-                SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: Text(
-                    discussionData.title,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ),
-
-                /// User HEAD
-                ListTile(
-                  title: Text(userData.displayName),
-                  subtitle: Text(discussionData.createdAt),
-                  leading: FlarumUserAvatar(userData.avatarUrl),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-
-                /// content
-                SizedBox(
+          child: Card(
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: const BorderRadius.all(Radius.circular(6)),
+            ),
+            child: Padding(
+              padding:
+                  EdgeInsets.only(top: 10, bottom: 20, left: 20, right: 20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  /// Title
+                  SizedBox(
                     width: MediaQuery.of(context).size.width,
-                    child: firstPost == null
-                        ? Padding(
-                            padding: EdgeInsets.only(bottom: 5),
-                            child: Text("..."),
-                          )
-                        : FlarumHTMLContent(StringUtil.getHtmlContentSummary(
-                                firstPost.contentHtml)
-                            .outerHtml)),
+                    child: Text(
+                      discussionData.title,
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                  ),
 
-                shoeSiteBanner ? makeSiteBanner(context) : SizedBox()
-              ],
+                  /// User HEAD
+                  ListTile(
+                    title: Text(userData.displayName),
+                    subtitle: Text(discussionData.createdAt),
+                    leading: FlarumUserAvatar(userData.avatarUrl),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+
+                  /// content
+                  SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: firstPost == null
+                          ? Padding(
+                              padding: EdgeInsets.only(bottom: 5),
+                              child: Text("..."),
+                            )
+                          : FlarumHTMLContent(StringUtil.getHtmlContentSummary(
+                                  firstPost.contentHtml)
+                              .outerHtml)),
+
+                  shoeSiteBanner ? makeSiteBanner(context) : SizedBox()
+                ],
+              ),
             ),
           ),
         ),

@@ -32,6 +32,8 @@ dependencies:
   # for desktop
   waterfall_flow: ^3.0.1
   ffi: ^1.0.0
+  # for open_url
+  url_launcher: ^6.0.2
 
 
 dev_dependencies:
