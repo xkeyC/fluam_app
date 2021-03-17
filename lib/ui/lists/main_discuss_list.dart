@@ -35,7 +35,9 @@ class MainDiscussList extends StatefulWidget {
 class _MainDiscussListState extends State<MainDiscussList>
     with TickerProviderStateMixin {
   int pageIndex = 0;
-  List<Widget> widgets = [];
+
+  //List<Widget> widgets = [];
+  List<FlarumDiscussionInfo> listData;
   ScrollController scrollController = ScrollController();
 
   bool pageHaveNext = false;
@@ -79,9 +81,10 @@ class _MainDiscussListState extends State<MainDiscussList>
     isLoading = true;
     pageHaveNext = false;
     if (page == 0) {
+      sitePageMap = {};
       setState(() {
-        widgets = [];
-        sitePageMap = {};
+        //widgets = [];
+        listData = [];
         ignoredSiteList = [];
       });
       sitePageMap.addAll({"_lastPageIndex": 0});
@@ -113,11 +116,7 @@ class _MainDiscussListState extends State<MainDiscussList>
                 d.links.next != "") {
               pageHaveNext = true;
             }
-            widgets.add(_DiscussCard(
-              info.site.data,
-              d,
-              shoeSiteBanner: true,
-            ));
+            listData.add(FlarumDiscussionInfo(info.site, d));
           }
         }
         setState(() {});
@@ -147,7 +146,7 @@ class _MainDiscussListState extends State<MainDiscussList>
         singleSiteNextPageUrl = d.links.next;
         pageHaveNext = true;
       }
-      widgets.add(_DiscussCard(widget.sites[siteIndex].data, d));
+      listData.add(FlarumDiscussionInfo(info.site, d));
     });
     setState(() {});
     isLoading = false;
@@ -235,7 +234,7 @@ class _MainDiscussListState extends State<MainDiscussList>
     } else {
       final view = CustomScrollView(
         controller: scrollController,
-        semanticChildCount: widgets.length,
+        semanticChildCount: listData.length,
         physics: AppConf.isDesktop ? NeverScrollableScrollPhysics() : null,
         slivers: [
           SliverToBoxAdapter(
@@ -250,7 +249,7 @@ class _MainDiscussListState extends State<MainDiscussList>
               _updateCurrentSite(context, index);
             },
           )),
-          (widgets == null || widgets.length == 0)
+          (listData == null || listData.length == 0)
               ? SliverWaterfallFlow.count(
                   crossAxisCount: 1,
                   children: [
@@ -276,8 +275,11 @@ class _MainDiscussListState extends State<MainDiscussList>
                   ),
                   delegate:
                       SliverChildBuilderDelegate((BuildContext c, int index) {
-                    return widgets[index];
-                  }, childCount: widgets.length),
+                    return _DiscussCard(
+                      listData[index],
+                      shoeSiteBanner: siteIndex == -1,
+                    );
+                  }, childCount: listData.length),
                 )
         ],
       );
@@ -413,28 +415,29 @@ class SitesHorizonListState extends State<SitesHorizonList> {
 
 /// items
 class _DiscussCard extends StatelessWidget {
-  final FlarumSiteData siteData;
-  final FlarumDiscussionData discussionData;
+  final FlarumDiscussionInfo discussionInfo;
   final bool shoeSiteBanner;
 
-  const _DiscussCard(this.siteData, this.discussionData,
+  const _DiscussCard(this.discussionInfo,
       {Key key, this.shoeSiteBanner = false})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     FlarumUserData userData =
-        discussionData.included.users[discussionData.user.id];
+        discussionInfo.data.included.users[discussionInfo.data.user.id];
     FlarumPostData firstPost;
     try {
-      firstPost = discussionData.included.posts[discussionData.firstPost.id];
+      firstPost =
+          discussionInfo.data.included.posts[discussionInfo.data.firstPost.id];
     } catch (_) {}
     return BouncingBox(
       onTap: () async {
         /// open Card page
         /// for preview,use Browser
         await Future.delayed(Duration(milliseconds: 300));
-        url_launcher.launch("${siteData.baseUrl}/d/${discussionData.id}");
+        url_launcher.launch(
+            "${discussionInfo.site.data.baseUrl}/d/${discussionInfo.data.id}");
       },
       child: SizedBox(
         width: MediaQuery.of(context).size.width,
@@ -459,7 +462,7 @@ class _DiscussCard extends StatelessWidget {
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: Text(
-                      discussionData.title,
+                      discussionInfo.data.title,
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
@@ -468,7 +471,7 @@ class _DiscussCard extends StatelessWidget {
                   /// User HEAD
                   ListTile(
                     title: Text(userData.displayName),
-                    subtitle: Text(discussionData.createdAt),
+                    subtitle: Text(discussionInfo.data.createdAt),
                     leading: FlarumUserAvatar(userData.avatarUrl),
                   ),
                   SizedBox(
@@ -499,7 +502,8 @@ class _DiscussCard extends StatelessWidget {
 
   Widget makeSiteBanner(BuildContext context) {
     Color backgroundColor =
-        HexColor.fromHex(siteData.themePrimaryColor).withAlpha(160);
+        HexColor.fromHex(discussionInfo.site.data.themePrimaryColor)
+            .withAlpha(160);
     return ActionChip(
       backgroundColor: backgroundColor,
       onPressed: () {},
@@ -508,8 +512,9 @@ class _DiscussCard extends StatelessWidget {
         child: Row(
           children: [
             SizedBox(
-              child: CacheImage(siteData.faviconUrl,
-                  nullUrlWidget: makeNoIconSiteIcon(context, siteData.title,
+              child: CacheImage(discussionInfo.site.data.faviconUrl,
+                  nullUrlWidget: makeNoIconSiteIcon(
+                      context, discussionInfo.site.data.title,
                       size: 14,
                       textColor: getTextColorWithBackgroundColor(
                           context, backgroundColor))),
@@ -521,7 +526,7 @@ class _DiscussCard extends StatelessWidget {
             ),
             Expanded(
                 child: Text(
-              siteData.title,
+              discussionInfo.site.data.title,
               overflow: TextOverflow.clip,
               style: TextStyle(
                   fontSize: 12,

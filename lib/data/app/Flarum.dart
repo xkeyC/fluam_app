@@ -7,3 +7,10 @@ class FlarumDiscussionsInfo {
 
   FlarumDiscussionsInfo(this.site, this.data);
 }
+
+class FlarumDiscussionInfo {
+  FlarumSiteInfo site;
+  FlarumDiscussionData data;
+
+  FlarumDiscussionInfo(this.site, this.data);
+}
