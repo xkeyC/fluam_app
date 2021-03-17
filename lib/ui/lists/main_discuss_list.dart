@@ -120,7 +120,7 @@ class _MainDiscussListState extends State<MainDiscussList>
             //listData.add(FlarumDiscussionInfo(info.site, d));
             widgets.add(_DiscussCard(
               FlarumDiscussionInfo(info.site, d),
-              shoeSiteBanner: true,
+              showSiteBanner: true,
             ));
           }
         }
@@ -424,10 +424,10 @@ class SitesHorizonListState extends State<SitesHorizonList> {
 /// items
 class _DiscussCard extends StatelessWidget {
   final FlarumDiscussionInfo discussionInfo;
-  final bool shoeSiteBanner;
+  final bool showSiteBanner;
 
   const _DiscussCard(this.discussionInfo,
-      {Key key, this.shoeSiteBanner = false})
+      {Key key, this.showSiteBanner = false})
       : super(key: key);
 
   @override
@@ -498,7 +498,7 @@ class _DiscussCard extends StatelessWidget {
                                   firstPost.contentHtml)
                               .outerHtml)),
 
-                  shoeSiteBanner ? makeSiteBanner(context) : SizedBox()
+                  showSiteBanner ? makeSiteBanner(context) : SizedBox()
                 ],
               ),
             ),
