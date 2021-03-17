@@ -44,7 +44,6 @@ class _BouncingBoxState extends State<BouncingBox>
     return GestureDetector(
       onTap: widget.onTap,
       onTapDown: _tapDown,
-      onTapUp: _tapUp,
       child: Transform.scale(
         scale: _scale,
         child: widget.child,
@@ -52,12 +51,9 @@ class _BouncingBoxState extends State<BouncingBox>
     );
   }
 
-  void _tapDown(TapDownDetails details) {
+  void _tapDown(TapDownDetails details) async {
     _controller.forward();
-  }
-
-  void _tapUp(TapUpDetails details) async {
-    await Future.delayed(Duration(milliseconds: 150));
+    await Future.delayed(Duration(milliseconds: 250));
     _controller.reverse();
   }
 }

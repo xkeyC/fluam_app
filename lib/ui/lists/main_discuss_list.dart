@@ -118,7 +118,10 @@ class _MainDiscussListState extends State<MainDiscussList>
               pageHaveNext = true;
             }
             //listData.add(FlarumDiscussionInfo(info.site, d));
-            widgets.add(_DiscussCard(FlarumDiscussionInfo(info.site, d)));
+            widgets.add(_DiscussCard(
+              FlarumDiscussionInfo(info.site, d),
+              shoeSiteBanner: true,
+            ));
           }
         }
         setState(() {});
