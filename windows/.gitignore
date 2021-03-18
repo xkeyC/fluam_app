@@ -17,3 +17,7 @@ x86/
 !*.[Cc]ache/
 /.vs/
 /out/
+/CERTIFICATE.pfx
+/xkeyc.crt
+/xkeyc.csr
+/xkeyc.key

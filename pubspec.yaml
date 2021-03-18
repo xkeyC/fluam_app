@@ -29,6 +29,7 @@ dependencies:
   crypto: ^3.0.0
   # for windows
   win32: ^2.0.4
+  msix: ^0.1.19
   # for desktop
   waterfall_flow: ^3.0.1
   ffi: ^1.0.0
@@ -47,3 +48,18 @@ flutter:
     - assets/icon.png
 flutter_intl:
   enabled: true
+
+msix_config:
+  display_name: Fluam
+  publisher_display_name: XkeyC Studio
+  identity_name: cn.xkeyc.fluam
+  msix_version: 1.0.0.0
+  certificate_path: ./windows/CERTIFICATE.pfx
+  publisher: 'E=me@xkeyc.cn, CN=xkeyc, OU=xkeyc.cn, O=XkeyC Studio, L=BeiJing, S=BeiJing, C=CN'
+  logo_path: assets/icon.png
+  start_menu_icon_path: assets/icon.png
+  tile_icon_path: assets/icon.png
+  #vs_generated_images_folder_path: ./assets_windows
+  icons_background_color: transparent
+  architecture: x64
+  capabilities: 'internetClient,location,webcam'
