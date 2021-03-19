@@ -18,7 +18,7 @@ A flarum (flarum.org) application, Seamlessly uses all the flarum sites of your 
 
 ## Download
 
-https://github.com/clinux-co/x_google_installer/releases/
+https://github.com/fluam/fluam_app/releases
 
 ## How to Build?
 
