@@ -498,12 +498,50 @@ class _DiscussCard extends StatelessWidget {
                                   firstPost.contentHtml)
                               .outerHtml)),
 
-                  showSiteBanner ? makeSiteBanner(context) : SizedBox()
+                  /// SiteBanner
+                  showSiteBanner ? makeSiteBanner(context) : SizedBox(),
+
+                  SizedBox(
+                    height: 5,
+                  ),
+
+                  /// Tags
+                  makeTags(context)
                 ],
               ),
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget makeTags(BuildContext context) {
+    List<Widget> tagsWidget = [];
+
+    discussionInfo.data.tags.forEach((tagInfo) {
+      final tag = discussionInfo.data.included.tags[tagInfo.id];
+      final backgroundColor = HexColor.fromHex(tag.color);
+      tagsWidget.add(InkWell(
+        onTap: () {},
+        child: Card(
+          color: backgroundColor,
+          child: Padding(
+            padding: EdgeInsets.all(5),
+            child: Text(
+              tag.name,
+              style: TextStyle(
+                  color: getTextColorWithBackgroundColor(
+                      context, backgroundColor)),
+            ),
+          ),
+        ),
+      ));
+    });
+
+    return SingleChildScrollView(
+      child: Row(
+        children: tagsWidget,
       ),
     );
   }

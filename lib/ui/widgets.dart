@@ -44,7 +44,7 @@ Color getTextColor(BuildContext context) {
 
 Color getTextColorWithBackgroundColor(
     BuildContext context, Color backgroundColor) {
-  return backgroundColor.computeLuminance() < 0.4 ? Colors.white : Colors.black;
+  return backgroundColor.computeLuminance() < 0.6 ? Colors.white : Colors.black;
 }
 
 Color getAppbarBackGroundColor(BuildContext context) {
