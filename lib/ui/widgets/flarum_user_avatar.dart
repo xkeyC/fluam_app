@@ -2,9 +2,9 @@ import 'package:fluam_app/ui/widgets/cache_image/cache_image.dart';
 import 'package:flutter/material.dart';
 
 class FlarumUserAvatar extends StatelessWidget {
-  final String avatarUrl;
+  final String? avatarUrl;
 
-  const FlarumUserAvatar(this.avatarUrl, {Key key}) : super(key: key);
+  const FlarumUserAvatar(this.avatarUrl, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

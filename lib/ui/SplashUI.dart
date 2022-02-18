@@ -1,4 +1,3 @@
-import 'package:fluam_app/generated/l10n.dart';
 import 'package:fluam_app/route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -11,11 +10,11 @@ class SplashUI extends StatefulWidget {
 }
 
 class _SplashUIState extends State<SplashUI> with TickerProviderStateMixin {
-  AnimationController _flutterLogoController;
-  AnimationController _appLogoController;
+  late AnimationController _flutterLogoController;
+  late AnimationController _appLogoController;
   FlutterLogoStyle _flutterLogoStyle = FlutterLogoStyle.markOnly;
   int flutterLogoDuration = 0;
-  Animation<Offset> flutterLogoAnimation;
+  late Animation<Offset> flutterLogoAnimation;
   bool showPowerByText = false;
   GlobalKey<ScaffoldState> _scaffold = GlobalKey();
 
@@ -44,37 +43,35 @@ class _SplashUIState extends State<SplashUI> with TickerProviderStateMixin {
   }
 
   void initData() async {
-    try {
-      final code = await AppConf.initApp();
-      int waitTime = 3000;
-      if (code == 1) {
-        flutterLogoDuration = 1000;
-        setState(() {
-          _flutterLogoStyle = FlutterLogoStyle.horizontal;
-        });
-        _flutterLogoController.duration = Duration(milliseconds: 300);
-        _appLogoController.duration = Duration(milliseconds: 500);
-        await Future.delayed(Duration(milliseconds: 500));
-      } else {
-        waitTime = 300;
-        setState(() {
-          _flutterLogoStyle = FlutterLogoStyle.horizontal;
-        });
-        setState(() {
-          showPowerByText = true;
-        });
-      }
-      _flutterLogoController.forward();
-      _appLogoController.forward();
-      await Future.delayed(Duration(milliseconds: waitTime));
+    final code = await AppConf.initApp();
+    int waitTime = 3000;
+    if (code == 1) {
+      flutterLogoDuration = 1000;
+      setState(() {
+        _flutterLogoStyle = FlutterLogoStyle.horizontal;
+      });
+      _flutterLogoController.duration = Duration(milliseconds: 300);
+      _appLogoController.duration = Duration(milliseconds: 500);
+      await Future.delayed(Duration(milliseconds: 500));
+    } else {
+      waitTime = 300;
+      setState(() {
+        _flutterLogoStyle = FlutterLogoStyle.horizontal;
+      });
+      setState(() {
+        showPowerByText = true;
+      });
+    }
+    _flutterLogoController.forward();
+    _appLogoController.forward();
+    await Future.delayed(Duration(milliseconds: waitTime));
 
-      if (AppConf.sites.length == 0) {
-        AppRoute.goAddSiteUI(_scaffold.currentContext, firstSite: true);
-        return;
-      }
+    if (AppConf.sites!.length == 0) {
+      AppRoute.goAddSiteUI(_scaffold.currentContext, firstSite: true);
+      return;
+    }
 
-      AppRoute.goMainAndRemoveUntil(_scaffold.currentContext);
-    } catch (e) {}
+    AppRoute.goMainAndRemoveUntil(_scaffold.currentContext!);
   }
 
   @override
@@ -86,9 +83,12 @@ class _SplashUIState extends State<SplashUI> with TickerProviderStateMixin {
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
-        S.delegate
+        GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: [const Locale('en'), const Locale('zh', 'CN')],
+      supportedLocales: [
+        Locale('en', ''),
+        Locale('zh', 'CN'),
+      ],
       home: Builder(
         builder: (BuildContext context) {
           return Scaffold(

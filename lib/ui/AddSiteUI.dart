@@ -8,7 +8,6 @@ import 'package:fluam_app/util/StringUtil.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:url_launcher/url_launcher.dart' as url_launcher;
 
 import '../conf.dart';
 
@@ -17,7 +16,7 @@ typedef void SiteInfoCallBack(FlarumSiteInfo info);
 class AddSiteUI extends StatefulWidget {
   final bool firstSite;
 
-  const AddSiteUI({Key key, this.firstSite = false}) : super(key: key);
+  const AddSiteUI({Key? key, this.firstSite = false}) : super(key: key);
 
   @override
   _AddSiteUIState createState() => _AddSiteUIState();
@@ -25,7 +24,7 @@ class AddSiteUI extends StatefulWidget {
 
 class _AddSiteUIState extends State<AddSiteUI> {
   PageController controller = PageController();
-  FlarumSiteInfo siteInfo;
+  FlarumSiteInfo? siteInfo;
 
   @override
   void initState() {
@@ -89,11 +88,11 @@ class _AddSiteUIState extends State<AddSiteUI> {
 
 /// Checking info Page
 class _CheckSiteInfoPage extends StatefulWidget {
-  final FlarumSiteInfo info;
+  final FlarumSiteInfo? info;
   final bool firstSite;
-  final VoidCallback onBack;
+  final VoidCallback? onBack;
 
-  const _CheckSiteInfoPage(this.info, this.firstSite, {Key key, this.onBack})
+  const _CheckSiteInfoPage(this.info, this.firstSite, {Key? key, this.onBack})
       : super(key: key);
 
   @override
@@ -102,19 +101,17 @@ class _CheckSiteInfoPage extends StatefulWidget {
 
 class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
   bool isSpeedChecking = false;
-  bool follow = false;
-  FlarumSiteInfo info;
+  bool? follow = false;
+  FlarumSiteInfo? info;
 
   void _checkSpeed() async {
     setState(() {
       isSpeedChecking = true;
     });
     try {
-      final i = await AppWebApi.getFlarumSiteData(info.data.baseUrl);
-      if (i != null) {
-        info = i;
-        follow = i.siteConnectionSpeedLevel < 2;
-      }
+      final i = await AppWebApi.getFlarumSiteData(info!.data.baseUrl!);
+      info = i;
+      follow = i.siteConnectionSpeedLevel! < 2;
     } catch (e) {}
     if (mounted) {
       setState(() {
@@ -123,17 +120,17 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
     }
   }
 
-  void _followSite(bool value) {
-    if (value) {
+  void _followSite(bool? value) {
+    if (value!) {
       /// if site speed not good
-      if (!(info.siteConnectionSpeedLevel < 2)) {
+      if (!(info!.siteConnectionSpeedLevel! < 2)) {
         /// show Dialog
         showDialog(
             context: context,
             builder: (context) {
               return AlertDialog(
-                title: Text(S.of(context).title_warning),
-                content: Text(S.of(context).c_site_speed_warning),
+                title: Text(S.of(context)!.title_warning),
+                content: Text(S.of(context)!.c_site_speed_warning),
                 actions: [
                   TextButton(
                       onPressed: () {
@@ -142,18 +139,18 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                           follow = true;
                         });
                       },
-                      child: Text(S.of(context).title_yes)),
+                      child: Text(S.of(context)!.title_yes)),
                   TextButton(
                       onPressed: () {
                         Navigator.pop(context);
                         _checkSpeed();
                       },
-                      child: Text(S.of(context).title_retest_speed)),
+                      child: Text(S.of(context)!.title_retest_speed)),
                   TextButton(
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: Text(S.of(context).title_no))
+                      child: Text(S.of(context)!.title_no))
                 ],
               );
             });
@@ -167,17 +164,17 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
 
   /// add Site Info to siteList
   void _addSite() async {
-    info.following = follow;
-    await info.saveSite();
+    info!.following = follow;
+    await info!.saveSite();
     await AppConf.updateSiteList();
     AppRoute.goMainAndRemoveUntil(context);
   }
 
-  String _getIconUrl() {
-    if (info.data.logoUrl != null) {
-      return info.data.logoUrl;
-    } else if (info.data.faviconUrl != null) {
-      return info.data.faviconUrl;
+  String? _getIconUrl() {
+    if (info!.data.logoUrl != null) {
+      return info!.data.logoUrl;
+    } else if (info!.data.faviconUrl != null) {
+      return info!.data.faviconUrl;
     } else {
       return "https://discuss.flarum.org/assets/logo-y6hlll2o.png";
     }
@@ -186,7 +183,7 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
   @override
   void initState() {
     info = widget.info;
-    if (info.siteConnectionSpeedLevel < 2) {
+    if (info!.siteConnectionSpeedLevel! < 2) {
       follow = true;
     }
     _checkSpeed();
@@ -215,7 +212,7 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                   Padding(
                     padding: EdgeInsets.only(top: 20, bottom: 20),
                     child: Text(
-                      info.data.title,
+                      info!.data.title!,
                       style:
                           TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                     ),
@@ -231,7 +228,7 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                              info.data.welcomeTitle,
+                              info!.data.welcomeTitle!,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.bold),
@@ -241,7 +238,7 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                             ),
                             Text(
                               StringUtil.getHtmlAllText(
-                                  info.data.welcomeMessage),
+                                  info!.data.welcomeMessage),
                               textAlign: TextAlign.center,
                             )
                           ],
@@ -261,7 +258,7 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                           children: [
                             ListTile(
                               title: Text(
-                                S.of(context).title_site_conf,
+                                S.of(context)!.title_site_conf,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 20),
                               ),
@@ -271,7 +268,7 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                             ListTile(
                               title: RichText(
                                 text: TextSpan(
-                                    text: S.of(context).title_SPEED_LEVEL,
+                                    text: S.of(context)!.title_SPEED_LEVEL,
                                     style: TextStyle(
                                       color: getTextColor(context),
                                       fontSize: 18,
@@ -282,11 +279,11 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                                           itemBuilder: (BuildContext context,
                                               int index) {
                                             Color c = Colors.amber;
-                                            if (info.siteConnectionSpeedLevel <=
+                                            if (info!.siteConnectionSpeedLevel! <=
                                                 1) {
                                               c = Colors.green;
-                                            } else if (info
-                                                    .siteConnectionSpeedLevel <=
+                                            } else if (info!
+                                                    .siteConnectionSpeedLevel! <=
                                                 2) {
                                               c = Colors.amber;
                                             } else {
@@ -300,13 +297,13 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                                           itemCount: 5,
                                           direction: Axis.horizontal,
                                           rating: 5.00 -
-                                              info.siteConnectionSpeedLevel,
+                                              info!.siteConnectionSpeedLevel!,
                                           itemSize: 28,
                                         ),
                                       )
                                     ]),
                               ),
-                              subtitle: Text(S.of(context).c_site_speed_level),
+                              subtitle: Text(S.of(context)!.c_site_speed_level),
                               trailing: IconButton(
                                 onPressed: isSpeedChecking ? null : _checkSpeed,
                                 icon: isSpeedChecking
@@ -318,9 +315,9 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                             /// Site Follow
                             ListTile(
                               title: Text(
-                                S.of(context).title_site_follow,
+                                S.of(context)!.title_site_follow,
                               ),
-                              subtitle: Text(S.of(context).c_site_follow),
+                              subtitle: Text(S.of(context)!.c_site_follow),
                               leading: Checkbox(
                                 onChanged: _followSite,
                                 value: follow,
@@ -359,7 +356,7 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                   backgroundColor: Colors.grey,
                   onPressed: () {
                     /// open Url
-                    url_launcher.launch(info.data.baseUrl);
+                    // url_launcher.launch(info!.data.baseUrl!);
                   },
                   child: FaIcon(FontAwesomeIcons.chrome),
                 )
@@ -372,9 +369,9 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
 /// Main page, check Url and get Info
 class _AddSiteMainPage extends StatefulWidget {
   final bool firstSite;
-  final SiteInfoCallBack siteInfoCallBack;
+  final SiteInfoCallBack? siteInfoCallBack;
 
-  const _AddSiteMainPage(this.firstSite, {Key key, this.siteInfoCallBack})
+  const _AddSiteMainPage(this.firstSite, {Key? key, this.siteInfoCallBack})
       : super(key: key);
 
   @override
@@ -413,7 +410,7 @@ class _AddSiteMainPageState extends State<_AddSiteMainPage> {
       setState(() {
         loadStatus = 2;
       });
-      widget.siteInfoCallBack(site);
+      widget.siteInfoCallBack!(site);
     } catch (e) {
       /// set Error
       setState(() {
@@ -430,8 +427,8 @@ class _AddSiteMainPageState extends State<_AddSiteMainPage> {
         children: [
           Text(
             widget.firstSite
-                ? S.of(context).title_add_site_first
-                : S.of(context).title_add_site,
+                ? S.of(context)!.title_add_site_first
+                : S.of(context)!.title_add_site,
             style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
           ),
@@ -447,9 +444,9 @@ class _AddSiteMainPageState extends State<_AddSiteMainPage> {
               enabled: loadStatus != 1,
               controller: urlTextController,
               decoration: InputDecoration(
-                  labelText: S.of(context).c_site_url_label,
+                  labelText: S.of(context)!.c_site_url_label,
                   errorText: loadStatus == -2
-                      ? S.of(context).c_site_url_label_error
+                      ? S.of(context)!.c_site_url_label_error
                       : null),
               onChanged: (String text) {
                 if (StringUtil.isHTTPSUrl(text)) {

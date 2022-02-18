@@ -1,5 +1,4 @@
 import 'package:fluam_app/ui/widgets.dart';
-import 'package:fluam_app/ui/widgets/flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:flutter/material.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as html;
@@ -8,7 +7,7 @@ class FlarumHTMLContent extends StatelessWidget {
   final String htmlString;
   final bool summary;
 
-  const FlarumHTMLContent(this.htmlString, {Key key, this.summary = false})
+  const FlarumHTMLContent(this.htmlString, {Key? key, this.summary = false})
       : super(key: key);
 
   /// Recursive decoding
@@ -98,13 +97,7 @@ class FlarumHTMLContent extends StatelessWidget {
   }
 
   Widget getHtmlWidget(BuildContext context, String html) {
-    return HtmlWidget(
-      html,
-      hyperlinkColor: Color.fromARGB(255, 243, 99, 34),
-      onTapUrl: (str) {
-        print("tapUrl:$str");
-      },
-    );
+    return Container();
   }
 
   // ignore: non_constant_identifier_names
@@ -123,6 +116,6 @@ class FlarumHTMLContent extends StatelessWidget {
     return RichText(
         text: TextSpan(
             children: _htmlToRichSpan(
-                context, html.parse(htmlString).body.children, [])));
+                context, html.parse(htmlString).body!.children, [])));
   }
 }

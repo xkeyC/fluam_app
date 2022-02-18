@@ -8,7 +8,7 @@ class AppWebApi {
   /// get siteInfo with Url
   static Future<FlarumSiteInfo> getFlarumSiteData(String siteUrl) async {
     final httpStartTime = DateTime.now().millisecondsSinceEpoch;
-    final r = await http.get(siteUrl + "/api");
+    final r = await http!.get(siteUrl + "/api");
     final httpUsedTime = DateTime.now().millisecondsSinceEpoch - httpStartTime;
     return FlarumSiteInfo.formDataAndConnectionTime(
         FlarumSiteData.formBase(FlarumBaseData.formJson(r.body)), httpUsedTime);
@@ -26,14 +26,14 @@ class AppWebApi {
 
   static Future<FlarumDiscussionsInfo> getDiscussionsListWithUrl(
       FlarumSiteInfo site, String url) async {
-    final r = await http.get(url);
+    final r = await http!.get(url);
     return FlarumDiscussionsInfo(site,
         FlarumDiscussionsData.formBase(FlarumBaseData.formJson((r.body))));
   }
 
-  static AppHttp _h;
+  static AppHttp? _h;
 
-  static AppHttp get http {
+  static AppHttp? get http {
     if (_h == null) {
       _h = AppHttp();
     }

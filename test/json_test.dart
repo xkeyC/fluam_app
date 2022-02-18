@@ -18,8 +18,8 @@ void main() async {
       .forEach((element) {
     print(
         "TAG: ${element.name} IsChild:${element.isChild} Position:${element.position}");
-    if (element.isChild) {
-      print("ParentTagsId :${element.parentTags.id}");
+    if (element.isChild!) {
+      print("ParentTagsId :${element.parentTags?.id}");
     }
   });
 
@@ -55,7 +55,7 @@ void main() async {
   d.discussionsList.forEach((element) {
     print(element.title);
   });
-  print(d.links.next);
+  print(d.links!.next);
 
   print("----------------users----------------");
 
@@ -66,7 +66,7 @@ void main() async {
       .usersList
       .forEach((element) {
     print(element.username);
-    print(element.included.groups.length);
+    print(element.included!.groups!.length);
   });
 
   client.close();

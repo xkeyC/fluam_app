@@ -5,7 +5,7 @@ class FlarumGroupsData extends FlarumBaseData {
 
   final List<FlarumGroupData> groupsList;
 
-  FlarumGroupsData(FlarumLinkData links, data, FlarumIncludedData included,
+  FlarumGroupsData(FlarumLinkData? links, data, FlarumIncludedData? included,
       String sourceJsonString, this.groupsList)
       : super(links, data, included, sourceJsonString);
 
@@ -34,7 +34,7 @@ class FlarumGroupsData extends FlarumBaseData {
 class FlarumGroupData extends FlarumBaseData {
   static const String typeName = "groups";
 
-  FlarumGroupData(FlarumLinkData links, data, FlarumIncludedData included,
+  FlarumGroupData(FlarumLinkData? links, data, FlarumIncludedData? included,
       String sourceJsonString)
       : super(links, data, included, sourceJsonString);
 
@@ -52,17 +52,17 @@ class FlarumGroupData extends FlarumBaseData {
         flarumBaseData.included, flarumBaseData.sourceJsonString);
   }
 
-  String get id => this.data["id"];
+  String? get id => this.data["id"];
 
-  Map get attributes => this.data["attributes"];
+  Map? get attributes => this.data["attributes"];
 
-  String get nameSingular => this.attributes["nameSingular"];
+  String? get nameSingular => this.attributes!["nameSingular"];
 
-  String get namePlural => this.attributes["namePlural"];
+  String? get namePlural => this.attributes!["namePlural"];
 
-  String get color => this.attributes["color"];
+  String? get color => this.attributes!["color"];
 
-  String get icon => this.attributes["icon"];
+  String? get icon => this.attributes!["icon"];
 
-  int get isHidden => this.attributes["isHidden"];
+  int? get isHidden => this.attributes!["isHidden"];
 }

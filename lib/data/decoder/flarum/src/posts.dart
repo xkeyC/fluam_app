@@ -5,7 +5,7 @@ class FlarumPostsData extends FlarumBaseData {
 
   final List<FlarumPostData> postsList;
 
-  FlarumPostsData(FlarumLinkData links, data, FlarumIncludedData included,
+  FlarumPostsData(FlarumLinkData? links, data, FlarumIncludedData? included,
       String sourceJsonString, this.postsList)
       : super(links, data, included, sourceJsonString);
 
@@ -34,7 +34,7 @@ class FlarumPostsData extends FlarumBaseData {
 class FlarumPostData extends FlarumBaseData {
   static const String typeName = "posts";
 
-  FlarumPostData(FlarumLinkData links, data, FlarumIncludedData included,
+  FlarumPostData(FlarumLinkData? links, data, FlarumIncludedData? included,
       String sourceJsonString)
       : super(links, data, included, sourceJsonString);
 
@@ -52,50 +52,50 @@ class FlarumPostData extends FlarumBaseData {
         flarumBaseData.included, flarumBaseData.sourceJsonString);
   }
 
-  Map get attributes => this.data["attributes"];
+  Map? get attributes => this.data["attributes"];
 
-  String get id => this.data["id"];
+  String? get id => this.data["id"];
 
-  int get number => this.attributes["number"];
+  int? get number => this.attributes!["number"];
 
-  String get createdAt => this.attributes["createdAt"];
+  String? get createdAt => this.attributes!["createdAt"];
 
-  String get contentType => this.attributes["contentType"];
+  String? get contentType => this.attributes!["contentType"];
 
-  String get contentHtml => this.attributes["contentHtml"];
+  String? get contentHtml => this.attributes!["contentHtml"];
 
-  String get content => this.attributes["content"];
+  String? get content => this.attributes!["content"];
 
-  String get editedAt => this.attributes["editedAt"];
+  String? get editedAt => this.attributes!["editedAt"];
 
-  bool get canEdit => this.attributes["canEdit"];
+  bool? get canEdit => this.attributes!["canEdit"];
 
-  bool get canHide => this.attributes["canHide"];
+  bool? get canHide => this.attributes!["canHide"];
 
-  bool get isApproved => this.attributes["isApproved"];
+  bool? get isApproved => this.attributes!["isApproved"];
 
-  bool get canFlag => this.attributes["canFlag"];
+  bool? get canFlag => this.attributes!["canFlag"];
 
-  bool get canLike => this.attributes["canLike"];
+  bool? get canLike => this.attributes!["canLike"];
 
-  bool get canBanIP => this.attributes["canBanIP"];
+  bool? get canBanIP => this.attributes!["canBanIP"];
 
-  Map get relationships => this.data["relationships"];
+  Map? get relationships => this.data["relationships"];
 
-  FlarumRelationshipsData get user =>
-      FlarumRelationshipsData.formJsonMap(this.relationships["user"]["data"]);
+  FlarumRelationshipsData? get user =>
+      FlarumRelationshipsData.formJsonMap(this.relationships!["user"]["data"]);
 
-  FlarumRelationshipsData get editedUser => FlarumRelationshipsData.formJsonMap(
-      this.relationships["editedUser"]["data"]);
+  FlarumRelationshipsData? get editedUser => FlarumRelationshipsData.formJsonMap(
+      this.relationships!["editedUser"]["data"]);
 
-  FlarumRelationshipsData get discussion => FlarumRelationshipsData.formJsonMap(
-      this.relationships["discussion"]["data"]);
+  FlarumRelationshipsData? get discussion => FlarumRelationshipsData.formJsonMap(
+      this.relationships!["discussion"]["data"]);
 
-  List<FlarumRelationshipsData> get likes =>
+  List<FlarumRelationshipsData?>? get likes =>
       FlarumRelationshipsData.formJsonMapList(
-          this.relationships["likes"]["data"]);
+          this.relationships!["likes"]["data"]);
 
-  List<FlarumRelationshipsData> get mentionedBy =>
+  List<FlarumRelationshipsData?>? get mentionedBy =>
       FlarumRelationshipsData.formJsonMapList(
-          this.relationships["mentionedBy"]["data"]);
+          this.relationships!["mentionedBy"]["data"]);
 }

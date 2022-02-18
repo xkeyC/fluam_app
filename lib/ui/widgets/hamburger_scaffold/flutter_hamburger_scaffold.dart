@@ -5,20 +5,20 @@ import 'package:flutter/material.dart';
 
 class HamburgerScaffold extends StatefulWidget {
   final Widget body;
-  final Widget appBarTitle;
-  final bool centerTitle;
+  final Widget? appBarTitle;
+  final bool? centerTitle;
   final HamburgerMenu hamburgerMenu;
-  final Color backgroundColor;
-  final double menuWidth;
-  final Widget appBarBottom;
-  final bool expandable;
-  final List<Widget> appBarActions;
-  final FloatingActionButton floatingActionButton;
+  final Color? backgroundColor;
+  final double? menuWidth;
+  final Widget? appBarBottom;
+  final bool? expandable;
+  final List<Widget>? appBarActions;
+  final FloatingActionButton? floatingActionButton;
 
   HamburgerScaffold(
-      {Key key,
-      @required this.body,
-      @required this.hamburgerMenu,
+      {Key? key,
+      required this.body,
+      required this.hamburgerMenu,
       this.backgroundColor,
       this.menuWidth,
       this.appBarTitle,
@@ -44,15 +44,15 @@ class _HamburgerScaffoldState extends State<HamburgerScaffold> {
         backgroundColor: getAppbarBackGroundColor(context),
         title: widget.appBarTitle != null
             ? PreferredSize(
-                child: widget.appBarTitle,
+                child: widget.appBarTitle!,
                 preferredSize: Size.fromHeight(kToolbarHeight))
             : new Container(),
         centerTitle: widget.centerTitle != null ? widget.centerTitle : true,
-        bottom: widget.appBarBottom != null ? widget.appBarBottom : null,
+        bottom: widget.appBarBottom != null ? widget.appBarBottom as PreferredSizeWidget? : null,
         actions: widget.appBarActions != null ? widget.appBarActions : [],
         leading: IconButton(
             onPressed: () {
-              if ((widget.expandable != null && widget.expandable) ||
+              if ((widget.expandable != null && widget.expandable!) ||
                   widget.expandable == null) {
                 setState(() {
                   _isExpanded ? _isExpanded = false : _isExpanded = true;
@@ -83,7 +83,7 @@ class HamburgerDrawer extends StatefulWidget {
   final bool expanded;
 
   HamburgerDrawer(
-      {Key key, @required this.hamburgerMenu, @required this.expanded})
+      {Key? key, required this.hamburgerMenu, required this.expanded})
       : super(key: key);
 
   @override
@@ -114,12 +114,12 @@ class HamburgerMenu extends StatefulWidget {
   final expanded;
 
   HamburgerMenu(
-      {Key key,
-      @required this.unselectedColor,
-      @required this.selectedColor,
-      @required this.indicatorColor,
-      @required this.children,
-      @required this.onClick,
+      {Key? key,
+      required this.unselectedColor,
+      required this.selectedColor,
+      required this.indicatorColor,
+      required this.children,
+      required this.onClick,
       this.expanded})
       : super(key: key);
 

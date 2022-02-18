@@ -14,19 +14,17 @@ import 'package:fluam_app/util/StringUtil.dart';
 import 'package:fluam_app/util/color.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:url_launcher/url_launcher.dart' as url_launcher;
 import 'package:waterfall_flow/waterfall_flow.dart';
 
 typedef SiteIndexCallBack(int index);
 typedef FabStatueCallBack(int index);
 
 class MainDiscussList extends StatefulWidget {
-  final List<FlarumSiteInfo> sites;
+  final List<FlarumSiteInfo>? sites;
   final FabStatueCallBack fabStatueCallBack;
 
-  const MainDiscussList(this.sites, {Key key, this.fabStatueCallBack})
-      : assert(fabStatueCallBack != null),
-        super(key: key);
+  const MainDiscussList(this.sites, {Key? key, required this.fabStatueCallBack})
+      : super(key: key);
 
   @override
   _MainDiscussListState createState() => _MainDiscussListState();
@@ -42,16 +40,16 @@ class _MainDiscussListState extends State<MainDiscussList>
   ScrollController scrollController = ScrollController();
 
   bool pageHaveNext = false;
-  String singleSiteNextPageUrl = "";
+  String? singleSiteNextPageUrl = "";
   int siteIndex = -1;
 
   bool isLoading = false;
 
   /// siteConf id,pageIndex
-  static Map<String, int> sitePageMap;
+  static late Map<String?, int> sitePageMap;
 
   /// if site loaded END,ignore it.
-  static List<String> ignoredSiteList;
+  static late List<String?> ignoredSiteList;
 
   @override
   void initState() {
@@ -92,10 +90,10 @@ class _MainDiscussListState extends State<MainDiscussList>
     }
     if (siteIndex == -1) {
       /// load All Site
-      final r = _splitSites(sitePageMap["_lastPageIndex"]);
+      final r = _splitSites(sitePageMap["_lastPageIndex"]!);
       List<Future<FlarumDiscussionsInfo>> getTask = [];
       r.forEach((s) {
-        getTask.add(AppWebApi.getDiscussionsList(s.info, s.index));
+        getTask.add(AppWebApi.getDiscussionsList(s.info, s.index!));
       });
       try {
         final List<FlarumDiscussionsInfo> result = await (Future.wait(getTask));
@@ -113,8 +111,8 @@ class _MainDiscussListState extends State<MainDiscussList>
             final d = info.data.discussionsList[i];
             if (!pageHaveNext &&
                 d.links != null &&
-                d.links.next != null &&
-                d.links.next != "") {
+                d.links!.next != null &&
+                d.links!.next != "") {
               pageHaveNext = true;
             }
             //listData.add(FlarumDiscussionInfo(info.site, d));
@@ -129,26 +127,26 @@ class _MainDiscussListState extends State<MainDiscussList>
         print(e);
       }
     } else {
-      await _loadSite(widget.sites[siteIndex]);
+      await _loadSite(widget.sites![siteIndex]);
     }
     isLoading = false;
   }
 
-  _loadSite(FlarumSiteInfo site, {String url = ""}) async {
+  _loadSite(FlarumSiteInfo site, {String? url = ""}) async {
     pageHaveNext = false;
     isLoading = true;
     FlarumDiscussionsInfo info;
     if (url == "") {
-      info = await AppWebApi.getDiscussionsList(widget.sites[siteIndex], 0);
+      info = await AppWebApi.getDiscussionsList(widget.sites![siteIndex], 0);
     } else {
-      info = await AppWebApi.getDiscussionsListWithUrl(site, url);
+      info = await AppWebApi.getDiscussionsListWithUrl(site, url!);
     }
     info.data.discussionsList.forEach((d) {
       if (!pageHaveNext &&
           d.links != null &&
-          d.links.next != null &&
-          d.links.next != "") {
-        singleSiteNextPageUrl = d.links.next;
+          d.links!.next != null &&
+          d.links!.next != "") {
+        singleSiteNextPageUrl = d.links!.next;
         pageHaveNext = true;
       }
       //listData.add(FlarumDiscussionInfo(info.site, d));
@@ -166,7 +164,7 @@ class _MainDiscussListState extends State<MainDiscussList>
     if (siteIndex == -1) {
       await _loadData(siteIndex, pageIndex);
     } else {
-      await _loadSite(widget.sites[siteIndex], url: singleSiteNextPageUrl);
+      await _loadSite(widget.sites![siteIndex], url: singleSiteNextPageUrl);
     }
     widget.fabStatueCallBack(1);
 
@@ -190,7 +188,7 @@ class _MainDiscussListState extends State<MainDiscussList>
 
   List<FlarumSitePageIndex> _splitSites(int index) {
     List<FlarumSitePageIndex> siteIndex = [];
-    final followSites = AppConf.followSites;
+    final followSites = AppConf.followSites!;
     int getCount = 5;
     if (followSites.length - ignoredSiteList.length < 5) {
       getCount = (followSites.length - ignoredSiteList.length);
@@ -207,12 +205,12 @@ class _MainDiscussListState extends State<MainDiscussList>
       if (!sitePageMap.containsKey(site.id)) {
         sitePageMap.addAll({site.id: 0});
       }
-      int pageIndex = sitePageMap[site.id];
+      int? pageIndex = sitePageMap[site.id];
       print("[siteSplit] ${site.data.title} index: $pageIndex");
       siteIndex.add((FlarumSitePageIndex(site, pageIndex)));
       getCount--;
       index++;
-      sitePageMap[site.id]++;
+      sitePageMap[site.id] = sitePageMap[site.id]! + 1;
     }
 
     sitePageMap.addAll({"_lastPageIndex": index});
@@ -233,7 +231,7 @@ class _MainDiscussListState extends State<MainDiscussList>
 
   @override
   Widget build(BuildContext context) {
-    if (widget.sites == null || widget.sites.length == 0) {
+    if (widget.sites == null || widget.sites!.length == 0) {
       return Center(
         child: Text("no followSites"),
       );
@@ -255,7 +253,7 @@ class _MainDiscussListState extends State<MainDiscussList>
               _updateCurrentSite(context, index);
             },
           )),
-          (widgets == null || widgets.length == 0)
+          (widgets.length == 0)
               ? SliverWaterfallFlow.count(
                   crossAxisCount: 1,
                   children: [
@@ -323,10 +321,10 @@ class _MainDiscussListState extends State<MainDiscussList>
 
 /// Site list
 class SitesHorizonList extends StatefulWidget {
-  final List<FlarumSiteInfo> sites;
-  final SiteIndexCallBack siteIndexCallBack;
+  final List<FlarumSiteInfo>? sites;
+  final SiteIndexCallBack? siteIndexCallBack;
 
-  const SitesHorizonList(this.sites, {Key key, this.siteIndexCallBack})
+  const SitesHorizonList(this.sites, {Key? key, this.siteIndexCallBack})
       : super(key: key);
 
   @override
@@ -337,14 +335,14 @@ class SitesHorizonListState extends State<SitesHorizonList> {
   int siteIndex = 0;
 
   Widget makeButton(
-      BuildContext context, String tipText, int index, Widget icon) {
+      BuildContext context, String? tipText, int index, Widget icon) {
     return SizedBox(
         height: 64,
         child: Tooltip(
           message: tipText,
           child: TextButton(
             onPressed: () {
-              widget.siteIndexCallBack(index);
+              widget.siteIndexCallBack!(index);
               if (index == -1) {
                 return;
               }
@@ -369,15 +367,15 @@ class SitesHorizonListState extends State<SitesHorizonList> {
             color: getTextColor(context),
           ))
     ];
-    widget.sites.asMap().forEach((index, site) {
+    widget.sites!.asMap().forEach((index, site) {
       widgets.add(makeButton(
           context,
           site.data.title,
           index + 1,
           SizedBox(
             child: site.data.faviconUrl == null
-                ? makeNoIconSiteIcon(context, site.data.title)
-                : Image.network(site.data.faviconUrl),
+                ? makeNoIconSiteIcon(context, site.data.title!)
+                : Image.network(site.data.faviconUrl!),
             height: 42,
             width: 42,
           )));
@@ -390,7 +388,7 @@ class SitesHorizonListState extends State<SitesHorizonList> {
           FontAwesomeIcons.plus,
           color: getTextColor(context),
         )));
-    if (widget.sites == null || widget.sites.length == 0) {
+    if (widget.sites == null || widget.sites!.length == 0) {
       return SizedBox();
     }
     return Padding(
@@ -427,25 +425,25 @@ class _DiscussCard extends StatelessWidget {
   final bool showSiteBanner;
 
   const _DiscussCard(this.discussionInfo,
-      {Key key, this.showSiteBanner = false})
+      {Key? key, this.showSiteBanner = false})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     FlarumUserData userData =
-        discussionInfo.data.included.users[discussionInfo.data.user.id];
-    FlarumPostData firstPost;
+        discussionInfo.data.included!.users![discussionInfo.data.user?.id]!;
+    FlarumPostData? firstPost;
     try {
-      firstPost =
-          discussionInfo.data.included.posts[discussionInfo.data.firstPost.id];
+      firstPost = discussionInfo
+          .data.included!.posts![discussionInfo.data.firstPost?.id];
     } catch (_) {}
     return BouncingBox(
       onTap: () async {
         /// open Card page
         /// for preview,use Browser
         await Future.delayed(Duration(milliseconds: 300));
-        url_launcher.launch(
-            "${discussionInfo.site.data.baseUrl}/d/${discussionInfo.data.id}");
+        // url_launcher.launch(
+        //     "${discussionInfo.site.data.baseUrl}/d/${discussionInfo.data.id}");
       },
       child: SizedBox(
         width: MediaQuery.of(context).size.width,
@@ -470,7 +468,7 @@ class _DiscussCard extends StatelessWidget {
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: Text(
-                      discussionInfo.data.title,
+                      discussionInfo.data.title!,
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
@@ -478,8 +476,8 @@ class _DiscussCard extends StatelessWidget {
 
                   /// User HEAD
                   ListTile(
-                    title: Text(userData.displayName),
-                    subtitle: Text(discussionInfo.data.createdAt),
+                    title: Text(userData.displayName!),
+                    subtitle: Text(discussionInfo.data.createdAt!),
                     leading: FlarumUserAvatar(userData.avatarUrl),
                   ),
                   SizedBox(
@@ -520,7 +518,7 @@ class _DiscussCard extends StatelessWidget {
     List<Widget> tagsWidget = [];
 
     discussionInfo.data.tags.forEach((tagInfo) {
-      final tag = discussionInfo.data.included.tags[tagInfo.id];
+      final tag = discussionInfo.data.included!.tags![tagInfo?.id]!;
       final backgroundColor = HexColor.fromHex(tag.color);
       tagsWidget.add(InkWell(
         onTap: () {},
@@ -529,7 +527,7 @@ class _DiscussCard extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.all(5),
             child: Text(
-              tag.name,
+              tag.name!,
               style: TextStyle(
                   color: getTextColorWithBackgroundColor(
                       context, backgroundColor)),
@@ -560,7 +558,7 @@ class _DiscussCard extends StatelessWidget {
             SizedBox(
               child: CacheImage(discussionInfo.site.data.faviconUrl,
                   nullUrlWidget: makeNoIconSiteIcon(
-                      context, discussionInfo.site.data.title,
+                      context, discussionInfo.site.data.title!,
                       size: 14,
                       textColor: getTextColorWithBackgroundColor(
                           context, backgroundColor))),
@@ -572,7 +570,7 @@ class _DiscussCard extends StatelessWidget {
             ),
             Expanded(
                 child: Text(
-              discussionInfo.site.data.title,
+              discussionInfo.site.data.title!,
               overflow: TextOverflow.clip,
               style: TextStyle(
                   fontSize: 12,

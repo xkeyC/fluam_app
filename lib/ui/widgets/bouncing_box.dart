@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 
 class BouncingBox extends StatefulWidget {
   final Widget child;
-  final GestureTapCallback onTap;
+  final GestureTapCallback? onTap;
 
-  const BouncingBox({Key key, this.onTap, this.child})
-      : assert(child != null),
-        super(key: key);
+  const BouncingBox({Key? key, this.onTap, required this.child})
+      : super(key: key);
 
   @override
   _BouncingBoxState createState() => _BouncingBoxState();
@@ -14,8 +13,8 @@ class BouncingBox extends StatefulWidget {
 
 class _BouncingBoxState extends State<BouncingBox>
     with SingleTickerProviderStateMixin {
-  double _scale;
-  AnimationController _controller;
+  double? _scale;
+  late AnimationController _controller;
 
   @override
   void initState() {

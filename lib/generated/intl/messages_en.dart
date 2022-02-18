@@ -19,7 +19,7 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
-  final messages = _notInlinedMessages(_notInlinedMessages);
+  final Map<String, dynamic> messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
     "c_site_follow" : MessageLookupByLibrary.simpleMessage("This site will show on your Home Page"),
     "c_site_speed_level" : MessageLookupByLibrary.simpleMessage("A good connection speed will improve your experience."),

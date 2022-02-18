@@ -21,8 +21,8 @@ class SmoothScrollDesktop extends StatelessWidget {
   final Curve curve;
 
   SmoothScrollDesktop({
-    @required this.controller,
-    @required this.child,
+    required this.controller,
+    required this.child,
     this.scrollSpeed = DEFAULT_SCROLL_SPEED,
     this.scrollAnimationLength = DEFAULT_NORMAL_SCROLL_ANIMATION_LENGTH_MS,
     this.curve = Curves.linear,

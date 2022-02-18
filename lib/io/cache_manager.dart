@@ -5,9 +5,9 @@ import 'package:hive/hive.dart';
 
 class AppCacheManager {
   static const String dbName = "cache_manager";
-  static String _cachePath;
-  static int _maxCacheCount;
-  static HttpClient _httpClient;
+  static late String _cachePath;
+  static late int _maxCacheCount;
+  static late HttpClient _httpClient;
 
   static Map<String, Future<File>> loadingMap = {};
 
@@ -32,12 +32,12 @@ class AppCacheManager {
     });
   }
 
-  static Future<File> getFile(String url) async {
+  static Future<File>? getFile(String url) async {
     final String fileName = getFileName(url);
     final File file = File(_cachePath + "/$fileName");
 
     if (loadingMap.keys.contains(fileName)) {
-      return loadingMap[fileName];
+      return loadingMap[fileName]!;
     }
 
     /// if File exists,return file
@@ -57,7 +57,7 @@ class AppCacheManager {
     }
     print("add Cache:$fileName");
     loadingMap.addAll({fileName: _getFileWithUrl(file, url, fileName)});
-    return loadingMap[fileName];
+    return loadingMap[fileName]!;
   }
 
   static Future<File> _getFileWithUrl(

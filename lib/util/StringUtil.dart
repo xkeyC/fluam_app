@@ -9,9 +9,9 @@ class StringUtil {
     return RegExp(r"^(https?:\/\/)[^\s]+").hasMatch(s);
   }
 
-  static String getHtmlAllText(String htmlString) {
+  static String getHtmlAllText(String? htmlString) {
     final doc = parse.parse(htmlString);
-    return doc.body.text;
+    return doc.body!.text;
   }
 
   static String getSha1(String str) {
@@ -19,12 +19,12 @@ class StringUtil {
   }
 
   /// magick
-  static dom.Document getHtmlContentSummary(String htmlString) {
+  static dom.Document getHtmlContentSummary(String? htmlString) {
     final doc = parse.parse(htmlString);
 
     List<dom.Element> summary = [];
     int textLen = 0;
-    doc.body.children.forEach((element) {
+    doc.body!.children.forEach((element) {
       if (textLen >= 240) {
         return;
       }
@@ -50,7 +50,7 @@ class StringUtil {
       }
     });
     summary.add(dom.Element.html("<p>...</p>"));
-    final d = dom.Document.html("<body></body>")..body.children.addAll(summary);
+    final d = dom.Document.html("<body></body>")..body!.children.addAll(summary);
     return d;
   }
 }

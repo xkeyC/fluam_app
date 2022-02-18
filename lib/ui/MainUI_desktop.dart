@@ -33,7 +33,7 @@ class _MainUIDesktopState extends State<MainUIDesktop> {
       backgroundColor: getScaffoldBackground(context),
       appBarTitle: makeTitleText(context, "Fluam"),
       centerTitle: false,
-      floatingActionButton: _getFab(context),
+      floatingActionButton: _getFab(context) as FloatingActionButton?,
       hamburgerMenu: HamburgerMenu(
         onClick: (int value) {
           setState(() {
@@ -71,7 +71,7 @@ class _MainUIDesktopState extends State<MainUIDesktop> {
     );
   }
 
-  Widget _getFab(BuildContext context) {
+  Widget? _getFab(BuildContext context) {
     bool isExtended = fabStatus == 0;
 
     switch (fabStatus) {
@@ -98,7 +98,7 @@ class _MainUIDesktopState extends State<MainUIDesktop> {
             height: 24,
           ),
           backgroundColor: getAppbarBackGroundColor(context),
-          label: null,
+          label: Text(""),
         );
     }
     return null;

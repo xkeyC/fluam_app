@@ -5,7 +5,7 @@ class FlarumTagsData extends FlarumBaseData {
 
   final List<FlarumTagData> tagsList;
 
-  FlarumTagsData(FlarumLinkData links, data, FlarumIncludedData included,
+  FlarumTagsData(FlarumLinkData? links, data, FlarumIncludedData? included,
       String sourceJsonString, this.tagsList)
       : super(links, data, included, sourceJsonString);
 
@@ -34,7 +34,7 @@ class FlarumTagsData extends FlarumBaseData {
 class FlarumTagData extends FlarumBaseData {
   static const String typeName = FlarumTagsData.typeName;
 
-  FlarumTagData(FlarumLinkData links, data, FlarumIncludedData included,
+  FlarumTagData(FlarumLinkData? links, data, FlarumIncludedData? included,
       String sourceJsonString)
       : super(links, data, included, sourceJsonString);
 
@@ -52,36 +52,36 @@ class FlarumTagData extends FlarumBaseData {
         flarumBaseData.included, flarumBaseData.sourceJsonString);
   }
 
-  Map get attributes => this.data["attributes"];
+  Map? get attributes => this.data["attributes"];
 
-  String get id => this.data["id"];
+  String? get id => this.data["id"];
 
-  String get name => this.attributes["name"];
+  String? get name => this.attributes!["name"];
 
-  String get description => this.attributes["description"];
+  String? get description => this.attributes!["description"];
 
-  String get slug => this.attributes["slug"];
+  String? get slug => this.attributes!["slug"];
 
-  String get color => this.attributes["color"];
+  String? get color => this.attributes!["color"];
 
-  String get icon => this.attributes["icon"];
+  String? get icon => this.attributes!["icon"];
 
-  String get discussionCount => this.attributes["discussionCount"];
+  String? get discussionCount => this.attributes!["discussionCount"];
 
-  int get position => this.attributes["position"];
+  int? get position => this.attributes!["position"];
 
-  bool get isChild => this.attributes["isChild"];
+  bool? get isChild => this.attributes!["isChild"];
 
-  bool get isHidden => this.attributes["isHidden"];
+  bool? get isHidden => this.attributes!["isHidden"];
 
-  String get lastPostedAt => this.attributes["lastPostedAt"];
+  String? get lastPostedAt => this.attributes!["lastPostedAt"];
 
-  bool get canStartDiscussion => this.attributes["canStartDiscussion"];
+  bool? get canStartDiscussion => this.attributes!["canStartDiscussion"];
 
-  bool get canAddToDiscussion => this.attributes["canAddToDiscussion"];
+  bool? get canAddToDiscussion => this.attributes!["canAddToDiscussion"];
 
-  Map get relationships => this.data["relationships"];
+  Map? get relationships => this.data["relationships"];
 
-  FlarumRelationshipsData get parentTags =>
-      FlarumRelationshipsData.formJsonMap(this.relationships["parent"]["data"]);
+  FlarumRelationshipsData? get parentTags =>
+      FlarumRelationshipsData.formJsonMap(this.relationships!["parent"]["data"]);
 }

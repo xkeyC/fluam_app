@@ -5,8 +5,8 @@ import 'package:fluam_app/io/cache_manager.dart';
 import 'package:flutter/material.dart';
 
 class CacheImage extends StatefulWidget {
-  final String url;
-  final Widget nullUrlWidget;
+  final String? url;
+  final Widget? nullUrlWidget;
 
   /// loader
   final double loaderSize;
@@ -19,15 +19,15 @@ class CacheImage extends StatefulWidget {
 
 class _CacheImageState extends State<CacheImage>
     with AutomaticKeepAliveClientMixin {
-  File imageFile;
-  StreamSubscription fileStream;
+  File? imageFile;
+  StreamSubscription? fileStream;
 
   @override
   void initState() {
     if (fileStream != null || widget.url == null || widget.url == "") {
       return;
     }
-    fileStream = AppCacheManager.getFile(widget.url).asStream().listen((file) {
+    fileStream = AppCacheManager.getFile(widget.url!)!.asStream().listen((file) {
       setState(() {
         imageFile = file;
       });
@@ -38,7 +38,7 @@ class _CacheImageState extends State<CacheImage>
   @override
   void dispose() {
     if (fileStream != null) {
-      fileStream.cancel();
+      fileStream!.cancel();
     }
     super.dispose();
   }
@@ -49,7 +49,7 @@ class _CacheImageState extends State<CacheImage>
 
     if (widget.url == null || widget.url == "") {
       if (widget.nullUrlWidget != null) {
-        return widget.nullUrlWidget;
+        return widget.nullUrlWidget!;
       }
       return SizedBox();
     }
@@ -60,7 +60,7 @@ class _CacheImageState extends State<CacheImage>
             size: widget.loaderSize,
             color: Colors.grey,
           )
-        : Image.file(imageFile);
+        : Image.file(imageFile!);
   }
 
   @override

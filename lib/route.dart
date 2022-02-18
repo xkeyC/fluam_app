@@ -12,19 +12,19 @@ class AppRoute {
         return MainUIDesktop();
       }
       return MainUI();
-    }), (route) => route == null);
+    }), (route) => false);
   }
 
-  static Future goAddSiteUI(BuildContext context, {bool firstSite = false}) {
+  static Future goAddSiteUI(BuildContext? context, {bool firstSite = false}) {
     if (firstSite) {
-      return Navigator.pushAndRemoveUntil(context,
+      return Navigator.pushAndRemoveUntil(context!,
           MaterialPageRoute(builder: (context) {
         return AddSiteUI(
           firstSite: firstSite,
         );
-      }), (route) => route == null);
+      }), (route) => false);
     }
-    return Navigator.push(context, MaterialPageRoute(builder: (context) {
+    return Navigator.push(context!, MaterialPageRoute(builder: (context) {
       return AddSiteUI(
         firstSite: firstSite,
       );

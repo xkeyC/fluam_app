@@ -5,7 +5,7 @@ class FlarumDiscussionsData extends FlarumBaseData {
 
   final List<FlarumDiscussionData> discussionsList;
 
-  FlarumDiscussionsData(FlarumLinkData links, data, FlarumIncludedData included,
+  FlarumDiscussionsData(FlarumLinkData? links, data, FlarumIncludedData? included,
       String sourceJsonString, this.discussionsList)
       : super(links, data, included, sourceJsonString);
 
@@ -38,7 +38,7 @@ class FlarumDiscussionsData extends FlarumBaseData {
 class FlarumDiscussionData extends FlarumBaseData {
   static const String typeName = "discussions";
 
-  FlarumDiscussionData(FlarumLinkData links, data, FlarumIncludedData included,
+  FlarumDiscussionData(FlarumLinkData? links, data, FlarumIncludedData? included,
       String sourceJsonString)
       : super(links, data, included, sourceJsonString);
 
@@ -56,63 +56,63 @@ class FlarumDiscussionData extends FlarumBaseData {
         flarumBaseData.included, flarumBaseData.sourceJsonString);
   }
 
-  String get id => this.data["id"];
+  String? get id => this.data["id"];
 
-  Map get attributes => this.data["attributes"];
+  Map? get attributes => this.data["attributes"];
 
-  String get title => this.attributes["title"];
+  String? get title => this.attributes!["title"];
 
-  String get slug => this.attributes["slug"];
+  String? get slug => this.attributes!["slug"];
 
-  int get commentCount => this.attributes["commentCount"];
+  int? get commentCount => this.attributes!["commentCount"];
 
-  int get participantCount => this.attributes["participantCount"];
+  int? get participantCount => this.attributes!["participantCount"];
 
-  String get createdAt => this.attributes["createdAt"];
+  String? get createdAt => this.attributes!["createdAt"];
 
-  String get lastPostedAt => this.attributes["lastPostedAt"];
+  String? get lastPostedAt => this.attributes!["lastPostedAt"];
 
-  int get lastPostNumber => this.attributes["lastPostNumber"];
+  int? get lastPostNumber => this.attributes!["lastPostNumber"];
 
-  bool get canReply => this.attributes["lastPostNumber"];
+  bool? get canReply => this.attributes!["lastPostNumber"];
 
-  bool get canRename => this.attributes["canRename"];
+  bool? get canRename => this.attributes!["canRename"];
 
-  bool get canDelete => this.attributes["canDelete"];
+  bool? get canDelete => this.attributes!["canDelete"];
 
-  bool get canHide => this.attributes["canHide"];
+  bool? get canHide => this.attributes!["canHide"];
 
-  String get lastReadAt => this.attributes["lastReadAt"];
+  String? get lastReadAt => this.attributes!["lastReadAt"];
 
-  int get lastReadPostNumber => this.attributes["lastReadPostNumber"];
+  int? get lastReadPostNumber => this.attributes!["lastReadPostNumber"];
 
-  bool get isApproved => this.attributes["isApproved"];
+  bool? get isApproved => this.attributes!["isApproved"];
 
-  bool get isLocked => this.attributes["isLocked"];
+  bool? get isLocked => this.attributes!["isLocked"];
 
-  bool get canLock => this.attributes["canLock"];
+  bool? get canLock => this.attributes!["canLock"];
 
-  bool get isSticky => this.attributes["isSticky"];
+  bool? get isSticky => this.attributes!["isSticky"];
 
-  bool get canSticky => this.attributes["canSticky"];
+  bool? get canSticky => this.attributes!["canSticky"];
 
-  bool get subscription => this.attributes["subscription"];
+  bool? get subscription => this.attributes!["subscription"];
 
-  bool get canTag => this.attributes["canTag"];
+  bool? get canTag => this.attributes!["canTag"];
 
-  Map get relationships => this.data["relationships"];
+  Map? get relationships => this.data["relationships"];
 
-  FlarumRelationshipsData get user =>
-      FlarumRelationshipsData.formJsonMap(this.relationships["user"]["data"]);
+  FlarumRelationshipsData? get user =>
+      FlarumRelationshipsData.formJsonMap(this.relationships!["user"]["data"]);
 
-  FlarumRelationshipsData get lastPostedUser =>
+  FlarumRelationshipsData? get lastPostedUser =>
       FlarumRelationshipsData.formJsonMap(
-          this.relationships["lastPostedUser"]["data"]);
+          this.relationships!["lastPostedUser"]["data"]);
 
-  FlarumRelationshipsData get firstPost => FlarumRelationshipsData.formJsonMap(
-      this.relationships["firstPost"]["data"]);
+  FlarumRelationshipsData? get firstPost => FlarumRelationshipsData.formJsonMap(
+      this.relationships!["firstPost"]["data"]);
 
-  List<FlarumRelationshipsData> get tags =>
+  List<FlarumRelationshipsData?> get tags =>
       FlarumRelationshipsData.formJsonMapList(
-          this.relationships["tags"]["data"]);
+          this.relationships!["tags"]["data"]);
 }

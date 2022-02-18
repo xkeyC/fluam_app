@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 makeAppBar(BuildContext context,
     {bool showBackButton = false,
-    Widget title,
-    List<Widget> actions,
+    Widget? title,
+    List<Widget>? actions,
     bool centerTitle = false}) {
   Color backgroundColor = getAppbarBackGroundColor(context);
   Color textColor =
       backgroundColor.computeLuminance() < 0.5 ? Colors.white : Colors.black;
   return AppBar(
     backgroundColor: backgroundColor,
-    brightness: Theme.of(context).brightness,
+    systemOverlayStyle: SystemUiOverlayStyle(
+      statusBarBrightness: Theme.of(context).brightness,
+    ),
     elevation: 4,
     leading: showBackButton
         ? IconButton(
@@ -29,7 +32,8 @@ makeAppBar(BuildContext context,
   );
 }
 
-Widget makeTitleText(BuildContext context, String text, {TextAlign textAlign}) {
+Widget makeTitleText(BuildContext context, String text,
+    {TextAlign? textAlign}) {
   return Text(
     text,
     style: TextStyle(color: getTextColor(context)),

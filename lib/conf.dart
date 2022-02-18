@@ -5,12 +5,12 @@ import 'io/cache_manager.dart';
 import 'io/hive_db.dart';
 
 class AppConf {
-  static List<FlarumSiteInfo> _sites;
-  static List<FlarumSiteInfo> _followSites;
+  static List<FlarumSiteInfo>? _sites;
+  static List<FlarumSiteInfo>? _followSites;
 
-  static List<FlarumSiteInfo> get sites => _sites;
+  static List<FlarumSiteInfo>? get sites => _sites;
 
-  static List<FlarumSiteInfo> get followSites => _followSites;
+  static List<FlarumSiteInfo>? get followSites => _followSites;
 
   static Future<int> initApp() async {
     /// int dataBase
