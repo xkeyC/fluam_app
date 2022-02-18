@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "xkeyC Studio" "\0"
-            VALUE "FileDescription", "A cross-platform flarum client." "\0"
+            VALUE "CompanyName", "cn.xkeyc" "\0"
+            VALUE "FileDescription", "fluam_app" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "Fluam" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2021 xkeyC All rights reserved." "\0"
-            VALUE "OriginalFilename", "fluam.exe" "\0"
-            VALUE "ProductName", "fluam" "\0"
+            VALUE "InternalName", "fluam_app" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2022 cn.xkeyc. All rights reserved." "\0"
+            VALUE "OriginalFilename", "fluam_app.exe" "\0"
+            VALUE "ProductName", "fluam_app" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
