@@ -32,8 +32,6 @@ dependencies:
   # for desktop
   waterfall_flow: ^3.0.2
   ffi: ^1.1.2
-  # for open_url
-
 
 dev_dependencies:
   flutter_test:

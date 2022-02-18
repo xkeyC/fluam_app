@@ -34,9 +34,7 @@ class _MainDiscussListState extends State<MainDiscussList>
     with TickerProviderStateMixin {
   int pageIndex = 0;
 
-  List<Widget> widgets = [];
-
-  //List<FlarumDiscussionInfo> listData;
+  List<FlarumDiscussionInfo>? listData;
   ScrollController scrollController = ScrollController();
 
   bool pageHaveNext = false;
@@ -82,8 +80,8 @@ class _MainDiscussListState extends State<MainDiscussList>
     if (page == 0) {
       sitePageMap = {};
       setState(() {
-        widgets = [];
-        //listData = [];
+        // widgets = [];
+        listData = [];
         ignoredSiteList = [];
       });
       sitePageMap.addAll({"_lastPageIndex": 0});
@@ -115,11 +113,11 @@ class _MainDiscussListState extends State<MainDiscussList>
                 d.links!.next != "") {
               pageHaveNext = true;
             }
-            //listData.add(FlarumDiscussionInfo(info.site, d));
-            widgets.add(_DiscussCard(
-              FlarumDiscussionInfo(info.site, d),
-              showSiteBanner: true,
-            ));
+            listData?.add(FlarumDiscussionInfo(info.site, d));
+            // widgets.add(_DiscussCard(
+            //   FlarumDiscussionInfo(info.site, d),
+            //   showSiteBanner: true,
+            // ));
           }
         }
         setState(() {});
@@ -149,8 +147,8 @@ class _MainDiscussListState extends State<MainDiscussList>
         singleSiteNextPageUrl = d.links!.next;
         pageHaveNext = true;
       }
-      //listData.add(FlarumDiscussionInfo(info.site, d));
-      widgets.add(_DiscussCard(FlarumDiscussionInfo(info.site, d)));
+      listData?.add(FlarumDiscussionInfo(info.site, d));
+      // widgets.add(_DiscussCard(FlarumDiscussionInfo(info.site, d)));
     });
     setState(() {});
     isLoading = false;
@@ -238,7 +236,7 @@ class _MainDiscussListState extends State<MainDiscussList>
     } else {
       final view = CustomScrollView(
         controller: scrollController,
-        semanticChildCount: widgets.length,
+        semanticChildCount: listData!.length,
         physics: AppConf.isDesktop ? NeverScrollableScrollPhysics() : null,
         slivers: [
           SliverToBoxAdapter(
@@ -253,7 +251,7 @@ class _MainDiscussListState extends State<MainDiscussList>
               _updateCurrentSite(context, index);
             },
           )),
-          (widgets.length == 0)
+          (listData!.length == 0)
               ? SliverWaterfallFlow.count(
                   crossAxisCount: 1,
                   children: [
@@ -279,13 +277,13 @@ class _MainDiscussListState extends State<MainDiscussList>
                   ),
                   delegate:
                       SliverChildBuilderDelegate((BuildContext c, int index) {
-                    return widgets[index];
-                    /*
+                    // return widgets[index];
+
                     return _DiscussCard(
-                      listData[index],
-                      shoeSiteBanner: siteIndex == -1,
-                    );*/
-                  }, childCount: widgets.length),
+                      listData![index],
+                      showSiteBanner: siteIndex == -1,
+                    );
+                  }, childCount: listData!.length),
                 )
         ],
       );
@@ -492,7 +490,7 @@ class _DiscussCard extends StatelessWidget {
                               padding: EdgeInsets.only(bottom: 5),
                               child: Text("..."),
                             )
-                          : FlarumHTMLContent(StringUtil.getHtmlContentSummary(
+                          : HtmlView(StringUtil.getHtmlContentSummary(
                                   firstPost.contentHtml)
                               .outerHtml)),
 

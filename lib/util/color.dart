@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
+
 extension HexColor on Color {
   /// String is in the format "aabbcc" or "ffaabbcc" with an optional leading "#".
   static Color fromHex(String? hexString) {
@@ -18,4 +20,18 @@ extension HexColor on Color {
       '${red.toRadixString(16).padLeft(2, '0')}'
       '${green.toRadixString(16).padLeft(2, '0')}'
       '${blue.toRadixString(16).padLeft(2, '0')}';
+}
+
+class ColorUtil {
+  static Color getTitleFormBackGround(Color color) {
+    return color.computeLuminance() < 0.5 ? Colors.white : Colors.black;
+  }
+
+  static Color getSubtitleFormBackGround(Color color) {
+    return color.computeLuminance() < 0.5 ? Colors.white54 : Colors.black54;
+  }
+
+  static Brightness getBrightnessFromBackground(Color color) {
+    return color.computeLuminance() < 0.5 ? Brightness.dark : Brightness.light;
+  }
 }
