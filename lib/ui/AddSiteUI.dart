@@ -1,6 +1,6 @@
 import 'package:fluam_app/api.dart';
 import 'package:fluam_app/data/app/FlarumSite.dart';
-import 'package:fluam_app/generated/l10n.dart';
+
 import 'package:fluam_app/route.dart';
 import 'package:fluam_app/ui/widgets.dart';
 import 'package:fluam_app/ui/widgets/cache_image/cache_image.dart';
@@ -10,6 +10,8 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../conf.dart';
+import '../generated/l10n.dart';
+import '../generated/r.dart';
 
 typedef void SiteInfoCallBack(FlarumSiteInfo info);
 
@@ -129,8 +131,8 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
             context: context,
             builder: (context) {
               return AlertDialog(
-                title: Text(S.of(context)!.title_warning),
-                content: Text(S.of(context)!.c_site_speed_warning),
+                title: Text(R().title_warning),
+                content: Text(R().c_site_speed_warning),
                 actions: [
                   TextButton(
                       onPressed: () {
@@ -139,18 +141,18 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                           follow = true;
                         });
                       },
-                      child: Text(S.of(context)!.title_yes)),
+                      child: Text(R().title_yes)),
                   TextButton(
                       onPressed: () {
                         Navigator.pop(context);
                         _checkSpeed();
                       },
-                      child: Text(S.of(context)!.title_retest_speed)),
+                      child: Text(R().title_retest_speed)),
                   TextButton(
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: Text(S.of(context)!.title_no))
+                      child: Text(R().title_no))
                 ],
               );
             });
@@ -258,7 +260,7 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                           children: [
                             ListTile(
                               title: Text(
-                                S.of(context)!.title_site_conf,
+                                R().title_site_conf,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 20),
                               ),
@@ -268,7 +270,7 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                             ListTile(
                               title: RichText(
                                 text: TextSpan(
-                                    text: S.of(context)!.title_SPEED_LEVEL,
+                                    text: R().title_SPEED_LEVEL,
                                     style: TextStyle(
                                       color: getTextColor(context),
                                       fontSize: 18,
@@ -303,7 +305,7 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                                       )
                                     ]),
                               ),
-                              subtitle: Text(S.of(context)!.c_site_speed_level),
+                              subtitle: Text(R().c_site_speed_level),
                               trailing: IconButton(
                                 onPressed: isSpeedChecking ? null : _checkSpeed,
                                 icon: isSpeedChecking
@@ -315,9 +317,9 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                             /// Site Follow
                             ListTile(
                               title: Text(
-                                S.of(context)!.title_site_follow,
+                                R().title_site_follow,
                               ),
-                              subtitle: Text(S.of(context)!.c_site_follow),
+                              subtitle: Text(R().c_site_follow),
                               leading: Checkbox(
                                 onChanged: _followSite,
                                 value: follow,
@@ -425,10 +427,12 @@ class _AddSiteMainPageState extends State<_AddSiteMainPage> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+
+          
           Text(
             widget.firstSite
-                ? S.of(context)!.title_add_site_first
-                : S.of(context)!.title_add_site,
+                ? R().title_add_site_first.toString()
+                : R().title_add_site.toString(),
             style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
           ),
@@ -444,9 +448,9 @@ class _AddSiteMainPageState extends State<_AddSiteMainPage> {
               enabled: loadStatus != 1,
               controller: urlTextController,
               decoration: InputDecoration(
-                  labelText: S.of(context)!.c_site_url_label,
+                  labelText: R().c_site_url_label,
                   errorText: loadStatus == -2
-                      ? S.of(context)!.c_site_url_label_error
+                      ? R().c_site_url_label_error
                       : null),
               onChanged: (String text) {
                 if (StringUtil.isHTTPSUrl(text)) {
