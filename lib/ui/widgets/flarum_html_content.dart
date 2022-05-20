@@ -253,8 +253,10 @@ class HtmlView extends StatelessWidget {
       case "details":
         return contentPadding(SizedBox(
           width: MediaQuery.of(context).size.width,
-          child: RaisedButton(
-              color: Theme.of(context).primaryColor,
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Theme.of(context).primaryColor,
+              ),
               child: Text(
                 "title_show_details",
                 style: TextStyle(
@@ -308,7 +310,6 @@ class HtmlView extends StatelessWidget {
             ),
           ),
         );
-        break;
       case "ul":
         List<Widget> list = [];
         element.children.forEach((c) {
@@ -376,7 +377,8 @@ class HtmlView extends StatelessWidget {
               ),
             ),
             onTap: () async {
-              SystemChrome.setEnabledSystemUIOverlays([]);
+              SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+                  overlays: []);
               SystemChrome.setPreferredOrientations([
                 DeviceOrientation.landscapeRight,
                 DeviceOrientation.landscapeRight,
@@ -385,8 +387,8 @@ class HtmlView extends StatelessWidget {
                   MaterialPageRoute(builder: (BuildContext context) {
                 return CodeView(element.text);
               }));
-              SystemChrome.setEnabledSystemUIOverlays(
-                  [SystemUiOverlay.top, SystemUiOverlay.bottom]);
+              SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+                  overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom]);
               SystemChrome.setPreferredOrientations([
                 DeviceOrientation.portraitUp,
               ]);
@@ -402,25 +404,25 @@ class HtmlView extends StatelessWidget {
             text: TextSpan(
                 children: getRichTextSpan(context, element.nodes),
                 style: TextStyle(fontSize: textSize, color: Colors.black))));
-        // return contentPadding(contentPadding(SizedBox(
-        //   width: MediaQuery.of(context).size.width,
-        //   child: RaisedButton(
-        //       color: Colors.red,
-        //       child: Text(
-        //         "UnimplementedNode",
-        //         style: TextStyle(color: Colors.white),
-        //       ),
-        //       onPressed: () {
-        //         showDialog(
-        //             context: context,
-        //             builder: (BuildContext context) {
-        //               return AlertDialog(
-        //                 title: Text("Source"),
-        //                 content: Text(element.outerHtml),
-        //               );
-        //             });
-        //       }),
-        // )));
+      // return contentPadding(contentPadding(SizedBox(
+      //   width: MediaQuery.of(context).size.width,
+      //   child: RaisedButton(
+      //       color: Colors.red,
+      //       child: Text(
+      //         "UnimplementedNode",
+      //         style: TextStyle(color: Colors.white),
+      //       ),
+      //       onPressed: () {
+      //         showDialog(
+      //             context: context,
+      //             builder: (BuildContext context) {
+      //               return AlertDialog(
+      //                 title: Text("Source"),
+      //                 content: Text(element.outerHtml),
+      //               );
+      //             });
+      //       }),
+      // )));
     }
   }
 

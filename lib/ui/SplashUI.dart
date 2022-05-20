@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '../conf.dart';
+import '../generated/l10n.dart';
 
 class SplashUI extends StatefulWidget {
   @override
@@ -84,6 +85,7 @@ class _SplashUIState extends State<SplashUI> with TickerProviderStateMixin {
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
+        S.delegate,
       ],
       supportedLocales: [
         Locale('en', ''),

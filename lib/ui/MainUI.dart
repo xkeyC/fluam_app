@@ -39,7 +39,7 @@ class _MainUIState extends State<MainUI> {
         child: fabIsLoading
             ? CircularProgressIndicator()
             : FaIcon(
-                FontAwesomeIcons.pencilAlt,
+                FontAwesomeIcons.pencil,
                 color: getTextColor(context),
               ),
         onPressed: () {},

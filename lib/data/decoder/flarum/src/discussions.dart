@@ -5,8 +5,12 @@ class FlarumDiscussionsData extends FlarumBaseData {
 
   final List<FlarumDiscussionData> discussionsList;
 
-  FlarumDiscussionsData(FlarumLinkData? links, data, FlarumIncludedData? included,
-      String sourceJsonString, this.discussionsList)
+  FlarumDiscussionsData(
+      FlarumLinkData? links,
+      data,
+      FlarumIncludedData? included,
+      String sourceJsonString,
+      this.discussionsList)
       : super(links, data, included, sourceJsonString);
 
   factory FlarumDiscussionsData.formBase(FlarumBaseData flarumBaseData) {
@@ -38,8 +42,8 @@ class FlarumDiscussionsData extends FlarumBaseData {
 class FlarumDiscussionData extends FlarumBaseData {
   static const String typeName = "discussions";
 
-  FlarumDiscussionData(FlarumLinkData? links, data, FlarumIncludedData? included,
-      String sourceJsonString)
+  FlarumDiscussionData(FlarumLinkData? links, data,
+      FlarumIncludedData? included, String sourceJsonString)
       : super(links, data, included, sourceJsonString);
 
   factory FlarumDiscussionData.formBase(FlarumBaseData flarumBaseData) {

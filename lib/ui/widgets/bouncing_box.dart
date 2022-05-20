@@ -13,7 +13,7 @@ class BouncingBox extends StatefulWidget {
 
 class _BouncingBoxState extends State<BouncingBox>
     with SingleTickerProviderStateMixin {
-  double? _scale;
+  // double? _scale;
 
   // late AnimationController _controller;
 
@@ -52,9 +52,9 @@ class _BouncingBoxState extends State<BouncingBox>
     // );
   }
 
-  void _tapDown(TapDownDetails details) async {
-    // _controller.forward();
-    // await Future.delayed(Duration(milliseconds: 250));
-    // _controller.reverse();
-  }
+  // void _tapDown(TapDownDetails details) async {
+  //   // _controller.forward();
+  //   // await Future.delayed(Duration(milliseconds: 250));
+  //   // _controller.reverse();
+  // }
 }

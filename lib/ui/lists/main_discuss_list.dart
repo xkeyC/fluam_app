@@ -1,20 +1,21 @@
+import 'dart:math';
+
 import 'package:fluam_app/api.dart';
 import 'package:fluam_app/conf.dart';
 import 'package:fluam_app/data/app/Flarum.dart';
 import 'package:fluam_app/data/app/FlarumSite.dart';
 import 'package:fluam_app/data/decoder/flarum/flarum.dart';
 import 'package:fluam_app/route.dart';
-import 'package:fluam_app/ui/widgets.dart';
-import 'package:fluam_app/ui/widgets/bouncing_box.dart';
 import 'package:fluam_app/ui/widgets/cache_image/cache_image.dart';
-import 'package:fluam_app/ui/widgets/desktop_scroll/desktop_scroll.dart';
 import 'package:fluam_app/ui/widgets/flarum_html_content.dart';
 import 'package:fluam_app/ui/widgets/flarum_user_avatar.dart';
 import 'package:fluam_app/util/StringUtil.dart';
 import 'package:fluam_app/util/color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:waterfall_flow/waterfall_flow.dart';
+import '../widgets.dart';
 
 typedef SiteIndexCallBack(int index);
 typedef FabStatueCallBack(int index);
@@ -50,9 +51,30 @@ class _MainDiscussListState extends State<MainDiscussList>
   static late List<String?> ignoredSiteList;
 
   @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     /// init sitePageMap
     scrollController.addListener(() {
+      //fix desktop scroll
+      if (AppConf.isDesktop) {
+        const EXTRA_SCROLL_SPEED = 60;
+        ScrollDirection scrollDirection =
+            scrollController.position.userScrollDirection;
+        if (scrollDirection != ScrollDirection.idle) {
+          double scrollEnd = scrollController.offset +
+              (scrollDirection == ScrollDirection.reverse
+                  ? EXTRA_SCROLL_SPEED
+                  : -EXTRA_SCROLL_SPEED);
+          scrollEnd = min(scrollController.position.maxScrollExtent,
+              max(scrollController.position.minScrollExtent, scrollEnd));
+          scrollController.jumpTo(scrollEnd);
+        }
+      }
       if (scrollController.offset == 0) {
         /// show All fab
         widget.fabStatueCallBack(0);
@@ -234,13 +256,12 @@ class _MainDiscussListState extends State<MainDiscussList>
         child: Text("no followSites"),
       );
     } else {
-      final view = CustomScrollView(
-        controller: scrollController,
-        semanticChildCount: listData!.length,
-        physics: AppConf.isDesktop ? NeverScrollableScrollPhysics() : null,
-        slivers: [
-          SliverToBoxAdapter(
-              child: SitesHorizonList(
+      // return CustomScrollView(
+      //   controller: scrollController,
+      // );
+      return Column(
+        children: [
+          SitesHorizonList(
             widget.sites,
             siteIndexCallBack: (index) {
               final i = index - 1;
@@ -250,56 +271,35 @@ class _MainDiscussListState extends State<MainDiscussList>
               }
               _updateCurrentSite(context, index);
             },
-          )),
-          (listData!.length == 0)
-              ? SliverWaterfallFlow.count(
-                  crossAxisCount: 1,
-                  children: [
-                    Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SizedBox(
-                            height: 20,
-                          ),
-                          CircularProgressIndicator()
-                        ],
-                      ),
-                    )
-                  ],
-                )
-              : SliverWaterfallFlow(
-                  gridDelegate:
-                      SliverWaterfallFlowDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: AppConf.isDesktop ? 3 : 1,
-                    crossAxisSpacing: 5.0,
-                    mainAxisSpacing: 5.0,
-                  ),
-                  delegate:
-                      SliverChildBuilderDelegate((BuildContext c, int index) {
-                    // return widgets[index];
-
-                    return _DiscussCard(
-                      listData![index],
-                      showSiteBanner: siteIndex == -1,
-                    );
-                  }, childCount: listData!.length),
-                )
+          ),
+          SizedBox(
+            height: 8,
+          ),
+          Expanded(
+            child: (listData!.length == 0)
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Scrollbar(
+                    controller: scrollController,
+                    child: WaterfallFlow.builder(
+                        controller: scrollController,
+                        itemCount: listData!.length,
+                        gridDelegate:
+                            SliverWaterfallFlowDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: AppConf.isDesktop ? 3 : 1,
+                          crossAxisSpacing: 5.0,
+                          mainAxisSpacing: 5.0,
+                        ),
+                        itemBuilder: (context, index) {
+                          return _DiscussCard(
+                            listData![index],
+                            showSiteBanner: siteIndex == -1,
+                          );
+                        })),
+          )
         ],
       );
-      final v = Scrollbar(
-          controller: scrollController,
-          isAlwaysShown: AppConf.isDesktop,
-          child: view);
-      if (AppConf.isDesktop) {
-        return SmoothScrollDesktop(
-          controller: scrollController,
-          child: v,
-          scrollSpeed: 200,
-          scrollAnimationLength: 200,
-        );
-      }
-      return v;
     }
   }
 
@@ -428,83 +428,72 @@ class _DiscussCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    FlarumUserData userData =
-        discussionInfo.data.included!.users![discussionInfo.data.user?.id]!;
+    FlarumUserData? userData =
+        discussionInfo.data.included!.users![discussionInfo.data.user?.id];
     FlarumPostData? firstPost;
     try {
       firstPost = discussionInfo
           .data.included!.posts![discussionInfo.data.firstPost?.id];
     } catch (_) {}
-    return BouncingBox(
-      onTap: () async {
-        /// open Card page
-        /// for preview,use Browser
-        await Future.delayed(Duration(milliseconds: 300));
-        // url_launcher.launch(
-        //     "${discussionInfo.site.data.baseUrl}/d/${discussionInfo.data.id}");
-      },
-      child: SizedBox(
-        width: MediaQuery.of(context).size.width,
-        child: Padding(
-          padding: const EdgeInsets.only(
-            top: 10,
-            left: 10,
-            right: 10,
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: Padding(
+        padding: const EdgeInsets.only(
+          top: 10,
+          left: 10,
+          right: 10,
+        ),
+        child: Card(
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: const BorderRadius.all(Radius.circular(6)),
           ),
-          child: Card(
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              borderRadius: const BorderRadius.all(Radius.circular(6)),
-            ),
-            child: Padding(
-              padding:
-                  EdgeInsets.only(top: 10, bottom: 20, left: 20, right: 20),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  /// Title
-                  SizedBox(
+          child: Padding(
+            padding: EdgeInsets.only(top: 10, bottom: 20, left: 20, right: 20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                /// Title
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: Text(
+                    discussionInfo.data.title!,
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+
+                /// User HEAD
+                ListTile(
+                  title: Text(userData?.displayName ?? "[unknown]"),
+                  subtitle: Text(discussionInfo.data.createdAt!),
+                  leading: FlarumUserAvatar(userData?.avatarUrl),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+
+                /// content
+                SizedBox(
                     width: MediaQuery.of(context).size.width,
-                    child: Text(
-                      discussionInfo.data.title!,
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                  ),
+                    child: firstPost == null
+                        ? Padding(
+                            padding: EdgeInsets.only(bottom: 5),
+                            child: Text("..."),
+                          )
+                        : HtmlView(StringUtil.getHtmlContentSummary(
+                                firstPost.contentHtml)
+                            .outerHtml)),
 
-                  /// User HEAD
-                  ListTile(
-                    title: Text(userData.displayName!),
-                    subtitle: Text(discussionInfo.data.createdAt!),
-                    leading: FlarumUserAvatar(userData.avatarUrl),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
+                /// SiteBanner
+                showSiteBanner ? makeSiteBanner(context) : SizedBox(),
 
-                  /// content
-                  SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: firstPost == null
-                          ? Padding(
-                              padding: EdgeInsets.only(bottom: 5),
-                              child: Text("..."),
-                            )
-                          : HtmlView(StringUtil.getHtmlContentSummary(
-                                  firstPost.contentHtml)
-                              .outerHtml)),
+                SizedBox(
+                  height: 5,
+                ),
 
-                  /// SiteBanner
-                  showSiteBanner ? makeSiteBanner(context) : SizedBox(),
-
-                  SizedBox(
-                    height: 5,
-                  ),
-
-                  /// Tags
-                  makeTags(context)
-                ],
-              ),
+                /// Tags
+                makeTags(context)
+              ],
             ),
           ),
         ),

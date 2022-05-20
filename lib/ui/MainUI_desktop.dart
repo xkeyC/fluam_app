@@ -81,7 +81,7 @@ class _MainUIDesktopState extends State<MainUIDesktop> {
           heroTag: "main_fab",
           isExtended: isExtended,
           icon: FaIcon(
-            FontAwesomeIcons.pencilAlt,
+            FontAwesomeIcons.pencil,
             color: getTextColor(context),
           ),
           label: makeTitleText(context, "Start a Discussion"),

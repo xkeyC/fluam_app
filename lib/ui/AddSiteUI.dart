@@ -129,8 +129,8 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
             context: context,
             builder: (context) {
               return AlertDialog(
-                title: Text(S.of(context)!.title_warning),
-                content: Text(S.of(context)!.c_site_speed_warning),
+                title: Text(S.of(context).title_warning),
+                content: Text(S.of(context).c_site_speed_warning),
                 actions: [
                   TextButton(
                       onPressed: () {
@@ -139,18 +139,18 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                           follow = true;
                         });
                       },
-                      child: Text(S.of(context)!.title_yes)),
+                      child: Text(S.of(context).title_yes)),
                   TextButton(
                       onPressed: () {
                         Navigator.pop(context);
                         _checkSpeed();
                       },
-                      child: Text(S.of(context)!.title_retest_speed)),
+                      child: Text(S.of(context).title_retest_speed)),
                   TextButton(
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: Text(S.of(context)!.title_no))
+                      child: Text(S.of(context).title_no))
                 ],
               );
             });
@@ -258,7 +258,7 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                           children: [
                             ListTile(
                               title: Text(
-                                S.of(context)!.title_site_conf,
+                                S.of(context).title_site_conf,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 20),
                               ),
@@ -268,7 +268,7 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                             ListTile(
                               title: RichText(
                                 text: TextSpan(
-                                    text: S.of(context)!.title_SPEED_LEVEL,
+                                    text: S.of(context).title_SPEED_LEVEL,
                                     style: TextStyle(
                                       color: getTextColor(context),
                                       fontSize: 18,
@@ -279,7 +279,8 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                                           itemBuilder: (BuildContext context,
                                               int index) {
                                             Color c = Colors.amber;
-                                            if (info!.siteConnectionSpeedLevel! <=
+                                            if (info!
+                                                    .siteConnectionSpeedLevel! <=
                                                 1) {
                                               c = Colors.green;
                                             } else if (info!
@@ -303,7 +304,7 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                                       )
                                     ]),
                               ),
-                              subtitle: Text(S.of(context)!.c_site_speed_level),
+                              subtitle: Text(S.of(context).c_site_speed_level),
                               trailing: IconButton(
                                 onPressed: isSpeedChecking ? null : _checkSpeed,
                                 icon: isSpeedChecking
@@ -315,9 +316,9 @@ class _CheckSiteInfoPageState extends State<_CheckSiteInfoPage> {
                             /// Site Follow
                             ListTile(
                               title: Text(
-                                S.of(context)!.title_site_follow,
+                                S.of(context).title_site_follow,
                               ),
-                              subtitle: Text(S.of(context)!.c_site_follow),
+                              subtitle: Text(S.of(context).c_site_follow),
                               leading: Checkbox(
                                 onChanged: _followSite,
                                 value: follow,
@@ -427,8 +428,8 @@ class _AddSiteMainPageState extends State<_AddSiteMainPage> {
         children: [
           Text(
             widget.firstSite
-                ? S.of(context)!.title_add_site_first
-                : S.of(context)!.title_add_site,
+                ? S.of(context).title_add_site_first
+                : S.of(context).title_add_site,
             style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
           ),
@@ -444,9 +445,9 @@ class _AddSiteMainPageState extends State<_AddSiteMainPage> {
               enabled: loadStatus != 1,
               controller: urlTextController,
               decoration: InputDecoration(
-                  labelText: S.of(context)!.c_site_url_label,
+                  labelText: S.of(context).c_site_url_label,
                   errorText: loadStatus == -2
-                      ? S.of(context)!.c_site_url_label_error
+                      ? S.of(context).c_site_url_label_error
                       : null),
               onChanged: (String text) {
                 if (StringUtil.isHTTPSUrl(text)) {

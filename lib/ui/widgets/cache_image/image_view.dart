@@ -10,17 +10,32 @@ class ImagesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-        color: Colors.transparent,
-        child: Hero(
-            tag: heroTag,
-            child: Scaffold(
+    return Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Stack(
+          children: [
+            Hero(
+                tag: heroTag,
+                child: Scaffold(
+                  backgroundColor: Colors.transparent,
+                  body: PageView.builder(
+                      itemCount: images?.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return CacheImage(images![index]);
+                      }),
+                )),
+            AppBar(
               backgroundColor: Colors.transparent,
-              body: PageView.builder(
-                  itemCount: images?.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return CacheImage(images![index]);
-                  }),
-            )));
+              automaticallyImplyLeading: false,
+              actions: [
+                IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(Icons.close)),
+              ],
+            )
+          ],
+        ));
   }
 }
